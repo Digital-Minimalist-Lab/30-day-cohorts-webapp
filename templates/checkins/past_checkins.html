@@ -3,33 +3,31 @@
 {% block title %}Past Check-Ins - {{ cohort.name }}{% endblock %}
 
 {% block content %}
-<div class="py-8">
-    <h1 class="text-3xl font-bold mb-8">Past Check-Ins</h1>
-    
-    {% if checkins %}
-    <div class="space-y-6">
-        {% for checkin in checkins %}
-        <div class="p-6 bg-white border border-gray-200 rounded-lg">
-            <h3 class="font-semibold mb-2">{{ checkin.date }}</h3>
-            <div class="text-sm space-y-1 text-gray-600">
-                <p>Mood: {{ checkin.mood_1to5 }}/5 | Digital Satisfaction: {{ checkin.digital_satisfaction_1to5 }}/5</p>
-                <p>Screen Time: {{ checkin.screentime_min }} min</p>
-                <p class="mt-2"><strong>Proud moment:</strong> {{ checkin.proud_moment_text }}</p>
-                {% if checkin.digital_slip_text %}
-                <p><strong>Digital slip:</strong> {{ checkin.digital_slip_text }}</p>
-                {% endif %}
-                <p><strong>Reflection:</strong> {{ checkin.reflection_text }}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p class="text-gray-600">No check-ins yet.</p>
-    {% endif %}
-    
-    <div class="mt-8">
-        <a href="{% url 'cohorts:homepage' %}" class="calm-button-secondary">Back to Home</a>
-    </div>
-</div>
+<header>
+    <h1>Past Check-Ins</h1>
+</header>
+
+{% if checkins %}
+    {% for checkin in checkins %}
+    <article>
+        <h3>{{ checkin.date }}</h3>
+        <p><small>
+            Mood: {{ checkin.mood_1to5 }}/5 | Digital Satisfaction: {{ checkin.digital_satisfaction_1to5 }}/5 | 
+            Screen Time: {{ checkin.screentime_min }} min
+        </small></p>
+        <p><strong>Proud moment:</strong> {{ checkin.proud_moment_text }}</p>
+        {% if checkin.digital_slip_text %}
+        <p><strong>Digital slip:</strong> {{ checkin.digital_slip_text }}</p>
+        {% endif %}
+        <p><strong>Reflection:</strong> {{ checkin.reflection_text }}</p>
+    </article>
+    {% endfor %}
+{% else %}
+    <p>No check-ins yet.</p>
+{% endif %}
+
+<p>
+    <a href="{% url 'cohorts:homepage' %}">Back to Home</a>
+</p>
 {% endblock %}
 

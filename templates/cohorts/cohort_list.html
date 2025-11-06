@@ -3,33 +3,27 @@
 {% block title %}Available Cohorts - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<div class="py-8">
-    <h1 class="text-3xl font-bold mb-8">Available Cohorts</h1>
-    
-    {% if available_cohorts %}
-    <div class="space-y-4">
-        {% for cohort in available_cohorts %}
-        <div class="p-6 bg-white border border-gray-200 rounded-lg">
-            <h2 class="text-2xl font-semibold mb-2">{{ cohort.name }}</h2>
-            <p class="text-gray-600 mb-4">
-                {{ cohort.start_date }} to {{ cohort.end_date }}
-            </p>
-            
-            {% if cohort.id in user_enrollments %}
-            <p class="text-green-600">Enrolled</p>
-            {% else %}
-            <a href="{% url 'cohorts:cohort_join' cohort.id %}" class="calm-button inline-block">
-                Join Cohort
-            </a>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="p-6 bg-gray-50 border border-gray-200 rounded-lg">
-        <p class="text-gray-600">No cohorts are currently available. Check back soon.</p>
-    </div>
-    {% endif %}
-</div>
+<header>
+    <h1>Available Cohorts</h1>
+</header>
+
+{% if available_cohorts %}
+    {% for cohort in available_cohorts %}
+    <sl-card>
+        <h2 slot="header">{{ cohort.name }}</h2>
+        <p><small>{{ cohort.start_date }} to {{ cohort.end_date }}</small></p>
+        
+        {% if cohort.id in user_enrollments %}
+        <p>Enrolled</p>
+        {% else %}
+        <a href="{% url 'cohorts:cohort_join' cohort.id %}" role="button">Join Cohort</a>
+        {% endif %}
+    </sl-card>
+    {% endfor %}
+{% else %}
+    <article>
+        <p>No cohorts are currently available. Check back soon.</p>
+    </article>
+{% endif %}
 {% endblock %}
 

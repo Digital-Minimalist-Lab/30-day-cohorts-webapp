@@ -18,21 +18,17 @@ class DailyCheckinForm(forms.ModelForm):
             'mood_1to5': forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 6)]),
             'digital_satisfaction_1to5': forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 6)]),
             'screentime_min': forms.NumberInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'placeholder': 'Screen time in minutes (estimated or actual)'
             }),
             'proud_moment_text': forms.Textarea(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'rows': 3,
                 'placeholder': 'One thing you\'re proud of that replaced scrolling...'
             }),
             'digital_slip_text': forms.Textarea(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'rows': 2,
                 'placeholder': 'If you slipped, describe what happened (optional)'
             }),
             'reflection_text': forms.Textarea(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'rows': 3,
                 'placeholder': '1-2 sentences about how today went...'
             }),

@@ -3,52 +3,34 @@
 {% block title %}Your Data - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<div class="py-8">
-    <h1 class="text-3xl font-bold mb-8">Your Data</h1>
-    
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
-        <p class="text-yellow-800 font-semibold">⚠️ Caution: Metrics and Gamification</p>
-        <p class="text-yellow-700 text-sm mt-2">
-            Metrics are powerful tools of the attention economy. They can hook your attention and turn 
-            reflection into optimization. We've intentionally hidden this data by default. Use it wisely.
-        </p>
-    </div>
-    
-    {% if avg_mood %}
-    <div class="space-y-6 mb-12">
-        <div class="p-6 bg-white border border-gray-200 rounded-lg">
-            <h2 class="text-xl font-semibold mb-4">Summary</h2>
-            <div class="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                    <p class="text-gray-600">Average Mood</p>
-                    <p class="text-2xl font-bold">{{ avg_mood|floatformat:1 }}/5</p>
-                </div>
-                <div>
-                    <p class="text-gray-600">Average Digital Satisfaction</p>
-                    <p class="text-2xl font-bold">{{ avg_digital_satisfaction|floatformat:1 }}/5</p>
-                </div>
-                <div>
-                    <p class="text-gray-600">Average Screen Time</p>
-                    <p class="text-2xl font-bold">{{ avg_screentime|floatformat:0 }} min</p>
-                </div>
-                <div>
-                    <p class="text-gray-600">Screen Time Change</p>
-                    <p class="text-2xl font-bold {% if screentime_change < 0 %}text-green-600{% endif %}">
-                        {{ screentime_change|floatformat:0 }} min
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <div class="p-6 bg-gray-50 border border-gray-200 rounded-lg mb-8">
-        <p class="text-gray-600">No data yet. Complete some daily check-ins to see your trends.</p>
-    </div>
-    {% endif %}
-    
-    <div class="mt-8">
-        <a href="{% url 'cohorts:homepage' %}" class="calm-button-secondary">Back to Home</a>
-    </div>
-</div>
+<header>
+    <h1>Your Data</h1>
+</header>
+
+<article>
+    <p><strong>⚠️ Caution: Metrics and Gamification</strong></p>
+    <p><small>
+        Metrics are powerful tools of the attention economy. They can hook your attention and turn 
+        reflection into optimization. We've intentionally hidden this data by default. Use it wisely.
+    </small></p>
+</article>
+
+{% if avg_mood %}
+<section>
+    <h2>Summary</h2>
+    <p>Average Mood: <strong>{{ avg_mood|floatformat:1 }}/5</strong></p>
+    <p>Average Digital Satisfaction: <strong>{{ avg_digital_satisfaction|floatformat:1 }}/5</strong></p>
+    <p>Average Screen Time: <strong>{{ avg_screentime|floatformat:0 }} min</strong></p>
+    <p>Screen Time Change: <strong>{{ screentime_change|floatformat:0 }} min</strong></p>
+</section>
+{% else %}
+<article>
+    <p>No data yet. Complete some daily check-ins to see your trends.</p>
+</article>
+{% endif %}
+
+<p>
+    <a href="{% url 'cohorts:homepage' %}">Back to Home</a>
+</p>
 {% endblock %}
 

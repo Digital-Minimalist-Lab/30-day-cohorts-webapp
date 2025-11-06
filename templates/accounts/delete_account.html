@@ -3,44 +3,37 @@
 {% block title %}Delete Account - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<div class="py-8">
-    <h1 class="text-3xl font-bold mb-4 text-red-600">Delete Account</h1>
+<header>
+    <h1>Delete Account</h1>
+</header>
+
+<article>
+    <p><strong>Warning: This action cannot be undone.</strong></p>
+    <p>
+        Deleting your account will permanently remove all your data including:
+    </p>
+    <ul>
+        <li>All daily check-ins and reflections</li>
+        <li>All weekly reflections</li>
+        <li>Entry and exit surveys</li>
+        <li>Cohort enrollments</li>
+        <li>Profile and settings</li>
+    </ul>
+    <p>
+        <strong>Note:</strong> We believe in data control and privacy. Hard deletion is a feature, not a bug.
+    </p>
+</article>
+
+<form method="post">
+    {% csrf_token %}
     
-    <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-        <p class="text-red-800 font-semibold mb-2">Warning: This action cannot be undone.</p>
-        <p class="text-red-700">
-            Deleting your account will permanently remove all your data including:
-        </p>
-        <ul class="list-disc list-inside mt-2 text-red-700">
-            <li>All daily check-ins and reflections</li>
-            <li>All weekly reflections</li>
-            <li>Entry and exit surveys</li>
-            <li>Cohort enrollments</li>
-            <li>Profile and settings</li>
-        </ul>
-        <p class="mt-4 text-red-700">
-            <strong>Note:</strong> We believe in data control and privacy. Hard deletion is a feature, not a bug.
-        </p>
-    </div>
+    <label for="confirm">
+        Type <code>DELETE</code> to confirm:
+        <input type="text" name="confirm" id="confirm" required>
+    </label>
     
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        
-        <div>
-            <label class="block text-sm font-medium mb-2">
-                Type <code class="bg-gray-100 px-2 py-1">DELETE</code> to confirm:
-            </label>
-            <input type="text" name="confirm" class="calm-input" required>
-        </div>
-        
-        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
-            Permanently Delete My Account
-        </button>
-        
-        <a href="{% url 'accounts:settings' %}" class="calm-button-secondary ml-4">
-            Cancel
-        </a>
-    </form>
-</div>
+    <button type="submit" class="contrast">Permanently Delete My Account</button>
+    <a href="{% url 'accounts:settings' %}" role="button" class="secondary">Cancel</a>
+</form>
 {% endblock %}
 

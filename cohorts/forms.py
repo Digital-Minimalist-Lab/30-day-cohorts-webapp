@@ -10,24 +10,18 @@ class CohortForm(forms.ModelForm):
         fields = ['name', 'start_date', 'end_date', 'price_cents', 'is_active']
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'placeholder': 'e.g., January 2024 Cohort'
             }),
             'start_date': forms.DateInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'type': 'date'
             }),
             'end_date': forms.DateInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'type': 'date'
             }),
             'price_cents': forms.NumberInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'placeholder': 'Price in cents (e.g., 1000 = $10.00)'
             }),
-            'is_active': forms.CheckboxInput(attrs={
-                'class': 'rounded'
-            }),
+            'is_active': forms.CheckboxInput(),
         }
         help_texts = {
             'price_cents': 'Price in cents (e.g., 1000 = $10.00)',

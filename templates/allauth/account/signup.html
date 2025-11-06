@@ -3,81 +3,70 @@
 {% block title %}Sign Up - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<div class="py-8 max-w-md mx-auto">
-    <h1 class="text-3xl font-bold mb-8">Sign Up</h1>
+<header>
+    <h1>Sign Up</h1>
+</header>
+
+<form method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
     
-    <form method="post" action="{% url 'account_signup' %}" class="space-y-4">
-        {% csrf_token %}
-        
-        {% if form.non_field_errors %}
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-            {{ form.non_field_errors }}
-        </div>
-        {% endif %}
-        
-        <div>
-            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium mb-2">
-                Email
-            </label>
-            <input type="email" 
-                   name="{{ form.email.name }}" 
-                   id="{{ form.email.id_for_label }}"
-                   class="calm-input {% if form.email.errors %}border-red-500{% endif %}"
-                   value="{{ form.email.value|default:'' }}"
-                   required>
-            {% if form.email.errors %}
-            <p class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</p>
-            {% endif %}
-            {% if form.email.help_text %}
-            <p class="text-xs text-gray-500 mt-1">{{ form.email.help_text }}</p>
-            {% endif %}
-        </div>
-        
-        <div>
-            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium mb-2">
-                Password
-            </label>
-            <input type="password" 
-                   name="{{ form.password1.name }}" 
-                   id="{{ form.password1.id_for_label }}"
-                   class="calm-input {% if form.password1.errors %}border-red-500{% endif %}"
-                   required>
-            {% if form.password1.errors %}
-            <p class="text-red-600 text-sm mt-1">{{ form.password1.errors.0 }}</p>
-            {% endif %}
-            {% if form.password1.help_text %}
-            <p class="text-xs text-gray-500 mt-1">{{ form.password1.help_text }}</p>
-            {% endif %}
-        </div>
-        
-        {% if form.password2 %}
-        <div>
-            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium mb-2">
-                Password (again)
-            </label>
-            <input type="password" 
-                   name="{{ form.password2.name }}" 
-                   id="{{ form.password2.id_for_label }}"
-                   class="calm-input {% if form.password2.errors %}border-red-500{% endif %}"
-                   required>
-            {% if form.password2.errors %}
-            <p class="text-red-600 text-sm mt-1">{{ form.password2.errors.0 }}</p>
-            {% endif %}
-        </div>
-        {% endif %}
-        
-        {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-        
-        <button type="submit" class="calm-button w-full">
-            Sign Up
-        </button>
-    </form>
+    {% if form.non_field_errors %}
+    <article>
+        {{ form.non_field_errors }}
+    </article>
+    {% endif %}
     
-    <p class="mt-4 text-center text-sm text-gray-600">
-        Already have an account? <a href="{% url 'account_login' %}" class="underline">Login</a>
-    </p>
-</div>
+    <label for="{{ form.email.id_for_label }}">
+        Email
+        <input type="email" 
+               name="{{ form.email.name }}" 
+               id="{{ form.email.id_for_label }}"
+               value="{{ form.email.value|default:'' }}"
+               required>
+        {% if form.email.errors %}
+        <small>{{ form.email.errors.0 }}</small>
+        {% endif %}
+        {% if form.email.help_text %}
+        <small>{{ form.email.help_text }}</small>
+        {% endif %}
+    </label>
+    
+    <label for="{{ form.password1.id_for_label }}">
+        Password
+        <input type="password" 
+               name="{{ form.password1.name }}" 
+               id="{{ form.password1.id_for_label }}"
+               required>
+        {% if form.password1.errors %}
+        <small>{{ form.password1.errors.0 }}</small>
+        {% endif %}
+        {% if form.password1.help_text %}
+        <small>{{ form.password1.help_text }}</small>
+        {% endif %}
+    </label>
+    
+    {% if form.password2 %}
+    <label for="{{ form.password2.id_for_label }}">
+        Password (again)
+        <input type="password" 
+               name="{{ form.password2.name }}" 
+               id="{{ form.password2.id_for_label }}"
+               required>
+        {% if form.password2.errors %}
+        <small>{{ form.password2.errors.0 }}</small>
+        {% endif %}
+    </label>
+    {% endif %}
+    
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    
+    <button type="submit">Sign Up</button>
+</form>
+
+<p><small>
+    Already have an account? <a href="{% url 'account_login' %}">Login</a>
+</small></p>
 {% endblock %}
 

@@ -10,16 +10,13 @@ class EntrySurveyForm(forms.ModelForm):
         widgets = {
             'mood_1to5': forms.RadioSelect(choices=[(i, str(i)) for i in range(1, 6)]),
             'baseline_screentime_min': forms.NumberInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'placeholder': 'Estimated daily screen time in minutes'
             }),
             'intention_text': forms.Textarea(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'rows': 4,
                 'placeholder': 'Why are you interested in participating in the digital detox?'
             }),
             'challenge_text': forms.Textarea(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md',
                 'rows': 3,
                 'placeholder': 'Name one thing you would like to reclaim (hobby, time with loved ones, etc.)'
             }),

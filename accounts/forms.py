@@ -8,8 +8,8 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['timezone', 'email_daily_reminder', 'email_weekly_reminder']
         widgets = {
-            'timezone': forms.Select(attrs={'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}),
-            'email_daily_reminder': forms.CheckboxInput(attrs={'class': 'rounded'}),
-            'email_weekly_reminder': forms.CheckboxInput(attrs={'class': 'rounded'}),
+            'timezone': forms.Select(),
+            'email_daily_reminder': forms.CheckboxInput(),
+            'email_weekly_reminder': forms.CheckboxInput(),
         }
 

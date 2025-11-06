@@ -1,139 +1,77 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
     <title>{% block title %}Digital Minimalist Lab{% endblock %}</title>
     
     <!-- Pico CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     
     <!-- Shoelace -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css" />
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/themes/light.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/shoelace.js"></script>
     
     <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     
     <!-- Chart.js (for dashboard) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <style>
-        /* Calm, minimal aesthetic */
-        :root {
-            --pico-font-family: 'Georgia', serif;
-            --pico-font-size: 1rem;
-            --pico-line-height: 1.6;
-            --pico-color: #1a202c;
-            --pico-background-color: #f7fafc;
-            --pico-primary: #1a202c;
-            --pico-primary-background: #1a202c;
-            --pico-primary-foreground: #ffffff;
-            --pico-border-radius: 0.375rem;
-        }
-        
-        .calm-container {
-            max-width: 42rem;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        nav {
-            border-bottom: 1px solid var(--pico-border-color);
-            background-color: var(--pico-background-color);
-        }
-        
-        nav > div {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        
-        nav a[href="/"] {
-            font-size: 1.25rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        
-        nav ul {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        
-        footer {
-            border-top: 1px solid var(--pico-border-color);
-            margin-top: 4rem;
-            padding: 2rem 0;
-            text-align: center;
-            font-size: 0.875rem;
-            color: var(--pico-muted-color);
-        }
-        
-        footer a {
-            margin: 0 0.5rem;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'base.css' %}">
     
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <!-- Header -->
-    <nav>
-        <div class="calm-container">
-            <a href="/">Digital Minimalist Lab</a>
-            
+    <nav class="container">
+        <ul>
+            <li><strong>Digital Minimalist Lab</strong></li>
+        </ul>
+        <ul>
             {% if user.is_authenticated %}
-            <ul>
                 <li><a href="{% url 'cohorts:homepage' %}">Home</a></li>
                 <li><a href="{% url 'accounts:settings' %}">Settings</a></li>
                 <li>
-                    <form method="post" action="{% url 'account_logout' %}" style="display: inline; margin: 0;">
+                    <form method="post" action="{% url 'account_logout' %}" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="secondary" style="margin: 0;">Logout</button>
+                        <button type="submit" class="secondary">Logout</button>
                     </form>
                 </li>
-            </ul>
             {% else %}
-            <ul>
                 <li><a href="{% url 'account_login' %}">Login</a></li>
                 <li><a href="{% url 'account_signup' %}" role="button">Sign Up</a></li>
-            </ul>
             {% endif %}
-        </div>
+        </ul>
     </nav>
     
     <!-- Messages -->
     {% if messages %}
-    <div class="calm-container" style="margin-top: 1rem;">
+    <main class="container">
         {% for message in messages %}
-        <article class="{% if message.tags == 'error' %}secondary{% elif message.tags == 'success' %}success{% else %}primary{% endif %}" style="margin-bottom: 1rem;">
+        <article>
             {{ message }}
         </article>
         {% endfor %}
-    </div>
+    </main>
     {% endif %}
     
     <!-- Main Content -->
-    <main class="calm-container">
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
     
     <!-- Footer -->
-    <footer>
-        <div class="calm-container">
-            <div style="margin-bottom: 0.5rem;">
-                <a href="{% url 'accounts:protocol' %}">Protocol</a>
-                <a href="{% url 'accounts:resources' %}">Resources</a>
-                <a href="{% url 'accounts:privacy' %}">Privacy</a>
-            </div>
-            <p style="margin: 0;">Digital Minimalist Lab © 2024</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Open source under AGPL-3.0 • Self-hosting encouraged</p>
-        </div>
+    <footer class="container">
+        <p>
+            <a href="{% url 'accounts:protocol' %}">Protocol</a> •
+            <a href="{% url 'accounts:resources' %}">Resources</a> •
+            <a href="{% url 'accounts:privacy' %}">Privacy</a>
+        </p>
+        <p><small>Digital Minimalist Lab © 2024 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
     </footer>
 </body>
 </html>

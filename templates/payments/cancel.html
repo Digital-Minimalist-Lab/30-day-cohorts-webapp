@@ -3,13 +3,14 @@
 {% block title %}Payment Cancelled - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<div class="py-8 text-center">
-    <h1 class="text-3xl font-bold mb-4">Payment Cancelled</h1>
-    <p class="text-gray-600 mb-8">No worries. You can try again when you're ready.</p>
-    
-    <a href="{% url 'cohorts:cohort_list' %}" class="calm-button">
-        Back to Cohorts
-    </a>
-</div>
+<header>
+    <h1>Payment Cancelled</h1>
+</header>
+
+<p>No worries. You can try again when you're ready.</p>
+
+<p>
+    <a href="{% url 'cohorts:cohort_list' %}" role="button">Back to Cohorts</a>
+</p>
 {% endblock %}
 

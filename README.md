@@ -47,7 +47,7 @@ This platform provides accountability and structure for the 30-day digital declu
 
 - **Framework**: Django 5.x
 - **Database**: PostgreSQL (via Docker Compose locally, Fly.io in production)
-- **Styling**: Tailwind CSS (CDN)
+- **Styling**: Pico CSS + Shoelace (CDN)
 - **Interactivity**: HTMX
 - **Charts**: Chart.js (for data view)
 - **Auth**: Django-allauth (email only)
@@ -86,26 +86,26 @@ This platform provides accountability and structure for the 30-day digital declu
    
    Wait for services to be healthy (database healthcheck completes).
 
-5. **Run migrations** (creates all database tables):
+4. **Run migrations** (creates all database tables):
    ```bash
    docker-compose exec web python manage.py migrate
    ```
    
    This creates all Django tables including django-allauth's `django_site` table.
 
-6. **Set up the default site** (required for django-allauth):
+5. **Set up the default site** (required for django-allauth):
    ```bash
    docker-compose exec web python manage.py setup_site
    ```
    
    This configures the default Site object that django-allauth needs.
 
-7. **Create a superuser** (optional, for admin access):
+6. **Create a superuser** (optional, for admin access):
    ```bash
    docker-compose exec web python manage.py createsuperuser
    ```
 
-8. **Access the application**:
+7. **Access the application**:
    - App: http://localhost:8000
    - Admin: http://localhost:8000/admin
    - Sign up: http://localhost:8000/accounts/signup/
