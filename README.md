@@ -328,20 +328,6 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
 
 **Commercial licensing:** If you need to use this software in a way that doesn't comply with AGPL (e.g., proprietary modifications without sharing source), commercial licenses may be available. Contact the project maintainer.
 
-### Trademark Notice
-
-**"Digital Minimalist Lab"** and associated branding are property of the project maintainer.
-
-You are free to:
-- Self-host this software
-- Modify it for your needs
-- Contribute improvements
-- Use it for your own cohorts
-
-You are not permitted to:
-- Use the "Digital Minimalist Lab" name/trademark for your hosted offering without permission
-- Create closed-source derivatives (must comply with AGPL)
-
 ### Support Policy
 
 - **Self-hosting = self-responsibility**: We provide the code, you manage your instance
