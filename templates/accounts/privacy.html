@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div class="py-8 prose max-w-none">
+    <h1>Privacy Policy</h1>
+    
+    <p><em>Last updated: {{ "now"|date:"F Y" }}</em></p>
+    
+    <h2>Data Collection</h2>
+    <p>
+        We collect only what's necessary for the 30-day digital declutter program:
+    </p>
+    <ul>
+        <li>Email address (for authentication and optional reminders)</li>
+        <li>Daily check-in responses</li>
+        <li>Weekly reflections</li>
+        <li>Entry and exit surveys</li>
+        <li>Timezone preference</li>
+    </ul>
+    
+    <h2>Data Usage</h2>
+    <p>
+        Your data is used exclusively for:
+    </p>
+    <ul>
+        <li>Your personal reflection and progress tracking</li>
+        <li>Aggregate cohort analytics (anonymized)</li>
+        <li>Optional email reminders (if you opt in)</li>
+    </ul>
+    
+    <h2>Data Storage</h2>
+    <p>
+        Data is stored in a Postgres database hosted in the EU (Frankfurt) for GDPR compliance.
+        We use industry-standard encryption for data in transit and at rest.
+    </p>
+    
+    <h2>Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li>Export all your data (JSON format) from Settings</li>
+        <li>Delete your account and all data permanently</li>
+        <li>Opt out of email reminders at any time</li>
+    </ul>
+    
+    <h2>No Tracking</h2>
+    <p>
+        We do not use analytics, tracking cookies, or third-party advertising. 
+        This platform is intentionally calm and privacy-respecting.
+    </p>
+    
+    <h2>Self-Hosting</h2>
+    <p>
+        This platform is open source (AGPL-3.0). You can self-host and have complete control over your data.
+    </p>
+    
+    <h2>Contact</h2>
+    <p>
+        Questions about privacy? Contact us via the project repository or support channels.
+    </p>
+</div>
+{% endblock %}
+

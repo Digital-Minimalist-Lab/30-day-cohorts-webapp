@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <h1 class="text-3xl font-bold mb-8">Settings</h1>
+    
+    <form method="post" class="space-y-6 mb-12">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium mb-2">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="calm-button">
+            Save Settings
+        </button>
+    </form>
+    
+    <div class="border-t border-gray-200 pt-8 space-y-6">
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Privacy & Data</h2>
+            <div class="space-y-2">
+                <a href="{% url 'accounts:export_data' %}" class="calm-button-secondary inline-block">
+                    Export My Data
+                </a>
+                <p class="text-sm text-gray-600">Download all your data as JSON</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 class="text-xl font-semibold mb-4 text-red-600">Danger Zone</h2>
+            <div class="space-y-2">
+                <a href="{% url 'accounts:delete_account' %}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md inline-block">
+                    Delete Account
+                </a>
+                <p class="text-sm text-gray-600">
+                    Permanently delete your account and all data. This cannot be undone.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

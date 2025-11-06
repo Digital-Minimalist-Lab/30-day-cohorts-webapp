@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}30-Day Digital Declutter - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div class="text-center py-16">
+    <h1 class="text-4xl font-bold mb-4">30-Day Digital Declutter</h1>
+    <p class="text-xl text-gray-600 mb-8">
+        Reclaim your attention. Restore your agency.
+    </p>
+    
+    <div class="max-w-2xl mx-auto text-left space-y-4 mb-12">
+        <p>
+            Join a structured 30-day cohort to intentionally reset your relationship with digital technology.
+        </p>
+        <p>
+            This is not about productivity hacks or willpower. This is about creating space for what matters.
+        </p>
+    </div>
+    
+    <div class="flex gap-4 justify-center">
+        <a href="{% url 'account_signup' %}" class="calm-button text-lg px-8 py-3">
+            Join a Cohort
+        </a>
+        <a href="{% url 'accounts:protocol' %}" class="calm-button-secondary text-lg px-8 py-3">
+            View Protocol
+        </a>
+    </div>
+</div>
+
+<div class="max-w-2xl mx-auto mt-16 space-y-8 text-gray-700">
+    <div>
+        <h2 class="text-2xl font-semibold mb-4">What to Expect</h2>
+        <ul class="space-y-2">
+            <li>• Daily 5-step reflection (no gamification)</li>
+            <li>• Weekly intention setting</li>
+            <li>• Cohort-based accountability</li>
+            <li>• Privacy-first, calm design</li>
+        </ul>
+    </div>
+    
+    <div>
+        <h2 class="text-2xl font-semibold mb-4">Philosophy</h2>
+        <p>
+            Digital agency > Digital addiction.<br>
+            Reflection > Optimization.<br>
+            Structure > Hustle.
+        </p>
+    </div>
+</div>
+{% endblock %}
+

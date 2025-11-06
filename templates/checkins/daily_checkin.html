@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Daily Check-In - {{ today }}{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <h1 class="text-3xl font-bold mb-2">Daily Check-In</h1>
+    <p class="text-gray-600 mb-8">{{ today }}</p>
+    
+    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+        <p class="text-gray-700">
+            <strong>5-step daily reflection:</strong> Rate your mood and digital satisfaction, 
+            note your screen time, celebrate a proud moment, acknowledge any slips, 
+            and reflect on your day.
+        </p>
+    </div>
+    
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium mb-2">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+            {% endif %}
+            {% if field.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="calm-button w-full">
+            Submit Check-In
+        </button>
+    </form>
+</div>
+{% endblock %}
+

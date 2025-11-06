@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div class="py-8 text-center">
+    <h1 class="text-3xl font-bold mb-4 text-green-600">Payment Successful</h1>
+    <p class="text-gray-600 mb-8">Thank you for joining the cohort. You're all set!</p>
+    
+    <a href="{% url 'cohorts:homepage' %}" class="calm-button">
+        Continue to Homepage
+    </a>
+</div>
+{% endblock %}
+

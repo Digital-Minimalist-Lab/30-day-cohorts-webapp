@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Past Reflections - {{ cohort.name }}{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <h1 class="text-3xl font-bold mb-8">Past Weekly Reflections</h1>
+    
+    {% if reflections %}
+    <div class="space-y-6">
+        {% for reflection in reflections %}
+        <div class="p-6 bg-white border border-gray-200 rounded-lg">
+            <h3 class="font-semibold mb-2">Week {{ reflection.week_index }}</h3>
+            <div class="text-sm space-y-2 text-gray-600">
+                <p><strong>Intention:</strong> {{ reflection.goal_text }}</p>
+                {% if reflection.reflection_text %}
+                <p><strong>Reflection:</strong> {{ reflection.reflection_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-600">No reflections yet.</p>
+    {% endif %}
+    
+    <div class="mt-8">
+        <a href="{% url 'cohorts:homepage' %}" class="calm-button-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
+

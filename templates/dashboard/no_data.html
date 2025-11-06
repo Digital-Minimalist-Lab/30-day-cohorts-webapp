@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}No Data - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div class="py-8">
+    <h1 class="text-3xl font-bold mb-4">No Data</h1>
+    <p class="text-gray-600 mb-8">You need to be enrolled in a cohort to view data.</p>
+    
+    <a href="{% url 'cohorts:cohort_list' %}" class="calm-button">
+        View Available Cohorts
+    </a>
+</div>
+{% endblock %}
+
