@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Profile</h1>
+</header>
+
+<!-- Settings Form -->
+<section>
+    <h2>Settings</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+            {{ field }}
+            {% if field.help_text %}
+            <small>{{ field.help_text }}</small>
+            {% endif %}
+            {% if field.errors %}
+            <small>{{ field.errors.0 }}</small>
+            {% endif %}
+        </label>
+        {% endfor %}
+        
+        <button type="submit">Save Settings</button>
+    </form>
+</section>
+
+<!-- Data View -->
+<section>
+    <h2>Your Data</h2>
+    
+    <article>
+        <p><strong>⚠️ Caution: Metrics and Gamification</strong></p>
+        <p><small>
+            Metrics are powerful tools of the attention economy. They can hook your attention and turn 
+            reflection into optimization. We've intentionally hidden this data by default. Use it wisely.
+        </small></p>
+    </article>
+    
+    {% if avg_mood %}
+    <sl-card>
+        <h3>Summary</h3>
+        <p>Average Mood: <strong>{{ avg_mood|floatformat:1 }}/5</strong></p>
+        <p>Average Digital Satisfaction: <strong>{{ avg_digital_satisfaction|floatformat:1 }}/5</strong></p>
+        <p>Average Screen Time: <strong>{{ avg_screentime|floatformat:0 }} min</strong></p>
+        <p>Screen Time Change: <strong>{{ screentime_change|floatformat:0 }} min</strong></p>
+    </sl-card>
+    {% else %}
+    <article>
+        <p>No data yet. Complete some daily check-ins to see your trends.</p>
+    </article>
+    {% endif %}
+</section>
+
+<!-- Privacy & Data -->
+<section>
+    <h2>Privacy & Data</h2>
+    <p>
+        <a href="{% url 'accounts:export_data' %}" role="button" class="secondary">Export My Data</a>
+    </p>
+    <p><small>Download all your data as JSON</small></p>
+</section>
+
+<!-- Danger Zone -->
+<section>
+    <h2>Danger Zone</h2>
+    <p>
+        <a href="{% url 'accounts:delete_account' %}" role="button" class="contrast">Delete Account</a>
+    </p>
+    <p><small>Permanently delete your account and all data. This cannot be undone.</small></p>
+</section>
+{% endblock %}
+

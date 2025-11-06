@@ -1,37 +1,47 @@
 {% extends 'base.html' %}
-
-{% block title %}30-Day Digital Declutter - Digital Minimalist Lab{% endblock %}
+{% block title %}30-Day Digital Declutter – Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<header>
-    <h1>30-Day Digital Declutter</h1>
-    <p>Reclaim your attention. Restore your agency.</p>
-</header>
-
-<p>Join a structured 30-day cohort to intentionally reset your relationship with technology.</p>
-
-<p>
-    <sl-button variant="primary" href="{% url 'account_signup' %}">Join a Cohort</sl-button>
-    <a href="{% url 'accounts:protocol' %}">View Protocol</a>
-</p>
-
-<section>
-    <h2>What to Expect</h2>
-    <ul>
-        <li>Daily reflection (no gamification)</li>
-        <li>Weekly intention setting</li>
-        <li>Cohort-based accountability</li>
-        <li>Privacy-first, calm design</li>
-    </ul>
+<!-- HERO -->
+<section class="hero">
+  <h1>30-Day Digital Declutter</h1>
+  <p class="muted">Attention is the Foundation of Love. Reclaim it.</p>
+  <p>
+    Join a structured 30-day cohort to intentionally reset your relationship with technology.
+  </p>
+  <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:1rem; margin-top:2rem;">
+    <sl-button variant="primary" size="large" href="{% url 'account_signup' %}">
+      Join a Cohort
+    </sl-button>
+    <sl-button variant="default" outline size="large" href="{% url 'accounts:protocol' %}">
+      View Protocol
+    </sl-button>
+  </div>
 </section>
 
+<!-- WHAT TO EXPECT -->
 <section>
+  <div class="card" style="padding:2rem;">
+    <h2>What to Expect</h2>
+    <ul>
+      <li>Daily reflection (no gamification)</li>
+      <li>Weekly intention setting</li>
+      <li>Cohort-based accountability</li>
+      <li>Privacy-first, calm design</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section>
+  <div class="card" style="padding:2rem;">
     <h2>Philosophy</h2>
     <p>
-        Digital agency &gt; Digital addiction.<br>
-        Reflection &gt; Optimization.<br>
-        Structure &gt; Hustle.
+      Digital agency &gt; Digital addiction.<br>
+      Reflection &gt; Optimization.<br>
+      Structure &gt; Hustle.
     </p>
+  </div>
 </section>
 {% endblock %}
 

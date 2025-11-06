@@ -35,9 +35,11 @@ def health_check(request: HttpRequest) -> JsonResponse:
 
 
 @login_required
-def settings_view(request: HttpRequest) -> HttpResponse:
-    """User settings page for profile and email preferences."""
+def profile_view(request: HttpRequest) -> HttpResponse:
+    """User profile page with settings and data view."""
     from .models import UserProfile
+    from cohorts.models import Cohort, Enrollment
+    from checkins.models import DailyCheckin
     
     # Get or create profile (in case signal didn't fire)
     profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -46,13 +48,51 @@ def settings_view(request: HttpRequest) -> HttpResponse:
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Settings updated successfully.')
-            return redirect('accounts:settings')
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('accounts:profile')
     else:
         form = UserProfileForm(instance=profile)
     
-    return render(request, 'accounts/settings.html', {
+    # Get data view information
+    enrollment = Enrollment.objects.filter(user=request.user).select_related('cohort').order_by('-enrolled_at').first()
+    
+    cohort = None
+    checkins = None
+    avg_mood = None
+    avg_digital_satisfaction = None
+    avg_screentime = None
+    mood_change = None
+    screentime_change = None
+    
+    if enrollment:
+        cohort = enrollment.cohort
+        checkins = DailyCheckin.objects.filter(
+            user=request.user,
+            cohort=cohort
+        ).order_by('date')
+        
+        # Calculate aggregates
+        if checkins.exists():
+            avg_mood = sum(c.mood_1to5 for c in checkins) / len(checkins)
+            avg_digital_satisfaction = sum(c.digital_satisfaction_1to5 for c in checkins) / len(checkins)
+            avg_screentime = sum(c.screentime_min for c in checkins) / len(checkins)
+            
+            # Get first and last for comparison
+            first_checkin = checkins.first()
+            latest_checkin = checkins.last()
+            
+            mood_change = latest_checkin.mood_1to5 - first_checkin.mood_1to5
+            screentime_change = latest_checkin.screentime_min - first_checkin.screentime_min
+    
+    return render(request, 'accounts/profile.html', {
         'form': form,
+        'cohort': cohort,
+        'checkins': checkins,
+        'avg_mood': avg_mood,
+        'avg_digital_satisfaction': avg_digital_satisfaction,
+        'avg_screentime': avg_screentime,
+        'mood_change': mood_change,
+        'screentime_change': screentime_change,
     })
 
 

@@ -23,18 +23,33 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'base.css' %}">
     
+    <!-- Messages for toast notifications -->
+    {% if messages %}
+    <script>
+        // Store Django messages for toast display
+        window.djangoMessages = [
+            {% for message in messages %}
+            {
+                level: '{{ message.tags }}',
+                message: '{{ message|escapejs }}'
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+    </script>
+    {% endif %}
+    
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <!-- Header -->
     <nav class="container">
         <ul>
-            <li><strong>Digital Minimalist Lab</strong></li>
+            <li><strong><a href="{% url 'cohorts:homepage' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
         </ul>
         <ul>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'cohorts:homepage' %}">Home</a></li>
-                <li><a href="{% url 'accounts:settings' %}">Settings</a></li>
+                <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
                 <li>
                     <form method="post" action="{% url 'account_logout' %}" style="display: inline;">
                         {% csrf_token %}
@@ -47,17 +62,6 @@
             {% endif %}
         </ul>
     </nav>
-    
-    <!-- Messages -->
-    {% if messages %}
-    <main class="container">
-        {% for message in messages %}
-        <article>
-            {{ message }}
-        </article>
-        {% endfor %}
-    </main>
-    {% endif %}
     
     <!-- Main Content -->
     <main class="container">
@@ -73,6 +77,94 @@
         </p>
         <p><small>Digital Minimalist Lab © 2024 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
     </footer>
+    
+    <!-- Toast notification script -->
+    <script>
+        // Map Django message levels to Shoelace alert variants
+        function getAlertVariant(djangoLevel) {
+            const levelMap = {
+                'success': 'success',
+                'error': 'danger',
+                'warning': 'warning',
+                'info': 'primary',
+                'debug': 'neutral'
+            };
+            // Handle combined tags like 'error message' or 'success message'
+            const baseLevel = djangoLevel.split(' ')[0];
+            return levelMap[baseLevel] || 'primary';
+        }
+        
+        // Get icon name for alert variant
+        function getIconName(variant) {
+            const iconMap = {
+                'success': 'check-circle',
+                'danger': 'exclamation-triangle',
+                'warning': 'exclamation-triangle',
+                'primary': 'info-circle',
+                'neutral': 'info-circle'
+            };
+            return iconMap[variant] || 'info-circle';
+        }
+        
+        // Show toast notification using Shoelace alert
+        function showToast(message, level) {
+            const variant = getAlertVariant(level);
+            const iconName = getIconName(variant);
+            
+            // Create alert element
+            const alert = document.createElement('sl-alert');
+            alert.variant = variant;
+            alert.closable = true;
+            alert.duration = 5000;
+            
+            // Create icon element
+            const icon = document.createElement('sl-icon');
+            icon.name = iconName;
+            icon.slot = 'icon';
+            alert.appendChild(icon);
+            
+            // Add message text
+            alert.appendChild(document.createTextNode(message));
+            
+            // Append to body
+            document.body.appendChild(alert);
+            
+            // Show as toast
+            alert.toast();
+        }
+        
+        // Show toast notifications from Django messages
+        function showDjangoMessages() {
+            if (window.djangoMessages && window.djangoMessages.length > 0) {
+                // Small delay to ensure Shoelace is loaded
+                setTimeout(function() {
+                    window.djangoMessages.forEach(function(msg) {
+                        showToast(msg.message, msg.level);
+                    });
+                }, 100);
+            }
+        }
+        
+        // Show messages on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', showDjangoMessages);
+        } else {
+            // DOM already loaded
+            showDjangoMessages();
+        }
+        
+        // Also handle HTMX responses that might include messages
+        document.body.addEventListener('htmx:afterSwap', function(event) {
+            // Check if the swapped content contains Django messages
+            const messageElements = event.detail.target.querySelectorAll('[data-message]');
+            messageElements.forEach(function(el) {
+                const level = el.getAttribute('data-message-level') || 'info';
+                const message = el.textContent.trim();
+                showToast(message, level);
+                el.remove(); // Remove the message element from DOM
+            });
+        });
+    </script>
 </body>
 </html>
 
