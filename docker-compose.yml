@@ -16,6 +16,19 @@ services:
       timeout: 5s
       retries: 5
 
+  stripe-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.stripe
+    container_name: digital_minimalist_stripe_cli
+    command: "listen --api-key ${STRIPE_SECRET_KEY} --device-name docker-stripe-cli --forward-to web:8000/payments/webhook/"
+    environment:
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    volumes:
+      - .:/app
+    depends_on:
+      - web
+
   web:
     build: .
     container_name: digital_minimalist_web

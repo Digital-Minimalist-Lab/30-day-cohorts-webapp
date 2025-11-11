@@ -400,6 +400,48 @@ python manage.py test
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed coding standards.
 
+### Handling Stripe Webhooks with Docker (Local Development)
+
+Stripe payments require webhooks to confirm payment success and update a user's enrollment status. The project is configured to use the Stripe CLI within Docker to forward webhook events from Stripe to your local machine.
+
+1.  **Prerequisites**
+
+    Make sure you have a `.env` file with your `STRIPE_SECRET_KEY` set. You can get this from your Stripe dashboard.
+
+2.  **Start the Services**
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    The `--build` flag is necessary to build the new `stripe-cli` Docker image for the first time.
+
+3.  **Get the Webhook Secret**
+
+    When the `stripe-cli` service starts, it will print the webhook signing secret to the console. Look for a line like this:
+
+    ```
+    Your webhook signing secret is whsec_...
+    ```
+
+4.  **Update Your `.env` File**
+
+    Copy the `whsec_...` secret and add it to your `.env` file:
+
+    ```
+    STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxx
+    ```
+
+5.  **Restart the `web` Service**
+
+    To ensure the `web` service picks up the new environment variable, restart it:
+
+    ```bash
+    docker-compose restart web
+    ```
+
+Your local development environment is now fully configured to handle Stripe webhooks with Docker.
+
 ---
 
 ## Contributing
