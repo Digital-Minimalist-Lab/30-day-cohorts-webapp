@@ -67,7 +67,7 @@ def homepage(request: HttpRequest) -> HttpResponse:
     # Get user's most recent enrollment (assuming one active cohort at a time)
     enrollment = Enrollment.objects.filter(user=request.user).select_related('cohort').order_by('-enrolled_at').first()
     
-    if not enrollment:
+    if not enrollment or enrollment.status == 'pending':
         # No enrollment, show signup prompt
         context = {
             'no_enrollment': True,
@@ -200,7 +200,7 @@ def cohort_list(request: HttpRequest) -> HttpResponse:
     ).order_by('-start_date')
     
     # Get user's enrollments
-    user_enrollments = Enrollment.objects.filter(user=request.user).values_list('cohort_id', flat=True)
+    user_enrollments = Enrollment.objects.filter(Q(user=request.user) & ~Q(status='pending')).values_list('cohort_id', flat=True)
     
     context = {
         'available_cohorts': available_cohorts,
@@ -227,7 +227,7 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
         cohort=cohort
     )
     
-    if not created:
+    if enrollment.status != 'pending':
         return redirect('cohorts:homepage')
     
     # If payment is enabled, redirect to payment
