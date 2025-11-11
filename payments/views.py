@@ -23,9 +23,21 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
     
     # Check if already paid
     enrollment = Enrollment.objects.filter(user=request.user, cohort=cohort).first()
-    if enrollment and enrollment.paid_at:
-        messages.info(request, 'You have already paid for this cohort.')
+    if enrollment and enrollment.status in ['paid', 'free']:
+        messages.info(request, 'You have already enrolled in this cohort.')
         return redirect('cohorts:homepage')
+    
+    # Get custom amount from query parameter (in cents)
+    amount_cents = request.GET.get('amount')
+    if amount_cents:
+        try:
+            amount_cents = int(amount_cents)
+            if amount_cents < cohort.minimum_price_cents:
+                amount_cents = cohort.minimum_price_cents
+        except (ValueError, TypeError):
+            amount_cents = cohort.minimum_price_cents
+    else:
+        amount_cents = cohort.minimum_price_cents
     
     try:
         checkout_session = stripe.checkout.Session.create(
@@ -33,7 +45,7 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
             line_items=[{
                 'price_data': {
                     'currency': 'usd',
-                    'unit_amount': cohort.price_cents,
+                    'unit_amount': amount_cents,
                     'product_data': {
                         'name': cohort.name,
                         'description': f'30-Day Digital Declutter Cohort ({cohort.start_date} - {cohort.end_date})',
@@ -42,9 +54,14 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=settings.SITE_URL + '/payments/success/?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=settings.SITE_URL + '/payments/cancel/',
-            client_reference_id=f'{request.user.id}:{cohort.id}',
+            success_url=settings.SITE_URL + '/cohort/join/success/',
+            cancel_url=settings.SITE_URL + '/cohort/join/checkout/',
+            client_reference_id=f'{request.user.id}:{cohort.id}:{amount_cents}',
+            metadata={
+                'user_id': request.user.id,
+                'cohort_id': cohort.id,
+                'amount_cents': amount_cents,
+            }
         )
         return redirect(checkout_session.url)
     except stripe.error.StripeError as e:
@@ -52,12 +69,12 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
         logger.error(f"Stripe error for user {request.user.id}, cohort {cohort.id}: {str(e)}")
         # Show generic message to user (don't expose Stripe details)
         messages.error(request, 'Unable to process payment at this time. Please try again later or contact support.')
-        return redirect('cohorts:cohort_list')
+        return redirect('cohorts:join_checkout')
     except Exception as e:
         # Log unexpected errors
         logger.error(f"Unexpected payment error for user {request.user.id}, cohort {cohort.id}: {str(e)}")
         messages.error(request, 'An unexpected error occurred. Please try again later.')
-        return redirect('cohorts:cohort_list')
+        return redirect('cohorts:join_checkout')
 
 
 @login_required
@@ -97,27 +114,42 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         
-        # Parse client_reference_id (format: "user_id:cohort_id")
+        # Parse client_reference_id (format: "user_id:cohort_id:amount_cents")
         client_ref = session.get('client_reference_id', '')
         if ':' in client_ref:
-            user_id, cohort_id = client_ref.split(':')
+            parts = client_ref.split(':')
+            if len(parts) >= 3:
+                user_id, cohort_id, amount_cents = parts[0], parts[1], parts[2]
+            else:
+                # Legacy format without amount
+                user_id, cohort_id = parts[0], parts[1]
+                amount_cents = session.get('amount_total', 0)
             
             try:
                 from django.contrib.auth import get_user_model
+                from django.utils import timezone
                 User = get_user_model()
                 user = User.objects.get(id=user_id)
                 cohort = Cohort.objects.get(id=cohort_id)
                 
-                # Update enrollment with payment timestamp
+                # Update enrollment with payment details
                 enrollment, created = Enrollment.objects.get_or_create(
                     user=user,
                     cohort=cohort
                 )
-                if not enrollment.paid_at:
-                    from django.utils import timezone
+                
+                # Only update if not already paid (idempotency)
+                if enrollment.status != 'paid':
+                    enrollment.status = 'paid'
+                    enrollment.amount_paid_cents = int(amount_cents)
                     enrollment.paid_at = timezone.now()
                     enrollment.save()
-                    logger.info(f"Payment confirmed for user {user.id}, cohort {cohort.id}")
+                    logger.info(
+                        f"Payment confirmed for user {user.id}, cohort {cohort.id}, "
+                        f"amount ${int(amount_cents)/100:.2f}"
+                    )
+                else:
+                    logger.info(f"Duplicate webhook for user {user.id}, cohort {cohort.id} - already paid")
             except Exception as e:
                 # Log error without exposing sensitive data
                 logger.error(f"Webhook processing error for client_ref {client_ref}: {str(e)}")

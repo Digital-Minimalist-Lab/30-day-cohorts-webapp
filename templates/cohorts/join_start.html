@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load account %}
+
+{% block title %}Join a Cohort - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<header style="text-align: center; margin-bottom: 2rem;">
+    <h1>Get Started</h1>
+    {% if cohort %}
+    <p style="color: var(--pico-muted-color);">
+        You'll create your account, {% if cohort.is_paid %}pay securely,{% endif %} and be in the dashboard in ~2 minutes.
+    </p>
+    {% endif %}
+</header>
+
+<div style="max-width: 500px; margin-inline: auto;">
+    <sl-tab-group>
+        <sl-tab slot="nav" panel="login">Login</sl-tab>
+        <sl-tab slot="nav" panel="signup">Create Account</sl-tab>
+
+        <!-- Login Panel -->
+        <sl-tab-panel name="login">
+            <form method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                
+                <label for="login-email">
+                    Email
+                    <input type="email" name="login" id="login-email" required autocomplete="email">
+                </label>
+                
+                <label for="login-password">
+                    Password
+                    <input type="password" name="password" id="login-password" required autocomplete="current-password">
+                </label>
+                
+                <label>
+                    <input type="checkbox" name="remember" role="switch">
+                    Remember me
+                </label>
+                
+                <input type="hidden" name="next" value="{% url 'cohorts:join_checkout' %}">
+                
+                <button type="submit" style="width: 100%;">
+                    {% if cohort and cohort.is_paid %}Continue to Payment{% else %}Continue{% endif %}
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1rem;">
+                <small><a href="{% url 'account_reset_password' %}">Forgot password?</a></small>
+            </p>
+        </sl-tab-panel>
+
+        <!-- Signup Panel -->
+        <sl-tab-panel name="signup">
+            <form method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                
+                <label for="signup-email">
+                    Email
+                    <input type="email" name="email" id="signup-email" required autocomplete="email">
+                </label>
+                
+                <label for="signup-password1">
+                    Password
+                    <input type="password" name="password1" id="signup-password1" required autocomplete="new-password">
+                </label>
+                
+                <label for="signup-password2">
+                    Confirm Password
+                    <input type="password" name="password2" id="signup-password2" required autocomplete="new-password">
+                </label>
+                
+                <label for="signup-timezone">
+                    Your Timezone
+                    <select name="timezone" id="signup-timezone" required>
+                        <option value="America/New_York" selected>Eastern (New York)</option>
+                        <option value="America/Chicago">Central (Chicago)</option>
+                        <option value="America/Denver">Mountain (Denver)</option>
+                        <option value="America/Los_Angeles">Pacific (Los Angeles)</option>
+                        <option value="America/Anchorage">Alaska</option>
+                        <option value="Pacific/Honolulu">Hawaii</option>
+                        <option value="Europe/London">London (UK)</option>
+                        <option value="Europe/Paris">Paris (Central Europe)</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                        <option value="Australia/Sydney">Sydney</option>
+                        <option value="UTC">UTC</option>
+                    </select>
+                    <small>For accurate daily check-in dates</small>
+                </label>
+                
+                <fieldset>
+                    <legend>Email Reminders (Optional)</legend>
+                    <label>
+                        <input type="checkbox" name="email_daily_reminder" role="switch">
+                        Daily check-in reminders
+                    </label>
+                    <label>
+                        <input type="checkbox" name="email_weekly_reminder" role="switch">
+                        Weekly reflection reminders
+                    </label>
+                </fieldset>
+                
+                <input type="hidden" name="next" value="{% url 'cohorts:join_checkout' %}">
+                
+                <button type="submit" style="width: 100%;">
+                    Create Account & {% if cohort and cohort.is_paid %}Continue to Payment{% else %}Get Started{% endif %}
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1rem; color: var(--pico-muted-color);">
+                <small>
+                    By creating an account, you agree to our 
+                    <a href="{% url 'accounts:privacy' %}">Privacy Policy</a>
+                </small>
+            </p>
+        </sl-tab-panel>
+    </sl-tab-group>
+</div>
+
+<style>
+sl-tab-group {
+    --indicator-color: var(--brand);
+}
+
+sl-tab-panel {
+    padding: 2rem 0.5rem;
+}
+
+fieldset {
+    border: 1px solid var(--pico-border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+fieldset legend {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+fieldset label {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}
+

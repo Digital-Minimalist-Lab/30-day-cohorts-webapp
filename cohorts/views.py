@@ -46,9 +46,22 @@ def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment
 
 
 def homepage(request: HttpRequest) -> HttpResponse:
-    """Homepage showing today's tasks for logged-in users."""
+    """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
     if not request.user.is_authenticated:
-        return render(request, 'cohorts/landing.html')
+        # Get next active cohort for enrollment landing
+        today = timezone.now().date()
+        next_cohort = Cohort.objects.filter(
+            is_active=True,
+            start_date__gte=today
+        ).order_by('start_date').first()
+        
+        context = {
+            'cohort': next_cohort,
+        }
+        if next_cohort:
+            context['seats_available'] = next_cohort.seats_available()
+        
+        return render(request, 'cohorts/landing.html', context)
     
     # Get user's most recent enrollment (assuming one active cohort at a time)
     enrollment = Enrollment.objects.filter(user=request.user).select_related('cohort').order_by('-enrolled_at').first()
@@ -218,9 +231,135 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
     
     # If payment is enabled, redirect to payment
     from django.conf import settings
-    if settings.STRIPE_ENABLED and cohort.price_cents > 0:
+    if settings.STRIPE_ENABLED and cohort.minimum_price_cents > 0:
         return redirect('payments:create_checkout', cohort_id=cohort.id)
     
     # Otherwise, redirect to entry survey
     return redirect('surveys:entry_survey', cohort_id=cohort.id)
+
+
+def join_start(request: HttpRequest) -> HttpResponse:
+    """Step 1: Account creation or login for cohort enrollment."""
+    # If user is authenticated, redirect to checkout
+    if request.user.is_authenticated:
+        # Check if already enrolled in active cohort
+        today = timezone.now().date()
+        active_enrollment = Enrollment.objects.filter(
+            user=request.user,
+            cohort__is_active=True,
+            cohort__start_date__gte=today - timezone.timedelta(days=7)
+        ).select_related('cohort').first()
+        
+        if active_enrollment:
+            return redirect('cohorts:homepage')
+        
+        # Otherwise redirect to checkout
+        return redirect('cohorts:join_checkout')
+    
+    # Get next active cohort
+    today = timezone.now().date()
+    next_cohort = Cohort.objects.filter(
+        is_active=True,
+        start_date__gte=today
+    ).order_by('start_date').first()
+    
+    context = {
+        'cohort': next_cohort,
+    }
+    
+    return render(request, 'cohorts/join_start.html', context)
+
+
+@login_required
+def join_checkout(request: HttpRequest) -> HttpResponse:
+    """Step 2: Payment checkout (or skip if free cohort)."""
+    from django.conf import settings
+    from .forms import PaymentAmountForm
+    
+    # Get next active cohort
+    today = timezone.now().date()
+    cohort = Cohort.objects.filter(
+        is_active=True,
+        start_date__gte=today - timezone.timedelta(days=7)
+    ).order_by('start_date').first()
+    
+    if not cohort:
+        return render(request, 'cohorts/cohort_join_error.html', {
+            'message': 'No active cohorts available at the moment.'
+        })
+    
+    # Check if cohort is full
+    if cohort.is_full():
+        return render(request, 'cohorts/cohort_join_error.html', {
+            'cohort': cohort,
+            'message': f'This cohort is full. Please check back for the next cohort.'
+        })
+    
+    # Check if already enrolled
+    existing_enrollment = Enrollment.objects.filter(
+        user=request.user,
+        cohort=cohort
+    ).first()
+    
+    if existing_enrollment and existing_enrollment.status in ['paid', 'free']:
+        return redirect('cohorts:homepage')
+    
+    # If free cohort, create enrollment and redirect to success
+    if not cohort.is_paid:
+        enrollment, created = Enrollment.objects.get_or_create(
+            user=request.user,
+            cohort=cohort,
+            defaults={'status': 'free'}
+        )
+        if created or enrollment.status == 'pending':
+            enrollment.status = 'free'
+            enrollment.save()
+        return redirect('cohorts:join_success')
+    
+    # Paid cohort - show payment form
+    if request.method == 'POST':
+        form = PaymentAmountForm(request.POST, minimum_price_cents=cohort.minimum_price_cents)
+        if form.is_valid():
+            amount_cents = form.cleaned_data['amount_cents']
+            # Create or get enrollment
+            enrollment, created = Enrollment.objects.get_or_create(
+                user=request.user,
+                cohort=cohort,
+                defaults={'status': 'pending'}
+            )
+            # Redirect to Stripe checkout
+            from django.urls import reverse
+            return redirect(
+                reverse('payments:create_checkout', kwargs={'cohort_id': cohort.id}) + 
+                f'?amount={amount_cents}'
+            )
+    else:
+        form = PaymentAmountForm(minimum_price_cents=cohort.minimum_price_cents)
+    
+    context = {
+        'cohort': cohort,
+        'form': form,
+        'minimum_price_dollars': cohort.minimum_price_cents / 100,
+    }
+    
+    return render(request, 'cohorts/join_checkout.html', context)
+
+
+@login_required
+def join_success(request: HttpRequest) -> HttpResponse:
+    """Step 3: Onboarding success page after enrollment."""
+    # Get user's most recent enrollment
+    enrollment = Enrollment.objects.filter(
+        user=request.user
+    ).select_related('cohort').order_by('-enrolled_at').first()
+    
+    if not enrollment:
+        return redirect('cohorts:homepage')
+    
+    context = {
+        'enrollment': enrollment,
+        'cohort': enrollment.cohort,
+    }
+    
+    return render(request, 'cohorts/join_success.html', context)
 

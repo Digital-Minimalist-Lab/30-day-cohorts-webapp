@@ -143,6 +143,9 @@ ACCOUNT_UNIQUE_EMAIL = True
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+ACCOUNT_FORMS = {
+    'signup': 'cohorts.forms.EnrollmentSignupForm',
+}
 
 # Email Configuration
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

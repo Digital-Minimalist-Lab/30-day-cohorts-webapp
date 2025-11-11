@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}You're In! - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin-inline: auto; text-align: center;">
+    <!-- Success Header -->
+    <div style="margin-bottom: 3rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">You're In!</h1>
+        <p style="font-size: 1.2rem; color: var(--pico-muted-color);">
+            Let's reclaim your attention.
+        </p>
+    </div>
+
+    <!-- Cohort Info Card -->
+    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: left;">
+        <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Your Cohort</h2>
+        <p><strong>{{ cohort.name }}</strong></p>
+        <p style="color: var(--pico-muted-color); margin: 0;">
+            Starts <strong>{{ cohort.start_date|date:"F j, Y" }}</strong> • 
+            Ends {{ cohort.end_date|date:"F j, Y" }}
+        </p>
+    </div>
+
+    <!-- What Happens Next -->
+    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: left;">
+        <h2 style="font-size: 1.3rem; margin-bottom: 1.5rem;">What Happens Next</h2>
+        
+        <div style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 1.5rem; min-width: 2rem;">📊</div>
+            <div>
+                <p style="margin: 0; font-weight: 600;">Access Your Dashboard</p>
+                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
+                    Your personalized dashboard is ready. Bookmark it for daily check-ins.
+                </p>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 1.5rem; min-width: 2rem;">📧</div>
+            <div>
+                <p style="margin: 0; font-weight: 600;">Optional: Turn on Email Reminders</p>
+                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
+                    Get gentle nudges for daily check-ins. You can enable this in your profile.
+                </p>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: start; gap: 1rem;">
+            <div style="font-size: 1.5rem; min-width: 2rem;">🚀</div>
+            <div>
+                <p style="margin: 0; font-weight: 600;">Start Date: {{ cohort.start_date|date:"F j, Y" }}</p>
+                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
+                    You can start exploring the dashboard now. Daily prompts go live on {{ cohort.start_date|date:"F j" }}.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Button -->
+    <a href="{% url 'cohorts:homepage' %}" role="button" style="display: inline-block; min-width: 250px; margin-bottom: 1rem;">
+        Go to Your Dashboard
+    </a>
+    
+    <br>
+    
+    <a href="{% url 'accounts:profile' %}" role="button" class="secondary" style="display: inline-block; min-width: 250px;">
+        Update Email Preferences
+    </a>
+    
+    <!-- Additional Info -->
+    <div style="margin-top: 3rem; padding: 1.5rem; background: var(--pico-card-background-color); border-radius: var(--radius);">
+        <p style="color: var(--pico-muted-color); font-size: 0.95rem; margin: 0;">
+            <strong>Need help?</strong> Check out the 
+            <a href="{% url 'accounts:protocol' %}">Protocol</a> page for guidance on how to make the most of your 30 days.
+        </p>
+    </div>
+</div>
+{% endblock %}
+

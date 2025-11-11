@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin-inline: auto;">
+    <header style="text-align: center; margin-bottom: 3rem;">
+        <h1>Complete Your Enrollment</h1>
+        <p style="color: var(--pico-muted-color);">
+            Choose an amount that feels meaningful to you
+        </p>
+    </header>
+
+    <!-- Summary Card -->
+    <div class="card" style="padding: 2rem; margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 1rem; font-size: 1.3rem;">What You're Getting</h2>
+        
+        <p><strong>{{ cohort.name }}</strong></p>
+        <p style="color: var(--pico-muted-color); margin-bottom: 1.5rem;">
+            {{ cohort.start_date|date:"F j, Y" }} – {{ cohort.end_date|date:"F j, Y" }}
+        </p>
+        
+        <ul style="margin-bottom: 0;">
+            <li>30 days of guided digital declutter</li>
+            <li>Daily prompts & reflection journal</li>
+            <li>Weekly intention setting</li>
+            <li>Progress tracking dashboard</li>
+            <li>Post-cohort maintenance plan</li>
+        </ul>
+    </div>
+
+    <!-- Payment Form -->
+    <div class="card" style="padding: 2rem;">
+        <h2 style="margin-bottom: 1rem; font-size: 1.3rem;">Choose Your Amount</h2>
+        
+        <p style="color: var(--pico-muted-color); margin-bottom: 1.5rem;">
+            Payment is a commitment device. Choose an amount that feels non-trivial to you. 
+            Minimum: <strong>${{ minimum_price_dollars|floatformat:0 }}</strong>
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Quick Select Buttons -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+                <button type="button" class="secondary amount-btn" data-amount="10" style="padding: 0.75rem;">
+                    $10
+                </button>
+                <button type="button" class="secondary amount-btn" data-amount="25" style="padding: 0.75rem;">
+                    $25
+                </button>
+                <button type="button" class="secondary amount-btn" data-amount="50" style="padding: 0.75rem;">
+                    $50
+                </button>
+                <button type="button" class="secondary amount-btn" data-amount="100" style="padding: 0.75rem;">
+                    $100
+                </button>
+            </div>
+            
+            <!-- Amount Input -->
+            <label for="{{ form.amount_cents.id_for_label }}">
+                Or Enter Custom Amount (USD)
+                <input type="number" 
+                       name="{{ form.amount_cents.name }}" 
+                       id="{{ form.amount_cents.id_for_label }}"
+                       value="{{ form.amount_cents.value|default:minimum_price_dollars|floatformat:0 }}"
+                       min="{{ minimum_price_dollars|floatformat:0 }}"
+                       step="1"
+                       required
+                       style="font-size: 1.2rem; font-weight: 600;">
+                {% if form.amount_cents.errors %}
+                <small style="color: #ef4444;">{{ form.amount_cents.errors.0 }}</small>
+                {% endif %}
+                {% if form.amount_cents.help_text %}
+                <small>{{ form.amount_cents.help_text }}</small>
+                {% endif %}
+            </label>
+            
+            <button type="submit" style="width: 100%; margin-top: 1.5rem;">
+                Pay Securely with Stripe
+            </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--pico-muted-color); font-size: 0.9rem;">
+            <small>
+                🔒 Secure payment via Stripe • 
+                Full refund up to start date • 
+                <a href="{% url 'accounts:privacy' %}">Privacy Policy</a>
+            </small>
+        </p>
+    </div>
+</div>
+
+<script>
+// Handle quick select buttons
+document.querySelectorAll('.amount-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const amount = this.getAttribute('data-amount');
+        const input = document.getElementById('{{ form.amount_cents.id_for_label }}');
+        input.value = amount;
+        
+        // Visual feedback
+        document.querySelectorAll('.amount-btn').forEach(b => {
+            b.classList.remove('contrast');
+            b.classList.add('secondary');
+        });
+        this.classList.remove('secondary');
+        this.classList.add('contrast');
+    });
+});
+
+// Prevent double submission
+document.querySelector('form').addEventListener('submit', function(e) {
+    const submitBtn = this.querySelector('button[type="submit"]');
+    if (submitBtn.disabled) {
+        e.preventDefault();
+        return false;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing...';
+});
+</script>
+
+<style>
+.amount-btn {
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.amount-btn:hover {
+    transform: scale(1.05);
+}
+
+.amount-btn.contrast {
+    background-color: var(--pico-primary-background);
+    color: var(--pico-primary-foreground);
+}
+</style>
+{% endblock %}
+
