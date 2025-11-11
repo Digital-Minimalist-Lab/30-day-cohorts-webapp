@@ -3,70 +3,8 @@
 {% block title %}Sign Up - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<header>
-    <h1>Sign Up</h1>
-</header>
 
-<form method="post" action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    
-    {% if form.non_field_errors %}
-    <article>
-        {{ form.non_field_errors }}
-    </article>
-    {% endif %}
-    
-    <label for="{{ form.email.id_for_label }}">
-        Email
-        <input type="email" 
-               name="{{ form.email.name }}" 
-               id="{{ form.email.id_for_label }}"
-               value="{{ form.email.value|default:'' }}"
-               required>
-        {% if form.email.errors %}
-        <small>{{ form.email.errors.0 }}</small>
-        {% endif %}
-        {% if form.email.help_text %}
-        <small>{{ form.email.help_text }}</small>
-        {% endif %}
-    </label>
-    
-    <label for="{{ form.password1.id_for_label }}">
-        Password
-        <input type="password" 
-               name="{{ form.password1.name }}" 
-               id="{{ form.password1.id_for_label }}"
-               required>
-        {% if form.password1.errors %}
-        <small>{{ form.password1.errors.0 }}</small>
-        {% endif %}
-        {% if form.password1.help_text %}
-        <small>{{ form.password1.help_text }}</small>
-        {% endif %}
-    </label>
-    
-    {% if form.password2 %}
-    <label for="{{ form.password2.id_for_label }}">
-        Password (again)
-        <input type="password" 
-               name="{{ form.password2.name }}" 
-               id="{{ form.password2.id_for_label }}"
-               required>
-        {% if form.password2.errors %}
-        <small>{{ form.password2.errors.0 }}</small>
-        {% endif %}
-    </label>
-    {% endif %}
-    
-    {% if redirect_field_value %}
-    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    {% endif %}
-    
-    <button type="submit">Sign Up</button>
-</form>
+{% include 'account/_auth_forms.html' with login_form=login_form signup_form=signup_form %}
 
-<p><small>
-    Already have an account? <a href="{% url 'account_login' %}">Login</a>
-</small></p>
 {% endblock %}
 

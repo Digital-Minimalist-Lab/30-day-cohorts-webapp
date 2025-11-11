@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.db.models import Q
 import pytz
 from .models import Cohort, Enrollment
+from allauth.account.forms import LoginForm, SignupForm
 
 
 def get_user_today(user: AbstractUser) -> date:
@@ -265,6 +266,8 @@ def join_start(request: HttpRequest) -> HttpResponse:
     
     context = {
         'cohort': next_cohort,
+        'login_form': LoginForm(),
+        'signup_form': SignupForm(),
     }
     
     return render(request, 'cohorts/join_start.html', context)

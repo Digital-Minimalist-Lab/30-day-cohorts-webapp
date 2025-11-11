@@ -3,62 +3,8 @@
 {% block title %}Login - Digital Minimalist Lab{% endblock %}
 
 {% block content %}
-<header>
-    <h1>Login</h1>
-</header>
 
-<form method="post" action="{% url 'account_login' %}">
-    {% csrf_token %}
-    
-    {% if form.non_field_errors %}
-    <article>
-        {{ form.non_field_errors }}
-    </article>
-    {% endif %}
-    
-    <label for="{{ form.login.id_for_label }}">
-        Email
-        <input type="email" 
-               name="{{ form.login.name }}" 
-               id="{{ form.login.id_for_label }}"
-               value="{{ form.login.value|default:'' }}"
-               autofocus
-               required>
-        {% if form.login.errors %}
-        <small>{{ form.login.errors.0 }}</small>
-        {% endif %}
-    </label>
-    
-    <label for="{{ form.password.id_for_label }}">
-        Password
-        <input type="password" 
-               name="{{ form.password.name }}" 
-               id="{{ form.password.id_for_label }}"
-               required>
-        {% if form.password.errors %}
-        <small>{{ form.password.errors.0 }}</small>
-        {% endif %}
-    </label>
-    
-    {% if form.remember %}
-    <label for="{{ form.remember.id_for_label }}">
-        <input type="checkbox" 
-               name="{{ form.remember.name }}" 
-               id="{{ form.remember.id_for_label }}"
-               role="switch">
-        Remember me
-    </label>
-    {% endif %}
-    
-    {% if redirect_field_value %}
-    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    {% endif %}
-    
-    <button type="submit">Login</button>
-</form>
+{% include 'account/_auth_forms.html' with login_form=login_form signup_form=signup_form %}
 
-<p><small>
-    Don't have an account? <a href="{% url 'account_signup' %}">Sign up</a>
-</small></p>
 {% endblock %}
 

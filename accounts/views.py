@@ -6,6 +6,22 @@ from django.contrib import messages
 import json
 from datetime import datetime
 from .forms import UserProfileForm
+from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
+
+
+class CustomLoginView(LoginView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['signup_form'] = SignupForm()
+        context['login_form'] = context.pop('form')
+        return context
+
+class CustomSignupView(SignupView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['login_form'] = LoginForm()
+        context['signup_form'] = context.pop('form')
+        return context
 
 
 def health_check(request: HttpRequest) -> JsonResponse:
