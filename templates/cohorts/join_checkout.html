@@ -58,21 +58,21 @@
             </div>
             
             <!-- Amount Input -->
-            <label for="{{ form.amount_cents.id_for_label }}">
+            <label for="{{ form.amount.id_for_label }}">
                 Or Enter Custom Amount (USD)
                 <input type="number" 
-                       name="{{ form.amount_cents.name }}" 
-                       id="{{ form.amount_cents.id_for_label }}"
-                       value="{{ form.amount_cents.value|default:minimum_price_dollars|floatformat:0 }}"
+                       name="{{ form.amount.name }}" 
+                       id="{{ form.amount.id_for_label }}"
+                       value="{{ form.amount.value|default:minimum_price_dollars|floatformat:0 }}"
                        min="{{ minimum_price_dollars|floatformat:0 }}"
                        step="1"
                        required
                        style="font-size: 1.2rem; font-weight: 600;">
-                {% if form.amount_cents.errors %}
-                <small style="color: #ef4444;">{{ form.amount_cents.errors.0 }}</small>
+                {% if form.amount.errors %}
+                <small style="color: #ef4444;">{{ form.amount.errors.0 }}</small>
                 {% endif %}
-                {% if form.amount_cents.help_text %}
-                <small>{{ form.amount_cents.help_text }}</small>
+                {% if form.amount.help_text %}
+                <small>{{ form.amount.help_text }}</small>
                 {% endif %}
             </label>
             
@@ -96,7 +96,7 @@
 document.querySelectorAll('.amount-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const amount = this.getAttribute('data-amount');
-        const input = document.getElementById('{{ form.amount_cents.id_for_label }}');
+        const input = document.getElementById('{{ form.amount.id_for_label }}');
         input.value = amount;
         
         // Visual feedback

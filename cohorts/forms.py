@@ -6,6 +6,9 @@ import pytz
 from .models import Cohort
 from accounts.models import UserProfile
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CohortForm(forms.ModelForm):
     """Form for creating and updating cohorts."""
@@ -93,35 +96,46 @@ class EnrollmentSignupForm(SignupForm):
 
 class PaymentAmountForm(forms.Form):
     """Form for selecting payment amount (pay-what-you-want)."""
-    amount_cents = forms.IntegerField(
-        min_value=1,
+    amount = forms.DecimalField(
+        decimal_places=2,
         widget=forms.NumberInput(attrs={
             'placeholder': 'Enter amount in dollars',
-            'step': '1',
-            'min': '1'
+            'step': '0.01',
         }),
         help_text="Choose an amount that feels meaningful to you"
     )
-    
+
     def __init__(self, *args, minimum_price_cents=1000, **kwargs):
         super().__init__(*args, **kwargs)
         self.minimum_price_cents = minimum_price_cents
-        self.fields['amount_cents'].validators.append(
-            MinValueValidator(minimum_price_cents, message=f"Minimum amount is ${minimum_price_cents / 100:.2f}")
+        minimum_price_dollars = minimum_price_cents / 100
+
+        self.fields['amount'].min_value = minimum_price_dollars
+        self.fields['amount'].validators.append(
+            MinValueValidator(minimum_price_dollars, message=f"Minimum amount is ${minimum_price_dollars:.2f}")
         )
+        self.fields['amount'].widget.attrs['min'] = f'{minimum_price_dollars:.2f}'
+
         # Set initial value to minimum price in dollars
         if not self.is_bound:
-            self.initial['amount_cents'] = minimum_price_cents // 100
-    
-    def clean_amount_cents(self):
-        """Convert dollars to cents and validate."""
-        amount_dollars = self.cleaned_data['amount_cents']
-        amount_cents = amount_dollars * 100
-        
-        if amount_cents < self.minimum_price_cents:
-            raise forms.ValidationError(
-                f"Minimum amount is ${self.minimum_price_cents / 100:.2f}"
-            )
-        
-        return amount_cents
+            self.initial['amount'] = f'{minimum_price_dollars:.2f}'
+
+
+    def clean(self):
+        """Validate amount and convert to cents."""
+        cleaned_data = super().clean()
+        amount_dollars = cleaned_data.get('amount')
+
+        if amount_dollars:
+            amount_cents = int(amount_dollars * 100)
+
+            if amount_cents < self.minimum_price_cents:
+                logger.warning("validation error...")
+                raise forms.ValidationError(
+                    f"Minimum amount is ${self.minimum_price_cents / 100:.2f}"
+                )
+
+            cleaned_data['amount_cents'] = amount_cents
+
+        return cleaned_data
 
