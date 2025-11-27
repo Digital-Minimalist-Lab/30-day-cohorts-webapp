@@ -74,10 +74,10 @@ This platform provides accountability and structure for the 30-day digital declu
 
 2. **Create `.env` file**:
    ```bash
-   cp .env.example .env
+   cp env.example .env
    ```
    
-   The `.env.example` file contains all required environment variables with default values suitable for local development. Edit `.env` if you need to customize settings.
+   The `env.example` file contains all required environment variables with default values suitable for local development. Edit `.env` if you need to customize settings.
 
 3. **Start services with Docker Compose**:
    ```bash

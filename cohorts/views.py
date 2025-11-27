@@ -46,6 +46,13 @@ def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment
     return Enrollment.objects.filter(user=user, cohort=cohort).first()
 
 
+# This is a temporary landing page which exists until the rest of the application is ready.
+# That should be _fine_. There is now way this will go wrong.
+def landing(request: HttpRequest) -> HttpResponse:
+    context = None
+    return render(request, 'landing/index.html', context)
+
+
 def homepage(request: HttpRequest) -> HttpResponse:
     """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
     if not request.user.is_authenticated:

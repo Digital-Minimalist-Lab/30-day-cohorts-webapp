@@ -1,0 +1,159 @@
+{% extends 'base_nocontent.html' %}
+{% load cohort_filters %}
+{% block title %}Join the 30-Day Digital Declutter – Digital Minimalist Lab{% endblock %}
+
+{% block page_content %}
+
+<!-- Header -->
+<nav class="container">
+    <ul>
+        <li><strong><a href="{% url 'cohorts:landing' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
+    </ul>
+</nav>
+
+
+<main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+    <h1>Join the 30-Day Digital Declutter</h1>
+
+    <p class="subheading">
+        Reset your relationship with technology and break free of the Attention Economy.
+    </p>
+
+    </section>
+
+    <!-- PROBLEM → PROMISE -->
+    <section>
+    <div class="card" style="padding:3rem; text-align:center;">
+        <p style="font-size: 1.25rem; margin: 0; max-width: 40rem; margin-inline: auto;">
+        You don't have a "willpower" problem. You have an <em>environment</em> problem. For 30 days we'll rebuild it.
+        </p>
+    </div>
+    </section>
+
+    <!-- WHAT YOU'LL EXPERIENCE -->
+    <section>
+    <h2 style="text-align: center; margin-bottom: 2rem;">What You'll Experience</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Daily prompts & tiny actions</h3>
+        <p style="margin: 0; color: var(--pico-muted-color);">Small, concrete steps that compound over time</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">A simple protocol (no apps required)</h3>
+        <p style="margin: 0; color: var(--pico-muted-color);">Research-informed, no gimmicks</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Light community accountability</h3>
+        <p style="margin: 0; color: var(--pico-muted-color);">Structure without spam or social pressure</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">A private dashboard you actually use</h3>
+        <p style="margin: 0; color: var(--pico-muted-color);">Track progress, not metrics</p>
+        </div>
+    </div>
+    </section>
+
+    <!-- WHAT YOU GET -->
+    <section>
+    <div class="card" style="padding: 2rem;">
+        <h2>What You Get</h2>
+        <ul style="line-height: 1.9;">
+        <li>Cohort dashboard with day-by-day guidance</li>
+        <li>Reflection journal + progress tracker</li>
+        <li>Optional buddy system</li>
+        <li>Post-cohort maintenance plan</li>
+        </ul>
+    </div>
+    </section>
+
+    <!-- SCHEDULE & FORMAT -->
+    {% if cohort %}
+    <section>
+    <div class="card" style="padding: 2rem;">
+        <h2>Schedule & Format</h2>
+        <p>
+        <strong>Starts {{ cohort.start_date|date:"F j, Y" }} • Ends {{ cohort.end_date|date:"F j, Y" }} • ~5 min/day</strong>
+        </p>
+        <p style="margin: 0;">
+        Delivered via your web dashboard + email reminders (opt-in).
+        </p>
+    </div>
+    </section>
+    {% endif %}
+
+    <!-- SOCIAL PROOF -->
+    <section>
+    <h2 style="text-align: center; margin-bottom: 2rem;">What Participants Say</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="card" style="padding: 1.5rem;">
+        <p style="font-style: italic; margin-bottom: 1rem;">"Finally broke my doomscrolling habit. The daily prompts kept me on track."</p>
+        <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— J.S.</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+        <p style="font-style: italic; margin-bottom: 1rem;">"I thought I needed more willpower. Turns out I needed better systems."</p>
+        <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— A.M.</p>
+        </div>
+        <div class="card" style="padding: 1.5rem;">
+        <p style="font-style: italic; margin-bottom: 1rem;">"The cohort structure made all the difference. I wasn't doing this alone."</p>
+        <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— R.K.</p>
+        </div>
+    </div>
+    <p style="text-align: center; margin-top: 1.5rem; color: var(--pico-muted-color);">
+        <em>First-time? Start anyway.</em>
+    </p>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+    <h2 style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+    
+    <div style="max-width: 700px; margin-inline: auto;">
+        <sl-details summary="When do I start?">
+        <p>Cohorts start on the scheduled date listed above. You can join up to 7 days after the start date if there are spots available.</p>
+        </sl-details>
+
+        <sl-details summary="What if I'm too busy?">
+        <p>Each day takes approximately 5 minutes. The prompts are designed to fit into your existing routine. You can catch up on your own schedule—there's no falling behind.</p>
+        </sl-details>
+
+        <sl-details summary="What's your refund policy?">
+        <p>Full refund up to the cohort start date, no questions asked. Email us and we'll process it immediately.</p>
+        </sl-details>
+
+        <sl-details summary="Do I need to quit my phone?">
+        <p>No. This isn't about digital abstinence. It's about intentional use. You'll learn to use technology on your terms, not the other way around.</p>
+        </sl-details>
+
+        <sl-details summary="Is this religious or political?">
+        <p>No. This is a secular, evidence-based program focused on digital wellness and attention management. No ideology required.</p>
+        </sl-details>
+
+        <sl-details summary="Is this accessible?">
+        <p>We've designed the dashboard to be screen reader friendly and keyboard navigable. If you have specific accessibility needs, please contact us and we'll work with you.</p>
+        </sl-details>
+    </div>
+    </section>
+
+    <!-- FOOTER REASSURANCE -->
+    <section style="text-align: center; padding: 2rem; background: var(--pico-card-background-color); border-radius: var(--radius);">
+    <p style="color: var(--pico-muted-color); margin: 0;">
+        <a href="{% url 'accounts:privacy' %}">Privacy Policy</a>
+    </p>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="container">
+    <p>
+        <a href="{% url 'accounts:protocol' %}">Protocol</a> •
+        <a href="{% url 'accounts:resources' %}">Resources</a> •
+        <a href="{% url 'accounts:privacy' %}">Privacy</a>
+    </p>
+    <p><small>Digital Minimalist Lab © 2024 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
+</footer>
+
+{% endblock %}
+
