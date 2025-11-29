@@ -18,7 +18,6 @@ env
 db.sqlite3
 /media
 /staticfiles
-/static
 .vscode
 .idea
 *.swp
