@@ -3,134 +3,135 @@
 ────────────────────────────────────────────── */
 :root,
 [data-theme="light"] {
-  color-scheme: light;
+	color-scheme: light;
 
-  /* Neutral palette */
-  --pico-background-color: #fafbfc;
-  --pico-card-background-color: #ffffff;
-  --pico-form-element-background-color: #ffffff;
-  --pico-color: #1e1e20;
-  --pico-muted-color: #6b7280;
-  --pico-border-color: #e5e7eb;
+	/* Neutral palette */
+	--pico-background-color: #fafbfc;
+	--pico-card-background-color: #ffffff;
+	--pico-form-element-background-color: #ffffff;
+	--pico-color: #1e1e20;
+	--pico-muted-color: #6b7280;
+	--pico-border-color: #e5e7eb;
 
-  /* Brand / accent color — choose ONE */
-  --brand: #4b9cd3; /* calm blue */
-  /* alternative: --brand: #6aa58e;  sage green */
+	/* Brand / accent color — choose ONE */
+	--brand: #4b9cd3; /* calm blue for links/buttons */
+	--accent-green: #2f9e7d; /* soft green for headings */
+	--accent-green-muted: #5fb497;
 
-  /* Pico light mode overrides */
-  --pico-primary: var(--brand);
-  --pico-primary-background: var(--brand);
-  --pico-primary-foreground: #ffffff;
-  --pico-primary-hover-background: var(--brand);
-  --pico-primary-hover-foreground: #ffffff;
-  --pico-secondary-background: #f3f4f6;
-  --pico-secondary-foreground: #1e1e20;
-  --pico-secondary-hover-background: #e5e7eb;
-  --pico-secondary-hover-foreground: #1e1e20;
+	/* Pico light mode overrides */
+	--pico-primary: var(--brand);
+	--pico-primary-background: var(--brand);
+	--pico-primary-foreground: #ffffff;
+	--pico-primary-hover-background: var(--brand);
+	--pico-primary-hover-foreground: #ffffff;
+	--pico-secondary-background: #f3f4f6;
+	--pico-secondary-foreground: #1e1e20;
+	--pico-secondary-hover-background: #e5e7eb;
+	--pico-secondary-hover-foreground: #1e1e20;
 
-  /* Shoelace harmonization */
-  --sl-color-primary-600: var(--brand);
-  --sl-color-primary-700: var(--brand);
-  --sl-color-neutral-0: #ffffff;
-  --sl-color-neutral-50: #fafbfc;
-  --sl-color-neutral-100: #f3f4f6;
-  --sl-color-neutral-200: #e5e7eb;
-  --sl-color-neutral-900: #1e1e20;
-  --sl-color-neutral-950: #111827;
+	/* Shoelace harmonization */
+	--sl-color-primary-600: var(--brand);
+	--sl-color-primary-700: var(--brand);
+	--sl-color-neutral-0: #ffffff;
+	--sl-color-neutral-50: #fafbfc;
+	--sl-color-neutral-100: #f3f4f6;
+	--sl-color-neutral-200: #e5e7eb;
+	--sl-color-neutral-900: #1e1e20;
+	--sl-color-neutral-950: #111827;
 
-  /* Typography */
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
+	/* Typography */
+	font-family: system-ui, sans-serif;
+	line-height: 1.6;
 
-  /* Layout tokens */
-  --content-width: 48rem;
-  --section-gap: 5rem;
-  --radius: 16px;
+	/* Layout tokens */
+	--content-width: 64rem;
+	--section-gap: 3rem;
+	--radius: 16px;
 }
 
 /* Force light mode universally */
 html,
 body {
-  color-scheme: light;
-  background-color: var(--pico-background-color);
-  color: var(--pico-color);
+	color-scheme: light;
+	background-color: var(--pico-background-color);
+	color: var(--pico-color);
 }
 
 /* Block dark mode preference override */
 @media (prefers-color-scheme: dark) {
-  :root,
-  [data-theme="light"],
-  html[data-theme="light"],
-  html[data-theme="light"] body,
-  html[data-theme="light"] nav,
-  html[data-theme="light"] main,
-  html[data-theme="light"] article,
-  html[data-theme="light"] form,
-  html[data-theme="light"] label,
-  html[data-theme="light"] input,
-  html[data-theme="light"] textarea,
-  html[data-theme="light"] select,
-  html[data-theme="light"] button {
-    color-scheme: light;
-    background-color: var(--pico-background-color);
-    color: var(--pico-color);
-  }
-  
-  html[data-theme="light"] input,
-  html[data-theme="light"] textarea,
-  html[data-theme="light"] select {
-    background-color: var(--pico-form-element-background-color);
-    border-color: var(--pico-border-color);
-  }
-  
-  html[data-theme="light"] button {
-    background-color: var(--pico-primary-background);
-    color: var(--pico-primary-foreground);
-  }
+	:root,
+	[data-theme="light"],
+	html[data-theme="light"],
+	html[data-theme="light"] body,
+	html[data-theme="light"] nav,
+	html[data-theme="light"] main,
+	html[data-theme="light"] article,
+	html[data-theme="light"] form,
+	html[data-theme="light"] label,
+	html[data-theme="light"] input,
+	html[data-theme="light"] textarea,
+	html[data-theme="light"] select,
+	html[data-theme="light"] button {
+		color-scheme: light;
+		background-color: var(--pico-background-color);
+		color: var(--pico-color);
+	}
+
+	html[data-theme="light"] input,
+	html[data-theme="light"] textarea,
+	html[data-theme="light"] select {
+		background-color: var(--pico-form-element-background-color);
+		border-color: var(--pico-border-color);
+	}
+
+	html[data-theme="light"] button {
+		background-color: var(--pico-primary-background);
+		color: var(--pico-primary-foreground);
+	}
 }
 
 /* ──────────────────────────────────────────────
    LAYOUT STRUCTURE
 ────────────────────────────────────────────── */
 main.container {
-  max-width: var(--content-width);
-  margin-inline: auto;
-  padding: 2rem 1rem;
+	max-width: var(--content-width);
+	margin-inline: auto;
+	padding: 2rem 1rem;
 }
 
 section,
 article {
-  max-width: var(--content-width);
-  margin-inline: auto;
-  margin-block-end: var(--section-gap);
+	max-width: var(--content-width);
+	margin-inline: auto;
+	margin-block-end: var(--section-gap);
 }
 
 section:not(:last-child) {
-  margin-bottom: 2.5rem;
+	margin-bottom: 1.5rem;
 }
 
 /* ──────────────────────────────────────────────
    NAVIGATION & FOOTER
 ────────────────────────────────────────────── */
 nav {
-  background-color: var(--pico-background-color);
-  color: var(--pico-color);
+	background-color: var(--pico-background-color);
+	color: var(--pico-color);
 }
 
 nav .brand-link {
-  text-decoration: none;
-  color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 
 nav .brand-link:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 footer {
-  color: var(--pico-muted-color);
-  font-size: 0.875rem;
-  margin-top: 4rem;
-  text-align: center;
+	color: var(--pico-muted-color);
+	font-size: 0.875rem;
+	margin-top: 4rem;
+	text-align: center;
 }
 
 /* ──────────────────────────────────────────────
@@ -139,59 +140,62 @@ footer {
 /* Generic card container pattern - no hover effects */
 .card,
 sl-card::part(base) {
-  border-radius: var(--radius);
-  background: var(--pico-card-background-color);
-  border: 1px solid var(--pico-border-color);
-  box-shadow: none;
+	border-radius: var(--radius);
+	background: var(--pico-card-background-color);
+	border: 1px solid var(--pico-border-color);
+	box-shadow: none;
 }
 
 /* ──────────────────────────────────────────────
    HERO SECTION
 ────────────────────────────────────────────── */
 .hero {
-  text-align: center;
-  padding: 4rem 2rem;
-  margin-block: 5rem var(--section-gap);
-  border-radius: var(--radius);
-  background: var(--pico-card-background-color);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	text-align: center;
+	padding: 4rem 2rem;
+	margin-block: 5rem var(--section-gap);
+	border-radius: var(--radius);
+	background: var(--pico-card-background-color);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 .hero h1 {
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  margin-bottom: 1rem;
+	font-size: clamp(2.2rem, 4vw, 3rem);
+	margin-bottom: 1rem;
 }
 .hero p {
-  max-width: 36rem;
-  margin-inline: auto;
-  margin-bottom: 1.5rem;
+	max-width: 36rem;
+	margin-inline: auto;
+	margin-bottom: 1.5rem;
 }
 .hero .muted {
-  color: var(--pico-muted-color);
+	color: var(--pico-muted-color);
 }
 
 /* ──────────────────────────────────────────────
    TYPOGRAPHY & RHYTHM
 ────────────────────────────────────────────── */
-h1, h2, h3 {
-  margin-bottom: 1rem;
+h1,
+h2,
+h3 {
+	margin-bottom: 1rem;
 }
-p, ul {
-  line-height: 1.7;
+p,
+ul {
+	line-height: 1.7;
 }
 ul {
-  padding-left: 1.5rem;
+	padding-left: 1.5rem;
 }
 
 /* ──────────────────────────────────────────────
    FORM ELEMENTS
 ────────────────────────────────────────────── */
 form {
-  background-color: transparent;
-  color: var(--pico-color);
+	background-color: transparent;
+	color: var(--pico-color);
 }
 
 label {
-  color: var(--pico-color);
+	color: var(--pico-color);
 }
 
 input[type="email"],
@@ -200,9 +204,9 @@ input[type="text"],
 input[type="number"],
 textarea,
 select {
-  background-color: var(--pico-form-element-background-color);
-  color: var(--pico-color);
-  border-color: var(--pico-border-color);
+	background-color: var(--pico-form-element-background-color);
+	color: var(--pico-color);
+	border-color: var(--pico-border-color);
 }
 
 input[type="email"]:focus,
@@ -211,110 +215,685 @@ input[type="text"]:focus,
 input[type="number"]:focus,
 textarea:focus,
 select:focus {
-  background-color: var(--pico-form-element-background-color);
-  color: var(--pico-color);
-  border-color: var(--brand);
+	background-color: var(--pico-form-element-background-color);
+	color: var(--pico-color);
+	border-color: var(--brand);
 }
 
 button {
-  background-color: var(--pico-primary-background);
-  color: var(--pico-primary-foreground);
+	background-color: var(--pico-primary-background);
+	color: var(--pico-primary-foreground);
 }
 
 button:hover {
-  background-color: var(--pico-primary-hover-background);
-  color: var(--pico-primary-hover-foreground);
+	background-color: var(--pico-primary-hover-background);
+	color: var(--pico-primary-hover-foreground);
 }
 
 button.secondary {
-  background-color: var(--pico-secondary-background);
-  color: var(--pico-secondary-foreground);
+	background-color: var(--pico-secondary-background);
+	color: var(--pico-secondary-foreground);
 }
 
 button.secondary:hover {
-  background-color: var(--pico-secondary-hover-background);
-  color: var(--pico-secondary-hover-foreground);
+	background-color: var(--pico-secondary-hover-background);
+	color: var(--pico-secondary-hover-foreground);
 }
 
 /* Ensure form articles inherit light mode */
 form article {
-  background-color: var(--pico-card-background-color);
-  color: var(--pico-color);
+	background-color: var(--pico-card-background-color);
+	color: var(--pico-color);
 }
 
 /* Form help text and errors */
 small {
-  color: var(--pico-muted-color);
-  display: block;
-  margin-top: 0.25rem;
+	color: var(--pico-muted-color);
+	display: block;
+	margin-top: 0.25rem;
 }
 
 label small {
-  color: var(--pico-muted-color);
+	color: var(--pico-muted-color);
 }
 
 /* Error states */
 input:invalid,
 textarea:invalid {
-  border-color: #ef4444;
+	border-color: #ef4444;
 }
 
 input:invalid:focus,
 textarea:invalid:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+	border-color: #ef4444;
+	box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
 }
 
 /* ──────────────────────────────────────────────
    BUTTON GROUP UTIL
 ────────────────────────────────────────────── */
 .btn-group {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 2rem;
 }
 
 /* ──────────────────────────────────────────────
    TOAST NOTIFICATIONS
 ────────────────────────────────────────────── */
 sl-alert {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10000;
-  max-width: 400px;
-  min-width: 300px;
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 10000;
+	max-width: 400px;
+	min-width: 300px;
 }
 
-
 .hero {
-  text-align: center;
-  padding: 6rem 2rem 5rem;
-  border-radius: var(--radius);
-  background: var(--pico-card-background-color);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+	text-align: center;
+	padding: 6rem 2rem 5rem;
+	border-radius: var(--radius);
+	background: var(--pico-card-background-color);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .hero h1 {
-  font-size: clamp(2.8rem, 7vw, 4.5rem);
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  line-height: 1.05;
-  margin-bottom: 1rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	margin-bottom: 1.5rem;
+}
+
+.hero .hero-line-small {
+	display: block;
+	font-size: clamp(2.5rem, 8vw, 5rem);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--pico-muted-color);
+	margin-bottom: 0.25rem;
+}
+
+.hero .hero-line-large {
+	display: block;
+	font-size: clamp(2.8rem, 8vw, 5rem);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: var(--pico-color);
 }
 
 .hero .subheading {
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
-  font-weight: 400;
-  color: var(--pico-muted-color);
-  margin-bottom: 2rem;
+	font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+	font-weight: 400;
+	color: var(--pico-muted-color);
+	line-height: 1.6;
+	margin-bottom: 2rem;
+	max-width: 32rem;
+	margin-inline: auto;
 }
 
 .hero .lede {
-  color: var(--pico-muted-color);
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
-  max-width: 60ch;
-  margin: 0 auto 2.5rem;
+	color: var(--pico-muted-color);
+	font-size: clamp(1rem, 2.2vw, 1.25rem);
+	max-width: 60ch;
+	margin: 0 auto 2.5rem;
+}
+
+/* ──────────────────────────────────────────────
+   PROBLEM → STORY → PROMISE SECTION
+────────────────────────────────────────────── */
+.problem-promise {
+	padding: 2.5rem 1rem;
+}
+
+.problem-promise-card {
+	max-width: 64rem;
+	margin-inline: auto;
+	padding: 2.75rem 3rem 2.25rem;
+	background: var(--pico-card-background-color);
+	border: 1px solid var(--pico-border-color);
+	border-radius: 18px;
+	box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 640px) {
+	.problem-promise {
+		padding: 2rem 1rem;
+	}
+	.problem-promise-card {
+		padding: 2rem 1.5rem 1.5rem;
+	}
+}
+
+.problem-promise-divider {
+	max-width: 5rem;
+	margin: 1.5rem auto;
+	border: none;
+	border-top: 3px solid var(--accent-green);
+	opacity: 0.6;
+}
+
+/* PROBLEM BLOCK */
+.problem-block {
+	margin-bottom: 0;
+}
+
+.problem-block--center {
+	text-align: center;
+}
+
+.problem-title {
+	font-size: 1.65rem;
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 0.4rem 0;
+	line-height: 1.3;
+}
+
+.problem-subtitle {
+	font-size: 1.05rem;
+	font-weight: 650;
+	color: var(--pico-muted-color);
+	margin: 0 0 0.75rem 0;
+}
+
+.problem-body {
+	font-size: 1.05rem;
+	line-height: 1.7;
+	color: var(--pico-color);
+	margin: 0;
+	max-width: 38rem;
+	margin-inline: auto;
+}
+
+/* STORY BLOCK */
+.story-block {
+	margin-bottom: 0;
+}
+
+.story-columns {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.75rem;
+}
+
+@media (max-width: 700px) {
+	.story-columns {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+}
+
+.story-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.story-title {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 0.3rem 0;
+	line-height: 1.3;
+}
+
+.story-subtitle {
+	font-size: 0.95rem;
+	font-weight: 650;
+	color: var(--pico-muted-color);
+	margin: 0 0 0.6rem 0;
+}
+
+.story-body {
+	font-size: 0.97rem;
+	line-height: 1.65;
+	color: var(--pico-color);
+	margin: 0 0 0.9rem 0;
+	flex-grow: 1;
+}
+
+/* Story video card */
+.story-video-card {
+	margin-top: auto;
+}
+
+.story-thumb-link {
+	display: block;
+	position: relative;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.story-thumb {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	transition: transform 0.2s ease;
+}
+
+.story-thumb-link:hover .story-thumb {
+	transform: scale(1.02);
+}
+
+.story-play-badge {
+	position: absolute;
+	bottom: 0.6rem;
+	left: 0.6rem;
+	background: rgba(0, 0, 0, 0.78);
+	color: #fff;
+	font-size: 0.7rem;
+	font-weight: 600;
+	padding: 0.3rem 0.55rem;
+	border-radius: 4px;
+}
+
+/* PROMISE BLOCK */
+.promise-block {
+	text-align: center;
+}
+
+.promise-title {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 0.4rem 0;
+	line-height: 1.3;
+}
+
+.promise-subtitle {
+	font-size: 1rem;
+	font-weight: 650;
+	color: var(--pico-muted-color);
+	margin: 0 0 0.75rem 0;
+}
+
+.promise-body {
+	font-size: 1.05rem;
+	line-height: 1.7;
+	color: var(--pico-color);
+	margin: 0 0 0.75rem 0;
+}
+
+.promise-list {
+	display: inline-block;
+	text-align: left;
+	margin: 0;
+	padding-left: 1.5rem;
+	font-size: 1.05rem;
+	line-height: 1.7;
+	color: var(--pico-color);
+}
+
+.promise-list li {
+	margin-bottom: 0.35rem;
+}
+
+.promise-list li:last-child {
+	margin-bottom: 0;
+}
+
+.problem-promise-body em {
+	font-style: italic;
+}
+
+/* ──────────────────────────────────────────────
+   JOURNEY SECTION (3-Phase Layout)
+────────────────────────────────────────────── */
+.journey-section {
+	padding: 4rem 1rem;
+}
+
+.journey-header {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.journey-title {
+	font-size: clamp(1.6rem, 4vw, 2rem);
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 0.75rem 0;
+}
+
+.journey-intro {
+	font-size: clamp(1rem, 2vw, 1.15rem);
+	color: var(--pico-muted-color);
+	max-width: 36rem;
+	margin-inline: auto;
+	line-height: 1.6;
+}
+
+/* Vertical stack layout for all screen sizes */
+.journey-phases {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	max-width: 40rem;
+	margin-inline: auto;
+}
+
+/* Individual phase column */
+.phase-column {
+	background: var(--pico-card-background-color);
+	border: 1px solid var(--pico-border-color);
+	border-radius: 12px;
+	padding: 2rem 1.75rem 2.25rem;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+	display: flex;
+	flex-direction: column;
+}
+
+/* Featured column (During) */
+.phase-column--featured {
+	border-top: 3px solid var(--brand);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Phase label (small, uppercase, muted) */
+.phase-label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--pico-muted-color);
+	margin-bottom: 0.5rem;
+}
+
+/* Phase title */
+.phase-title {
+	font-size: clamp(1.35rem, 3vw, 1.65rem);
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 1.25rem 0;
+	line-height: 1.3;
+}
+
+/* Container for phase items */
+.phase-items {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+/* Individual item within a phase */
+.phase-item {
+	padding: 1.25rem 1.5rem;
+	margin: 0;
+	border: 1px solid var(--pico-border-color);
+	border-radius: 8px;
+	background: transparent;
+	box-shadow: none;
+}
+
+.phase-item-title {
+	font-size: 1.05rem;
+	font-weight: 600;
+	color: var(--pico-color);
+	margin: 0 0 0.4rem 0;
+	line-height: 1.4;
+}
+
+.phase-item-body {
+	font-size: 0.97rem;
+	color: var(--pico-muted-color);
+	line-height: 1.6;
+	margin: 0;
+}
+
+/* List inside phase items (e.g., weekly goals) */
+.phase-item-list {
+	margin: 0.75rem 0 0 0;
+	padding-left: 1.25rem;
+	font-size: 0.95rem;
+	color: var(--pico-muted-color);
+	line-height: 1.55;
+}
+
+.phase-item-list li {
+	margin-bottom: 0.5rem;
+}
+
+.phase-item-list li:last-child {
+	margin-bottom: 0;
+}
+
+.phase-item-list strong {
+	color: var(--pico-color);
+	font-weight: 600;
+}
+
+/* ──────────────────────────────────────────────
+   ABOUT SECTION
+────────────────────────────────────────────── */
+.about-section {
+	padding: 3rem 1rem;
+}
+
+.about-card {
+	max-width: 64rem;
+	margin-inline: auto;
+	padding: 3rem 2.5rem;
+	background: var(--pico-card-background-color);
+	border: 1px solid var(--pico-border-color);
+	border-radius: 12px;
+	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Header */
+.about-header {
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.about-heading {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: var(--pico-color);
+	margin: 0 0 0.5rem 0;
+	line-height: 1.3;
+}
+
+.about-subheading {
+	font-size: 1rem;
+	color: var(--pico-muted-color);
+	margin: 0;
+	font-style: italic;
+}
+
+/* Image */
+.about-image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 2.5rem;
+}
+
+.about-image img {
+	width: 160px;
+	height: 160px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 4px solid var(--pico-border-color);
+	background: var(--pico-background-color);
+}
+
+.about-caption {
+	margin: 0.75rem 0 0 0;
+	font-size: 0.85rem;
+	color: var(--pico-muted-color);
+	line-height: 1.4;
+}
+
+/* Q&A format */
+.about-qa {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.qa-item {
+	padding: 0;
+}
+
+.qa-question {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--brand);
+	margin: 0 0 0.5rem 0;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+.qa-answer {
+	font-size: 1rem;
+	line-height: 1.75;
+	color: var(--pico-color);
+	margin: 0;
+}
+
+.qa-answer strong {
+	font-weight: 600;
+}
+
+@media (max-width: 600px) {
+	.about-card {
+		padding: 2rem 1.5rem;
+	}
+	
+	.about-heading {
+		font-size: 1.4rem;
+	}
+	
+	.about-image img {
+		width: 140px;
+		height: 140px;
+	}
+}
+
+/* ──────────────────────────────────────────────
+   WATCH MY STORY SECTION
+────────────────────────────────────────────── */
+.story-section {
+	padding: 4rem 1rem;
+}
+
+.story-section .story-header {
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.story-section .story-header h2 {
+	font-size: clamp(1.4rem, 4vw, 1.75rem);
+	font-weight: 700;
+	margin: 0 0 0.5rem 0;
+	color: var(--pico-color);
+}
+
+.story-section .story-header .muted {
+	font-size: 1rem;
+	color: var(--pico-muted-color);
+	max-width: 36rem;
+	margin-inline: auto;
+	line-height: 1.6;
+}
+
+.story-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	max-width: 48rem;
+	margin-inline: auto;
+}
+
+.story-card {
+	background: var(--pico-card-background-color);
+	border-radius: var(--radius);
+	padding: 1.5rem;
+	border: 1px solid var(--pico-border-color);
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+	display: flex;
+	flex-direction: column;
+}
+
+.story-card h3 {
+	margin: 0 0 0.5rem 0;
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--pico-color);
+	line-height: 1.3;
+}
+
+.story-card > .muted {
+	font-size: 0.95rem;
+	color: var(--pico-muted-color);
+	margin: 0 0 1rem 0;
+	line-height: 1.55;
+}
+
+.story-thumbnail {
+	position: relative;
+	border-radius: 8px;
+	overflow: hidden;
+	aspect-ratio: 16 / 9;
+	background: var(--pico-border-color);
+}
+
+.story-thumbnail a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.story-thumbnail img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.2s ease;
+}
+
+.story-thumbnail:hover img {
+	transform: scale(1.03);
+}
+
+.story-play-badge {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	padding: 0.5rem 1rem;
+	border-radius: 999px;
+	background: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	font-size: 0.85rem;
+	font-weight: 500;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.story-thumbnail:hover .story-play-badge {
+	opacity: 1;
+}
+
+.story-link {
+	margin: 0.75rem 0 0 0;
+	font-size: 0.85rem;
+	text-align: center;
+}
+
+.story-link a {
+	color: var(--brand);
+	text-decoration: none;
+}
+
+.story-link a:hover {
+	text-decoration: underline;
 }
