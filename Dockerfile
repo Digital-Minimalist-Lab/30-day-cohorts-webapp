@@ -12,7 +12,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Copy dependency files
 COPY pyproject.toml ./
-COPY uv.lock ./
+#COPY uv.lock ./
 
 # Install dependencies system-wide (for Docker)
 RUN uv pip install --system --no-cache-dir -e .
