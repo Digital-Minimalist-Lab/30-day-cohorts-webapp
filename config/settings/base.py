@@ -78,7 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-if os.getenv('LANDING_ONLY', '') != "":
+if os.getenv('LANDING_ONLY', '') == '':
     # Database
     DATABASES = {
         'default': {
