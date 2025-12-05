@@ -5,3 +5,5 @@ class CohortsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'cohorts'
 
+    def ready(self):
+        import cohorts.signals

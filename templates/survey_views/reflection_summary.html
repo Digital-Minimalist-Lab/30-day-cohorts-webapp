@@ -1,0 +1,9 @@
+{% load survey_extras %}
+
+<article>
+    <h3>Week {{ submission.week_number }}</h3>
+    <p><strong>Intention:</strong> {{ submission|answer_by_key:'goal_text' }}</p>
+    {% if submission|answer_by_key:'reflection_text' %}
+    <p><strong>Reflection:</strong> {{ submission|answer_by_key:'reflection_text' }}</p>
+    {% endif %}
+</article>

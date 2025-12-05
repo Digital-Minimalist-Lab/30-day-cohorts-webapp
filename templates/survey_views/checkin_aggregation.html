@@ -1,0 +1,19 @@
+{% if checkin_aggregation %}
+    <sl-card>
+        <h3>Summary</h3>
+        {% if 'mood_1to5' in checkin_aggregation %}
+        <p>Average Mood: <strong>{{ checkin_aggregation.mood_1to5.avg|floatformat:1 }}/5</strong></p>
+        {% endif %}
+        {% if 'digital_satisfaction_1to5' in checkin_aggregation %}
+        <p>Average Digital Satisfaction: <strong>{{ checkin_aggregation.digital_satisfaction_1to5.avg|floatformat:1 }}/5</strong></p>
+        {% endif %}
+        {% if 'screentime_min' in checkin_aggregation %}
+        <p>Average Screen Time: <strong>{{ checkin_aggregation.screentime_min.avg|floatformat:0 }} min</strong></p>
+        <p>Screen Time Change: <strong>{{ checkin_aggregation.screentime_min.change|floatformat:0 }} min</strong></p>
+        {% endif %}
+    </sl-card>
+{% else %}
+    <article>
+        <p>No data yet. Complete some daily check-ins to see your trends.</p>
+    </article>
+{% endif %}

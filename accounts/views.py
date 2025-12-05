@@ -6,7 +6,9 @@ from django.contrib import messages
 import json
 from datetime import datetime
 from .forms import UserProfileForm
+from surveys.models import Survey, SurveySubmission
 from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
+from cohorts.services import aggregate_checkin_data
 
 
 class CustomLoginView(LoginView):
@@ -54,8 +56,7 @@ def health_check(request: HttpRequest) -> JsonResponse:
 def profile_view(request: HttpRequest) -> HttpResponse:
     """User profile page with settings and data view."""
     from .models import UserProfile
-    from cohorts.models import Cohort, Enrollment
-    from checkins.models import DailyCheckin
+    from cohorts.models import Enrollment
     
     # Get or create profile (in case signal didn't fire)
     profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -74,41 +75,23 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     
     cohort = None
     checkins = None
-    avg_mood = None
-    avg_digital_satisfaction = None
-    avg_screentime = None
-    mood_change = None
-    screentime_change = None
+    aggregated_data = {}
     
     if enrollment:
         cohort = enrollment.cohort
-        checkins = DailyCheckin.objects.filter(
-            user=request.user,
-            cohort=cohort
-        ).order_by('date')
+        checkins = SurveySubmission.objects.none()
         
-        # Calculate aggregates
-        if checkins.exists():
-            avg_mood = sum(c.mood_1to5 for c in checkins) / len(checkins)
-            avg_digital_satisfaction = sum(c.digital_satisfaction_1to5 for c in checkins) / len(checkins)
-            avg_screentime = sum(c.screentime_min for c in checkins) / len(checkins)
-            
-            # Get first and last for comparison
-            first_checkin = checkins.first()
-            latest_checkin = checkins.last()
-            
-            mood_change = latest_checkin.mood_1to5 - first_checkin.mood_1to5
-            screentime_change = latest_checkin.screentime_min - first_checkin.screentime_min
+        checkins = SurveySubmission.objects.filter(
+            user=request.user, cohort=cohort, survey__purpose=Survey.Purpose.DAILY_CHECKIN,
+        ).prefetch_related('answers', 'answers__question').order_by('completed_at')
+        
+        aggregated_data = aggregate_checkin_data(checkins)
     
     return render(request, 'accounts/profile.html', {
         'form': form,
         'cohort': cohort,
         'checkins': checkins,
-        'avg_mood': avg_mood,
-        'avg_digital_satisfaction': avg_digital_satisfaction,
-        'avg_screentime': avg_screentime,
-        'mood_change': mood_change,
-        'screentime_change': screentime_change,
+        'checkin_aggregation': aggregated_data,
     })
 
 
@@ -116,6 +99,7 @@ def profile_view(request: HttpRequest) -> HttpResponse:
 def export_user_data(request: HttpRequest) -> HttpResponse:
     """Export all user data (GDPR compliance)."""
     from .models import UserProfile
+    from cohorts.models import Enrollment
     
     user = request.user
     
@@ -128,70 +112,10 @@ def export_user_data(request: HttpRequest) -> HttpResponse:
             'email': user.email,
             'date_joined': user.date_joined.isoformat(),
         },
-        'profile': {
-            'timezone': profile.timezone,
-            'email_daily_reminder': profile.email_daily_reminder,
-            'email_weekly_reminder': profile.email_weekly_reminder,
-        },
-        'enrollments': [],
-        'entry_surveys': [],
-        'daily_checkins': [],
-        'weekly_reflections': [],
-        'exit_surveys': [],
+        'profile': profile.to_dict(),
+        'enrollments': [e.to_dict() for e in Enrollment.objects.filter(user=user)],
+        'submissions': [s.to_dict() for s in SurveySubmission.objects.filter(user=user).order_by('completed_at')],
     }
-    
-    # Enrollments
-    for enrollment in user.enrollments.all():
-        data['enrollments'].append({
-            'cohort': enrollment.cohort.name,
-            'enrolled_at': enrollment.enrolled_at.isoformat(),
-            'paid_at': enrollment.paid_at.isoformat() if enrollment.paid_at else None,
-        })
-    
-    # Entry surveys
-    for survey in user.entry_surveys.all():
-        data['entry_surveys'].append({
-            'cohort': survey.cohort.name,
-            'mood': survey.mood_1to5,
-            'baseline_screentime_min': survey.baseline_screentime_min,
-            'intention': survey.intention_text,
-            'challenge': survey.challenge_text,
-            'completed_at': survey.completed_at.isoformat(),
-        })
-    
-    # Daily check-ins
-    for checkin in user.daily_checkins.all():
-        data['daily_checkins'].append({
-            'cohort': checkin.cohort.name,
-            'date': checkin.date.isoformat(),
-            'mood': checkin.mood_1to5,
-            'digital_satisfaction': checkin.digital_satisfaction_1to5,
-            'screentime_min': checkin.screentime_min,
-            'proud_moment': checkin.proud_moment_text,
-            'digital_slip': checkin.digital_slip_text,
-            'reflection': checkin.reflection_text,
-        })
-    
-    # Weekly reflections
-    for reflection in user.weekly_reflections.all():
-        data['weekly_reflections'].append({
-            'cohort': reflection.cohort.name,
-            'week': reflection.week_index,
-            'goal': reflection.goal_text,
-            'reflection': reflection.reflection_text,
-            'created_at': reflection.created_at.isoformat(),
-        })
-    
-    # Exit surveys
-    for survey in user.exit_surveys.all():
-        data['exit_surveys'].append({
-            'cohort': survey.cohort.name,
-            'mood': survey.mood_1to5,
-            'final_screentime_min': survey.final_screentime_min,
-            'wins': survey.wins_text,
-            'insights': survey.insight_text,
-            'completed_at': survey.completed_at.isoformat(),
-        })
     
     # Return as JSON file
     response = HttpResponse(
@@ -230,4 +154,3 @@ def protocol_view(request: HttpRequest) -> HttpResponse:
 def resources_view(request: HttpRequest) -> HttpResponse:
     """Resources page."""
     return render(request, 'accounts/resources.html')
-

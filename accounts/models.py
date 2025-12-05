@@ -30,3 +30,12 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return f"Profile for {self.user.email}"
 
+
+    def to_dict(self):
+        return {
+            'timezone': self.timezone,
+            'email_daily_reminder': self.email_daily_reminder,
+            'email_weekly_reminder': self.email_weekly_reminder,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+        }

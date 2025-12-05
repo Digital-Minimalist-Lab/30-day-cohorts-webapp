@@ -1,0 +1,10 @@
+<article>
+    <h3>{{ submission.due_date|date:"Y-m-d" }}</h3>
+    <ul>
+        {% for answer in submission.answers.all %}
+        <li>
+            <strong>{{ answer.question.text }}:</strong> {{ answer.value }}
+        </li>
+        {% endfor %}
+    </ul>
+</article>

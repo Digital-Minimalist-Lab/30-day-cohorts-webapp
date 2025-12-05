@@ -69,10 +69,10 @@ exclude = [
 "**/migrations/*.py" = ["E501"]
 
 [tool.ruff.isort]
-known-first-party = ["accounts", "cohorts", "checkins", "surveys", "dashboard", "payments", "admin_tools", "config"]
+known-first-party = ["accounts", "cohorts", "checkins", "surveys", "dashboard", "payments", "config"]
 
 [tool.pyright]
-include = ["accounts", "cohorts", "checkins", "surveys", "dashboard", "payments", "admin_tools", "config"]
+include = ["accounts", "cohorts", "checkins", "surveys", "dashboard", "payments", "config"]
 exclude = ["**/migrations", "**/__pycache__"]
 pythonVersion = "3.11"
 typeCheckingMode = "basic"

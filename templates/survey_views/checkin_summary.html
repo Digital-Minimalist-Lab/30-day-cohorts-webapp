@@ -1,0 +1,16 @@
+{% load survey_extras %}
+
+<article>
+    <h3>{{ submission.due_date|date:"Y-m-d" }}</h3>
+    <p><small>
+        Mood: {{ submission|answer_by_key:'mood_1to5' }}/5 | Digital Satisfaction: {{ submission|answer_by_key:'digital_satisfaction_1to5' }}/5 | 
+        Screen Time: {{ submission|answer_by_key:'screentime_min' }} min
+    </small></p>
+    <p><strong>Proud moment:</strong> {{ submission|answer_by_key:'proud_moment_text' }}</p>
+    {% with digital_slip=submission|answer_by_key:'digital_slip_text' %}
+    {% if digital_slip %}
+    <p><strong>Digital slip:</strong> {{ digital_slip }}</p>
+    {% endif %}
+    {% endwith %}
+    <p><strong>Reflection:</strong> {{ submission|answer_by_key:'reflection_text' }}</p>
+</article>

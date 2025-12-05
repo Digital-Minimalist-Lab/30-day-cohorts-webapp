@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ cohort.name }}{% endblock %}
+
+{% block content %}
+<header>
+    <h1>{{ page_title }}</h1>
+</header>
+
+{% if object_list %}
+    {% for submission in object_list %}
+      {% include summary_template_path with submission=submission %}
+    {% endfor %}
+{% else %}
+    <p>{{ empty_message }}</p>
+{% endif %}
+
+<p>
+    <a href="{% url 'cohorts:homepage' %}">Back to Home</a>
+</p>
+{% endblock %}

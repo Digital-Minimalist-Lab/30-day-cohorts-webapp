@@ -39,10 +39,8 @@ INSTALLED_APPS = [
     'accounts',
     'cohorts',
     'surveys',
-    'checkins',
     'dashboard',
     'payments',
-    'admin_tools',
 ]
 
 MIDDLEWARE = [
@@ -203,11 +201,6 @@ LOGGING = {
             'propagate': False,
         },
         'accounts': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'checkins': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,

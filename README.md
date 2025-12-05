@@ -371,7 +371,6 @@ This project is licensed under the **GNU Affero General Public License v3.0 (AGP
 ├── checkins/          # Daily check-ins and weekly reflections
 ├── dashboard/         # Data visualization (hidden by default)
 ├── payments/          # Stripe integration
-├── admin_tools/       # Staff-only management views
 ├── templates/         # Django templates
 ├── static/            # Static files (CSS, JS, images)
 ├── config/            # Django settings

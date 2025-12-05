@@ -42,19 +42,7 @@
         </small></p>
     </article>
     
-    {% if avg_mood %}
-    <sl-card>
-        <h3>Summary</h3>
-        <p>Average Mood: <strong>{{ avg_mood|floatformat:1 }}/5</strong></p>
-        <p>Average Digital Satisfaction: <strong>{{ avg_digital_satisfaction|floatformat:1 }}/5</strong></p>
-        <p>Average Screen Time: <strong>{{ avg_screentime|floatformat:0 }} min</strong></p>
-        <p>Screen Time Change: <strong>{{ screentime_change|floatformat:0 }} min</strong></p>
-    </sl-card>
-    {% else %}
-    <article>
-        <p>No data yet. Complete some daily check-ins to see your trends.</p>
-    </article>
-    {% endif %}
+    {% include 'survey_views/checkin_aggregation.html' %}
 </section>
 
 <!-- Privacy & Data -->
@@ -75,4 +63,3 @@
     <p><small>Permanently delete your account and all data. This cannot be undone.</small></p>
 </section>
 {% endblock %}
-

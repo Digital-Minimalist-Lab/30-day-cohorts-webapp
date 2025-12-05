@@ -1,33 +1,17 @@
 from typing import Optional
-from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AbstractUser
 from django.http import HttpRequest, HttpResponse
-from django.utils import timezone
-from django.db.models import Q
-import pytz
+from django.utils import timezone 
+from django.db.models import Q, Count
 from .models import Cohort, Enrollment
+from .utils import get_user_today
+from cohorts.services import get_user_tasks
 from allauth.account.forms import LoginForm, SignupForm
+import logging
 
-
-def get_user_today(user: AbstractUser) -> date:
-    """
-    Get today's date in user's timezone.
-    
-    Args:
-        user: Django User instance with associated UserProfile
-        
-    Returns:
-        datetime.date: Today's date in user's timezone
-    """
-    from accounts.models import UserProfile
-    
-    # Get or create profile (defensive programming)
-    profile, _ = UserProfile.objects.get_or_create(user=user)
-    user_tz = pytz.timezone(profile.timezone)
-    return timezone.now().astimezone(user_tz).date()
-
+logger = logging.getLogger(__name__)
 
 def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment]:
     """
@@ -57,137 +41,42 @@ def homepage(request: HttpRequest) -> HttpResponse:
     """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
     if not request.user.is_authenticated:
         # Get next active cohort for enrollment landing
-        today = timezone.now().date()
-        next_cohort = Cohort.objects.filter(
-            is_active=True,
-            start_date__gte=today
-        ).order_by('start_date').first()
+        next_cohort = Cohort.objects.get_upcoming().first()
         
         context = {
             'cohort': next_cohort,
         }
         if next_cohort:
             context['seats_available'] = next_cohort.seats_available()
-        
         return render(request, 'cohorts/landing.html', context)
     
     # Get user's most recent enrollment (assuming one active cohort at a time)
-    enrollment = Enrollment.objects.filter(user=request.user).select_related('cohort').order_by('-enrolled_at').first()
+    # Also fetch the total number of enrollments for the cohort in the same query.
+    enrollment = Enrollment.objects.filter(
+        user=request.user
+    ).select_related('cohort').annotate(
+        enrollment_count=Count('cohort__enrollments')
+    ).order_by('-enrolled_at').first()
+    
     
     if not enrollment or enrollment.status == 'pending':
         # No enrollment, show signup prompt
-        context = {
+        return render(request, 'cohorts/homepage.html', {
             'no_enrollment': True,
-            'available_cohorts': Cohort.objects.filter(is_active=True).order_by('start_date').first(),
-        }
-        return render(request, 'cohorts/homepage.html', context)
+            'available_cohort': Cohort.objects.get_upcoming().first(),
+        })
     
     cohort = enrollment.cohort
     today = get_user_today(request.user)
-    
-    # Get enrollment count
-    enrollment_count = cohort.enrollments.count()
-    
-    # Determine today's tasks in chronological order
-    tasks = []
-    completed_tasks = []
-    
-    # 1. Check entry survey (always first)
-    entry_survey = enrollment.user.entry_surveys.filter(cohort=cohort).first()
-    if not entry_survey:
-        tasks.append({
-            'type': 'entry_survey',
-            'title': 'Complete Entry Survey',
-            'description': 'Establish your baseline metrics',
-            'url': f'/surveys/entry/{cohort.id}/',
-            'order': 1,
-        })
-    else:
-        completed_tasks.append({
-            'type': 'entry_survey',
-            'title': 'Entry Survey',
-            'completed_at': entry_survey.completed_at,
-            'url': f'/surveys/entry/{cohort.id}/',
-        })
-    
-    # 2. Check today's daily check-in
-    daily_checkin = enrollment.user.daily_checkins.filter(cohort=cohort, date=today).first()
-    if not daily_checkin:
-        tasks.append({
-            'type': 'daily_checkin',
-            'title': 'Log Today\'s Check-In',
-            'description': 'Complete your 5-step daily reflection',
-            'url': f'/checkins/daily/{cohort.id}/',
-            'order': 2,
-        })
-    else:
-        completed_tasks.append({
-            'type': 'daily_checkin',
-            'title': f'Daily Check-In - {today}',
-            'completed_at': daily_checkin.created_at,
-            'url': f'/checkins/daily/{cohort.id}/',
-        })
-    
-    # 3. Check weekly reflection (days 7, 14, 21, 28)
-    # With catch-up: Week 1 available days 7-13, Week 2 days 14-20, etc.
-    days_since_start = (today - cohort.start_date).days
-    week_days = {1: 7, 2: 14, 3: 21, 4: 28}
-    
-    for week_index, week_day in week_days.items():
-        # Check if we're in the window for this week
-        if days_since_start >= week_day and days_since_start < week_day + 7:
-            weekly_reflection = enrollment.user.weekly_reflections.filter(
-                cohort=cohort,
-                week_index=week_index
-            ).first()
-            
-            if not weekly_reflection:
-                tasks.append({
-                    'type': 'weekly_reflection',
-                    'title': f'Set Week {week_index} Intention',
-                    'description': f'Set your intention for week {week_index}',
-                    'url': f'/checkins/weekly/{cohort.id}/',
-                    'order': 3,
-                })
-                break  # Only show the earliest incomplete reflection
-            else:
-                completed_tasks.append({
-                    'type': 'weekly_reflection',
-                    'title': f'Week {week_index} Reflection',
-                    'completed_at': weekly_reflection.created_at,
-                    'url': f'/checkins/weekly/{cohort.id}/',
-                })
-    
-    # 4. Check exit survey (if cohort ended)
-    if today >= cohort.end_date:
-        exit_survey = enrollment.user.exit_surveys.filter(cohort=cohort).first()
-        if not exit_survey:
-            tasks.append({
-                'type': 'exit_survey',
-                'title': 'Complete Exit Survey',
-                'description': 'Reflect on your 30-day journey',
-                'url': f'/surveys/exit/{cohort.id}/',
-                'order': 4,
-            })
-        else:
-            completed_tasks.append({
-                'type': 'exit_survey',
-                'title': 'Exit Survey',
-                'completed_at': exit_survey.completed_at,
-                'url': f'/surveys/exit/{cohort.id}/',
-            })
-    
-    # Sort tasks by order
-    tasks.sort(key=lambda x: x['order'])
+    tasks, completed_tasks = get_user_tasks(request.user, cohort, today)
     
     context = {
         'enrollment': enrollment,
         'cohort': cohort,
+        'enrollment_count': enrollment.enrollment_count, # Use the annotated value
         'tasks': tasks,
         'completed_tasks': completed_tasks,
         'today': today,
-        'enrollment_count': enrollment_count,
-        'no_enrollment': False,
     }
     
     return render(request, 'cohorts/homepage.html', context)
@@ -196,18 +85,13 @@ def homepage(request: HttpRequest) -> HttpResponse:
 @login_required
 def cohort_list(request: HttpRequest) -> HttpResponse:
     """List available cohorts."""
-    today = timezone.now().date()
-    
     # Get cohorts that can be joined (within 7 days of start and active)
-    available_cohorts = Cohort.objects.filter(
-        is_active=True
-    ).filter(
-        start_date__lte=today + timezone.timedelta(days=0),
-        start_date__gte=today - timezone.timedelta(days=7)
-    ).order_by('-start_date')
-    
+    available_cohorts = Cohort.objects.get_joinable()
+
     # Get user's enrollments
-    user_enrollments = Enrollment.objects.filter(Q(user=request.user) & ~Q(status='pending')).values_list('cohort_id', flat=True)
+    user_enrollments = Enrollment.objects.filter(
+        user=request.user
+    ).exclude(status='pending').values_list('cohort_id', flat=True)
     
     context = {
         'available_cohorts': available_cohorts,
@@ -249,30 +133,19 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
 def join_start(request: HttpRequest) -> HttpResponse:
     """Step 1: Account creation or login for cohort enrollment."""
     # If user is authenticated, redirect to checkout
+    # Find the next upcoming or recently started cohort
+    joinable_cohort = Cohort.objects.get_joinable().first() or Cohort.objects.get_upcoming().first()
+
     if request.user.is_authenticated:
-        # Check if already enrolled in active cohort
-        today = timezone.now().date()
-        active_enrollment = Enrollment.objects.filter(
-            user=request.user,
-            cohort__is_active=True,
-            cohort__start_date__gte=today - timezone.timedelta(days=7)
-        ).select_related('cohort').first()
-        
-        if active_enrollment:
+        # If user is already enrolled in the target cohort, redirect to homepage
+        if joinable_cohort and Enrollment.objects.filter(user=request.user, cohort=joinable_cohort).exists():
             return redirect('cohorts:homepage')
         
         # Otherwise redirect to checkout
         return redirect('cohorts:join_checkout')
     
-    # Get next active cohort
-    today = timezone.now().date()
-    next_cohort = Cohort.objects.filter(
-        is_active=True,
-        start_date__gte=today
-    ).order_by('start_date').first()
-    
     context = {
-        'cohort': next_cohort,
+        'cohort': joinable_cohort,
         'login_form': LoginForm(),
         'signup_form': SignupForm(),
     }
@@ -286,13 +159,9 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
     from django.conf import settings
     from .forms import PaymentAmountForm
     
-    # Get next active cohort
-    today = timezone.now().date()
-    cohort = Cohort.objects.filter(
-        is_active=True,
-        start_date__gte=today - timezone.timedelta(days=7)
-    ).order_by('start_date').first()
-    
+    # Find the next upcoming or recently started cohort
+    cohort = Cohort.objects.get_joinable().first() or Cohort.objects.get_upcoming().first()
+
     if not cohort:
         return render(request, 'cohorts/cohort_join_error.html', {
             'message': 'No active cohorts available at the moment.'
@@ -372,4 +241,3 @@ def join_success(request: HttpRequest) -> HttpResponse:
     }
     
     return render(request, 'cohorts/join_success.html', context)
-

@@ -43,7 +43,7 @@
             {% for task in tasks %}
             <article style="margin-bottom: 1rem;">
                 <h3><a href="{{ task.url }}">{{ task.title }}</a></h3>
-                <p>{{ task.description }}</p>
+                <p>{{ task.description|safe }}</p>
             </article>
             {% endfor %}
         {% else %}
@@ -72,12 +72,11 @@
     <!-- Links -->
     <p>
         <small>
-            <a href="/checkins/past-checkins/{{ cohort.id }}/">View Past Check-Ins</a> •
-            <a href="/checkins/past-reflections/{{ cohort.id }}/">View Past Reflections</a>
+            <a href="{% url 'surveys:submission_list' cohort_id=cohort.id survey_slug='daily-check-in' %}">View Past Check-Ins</a> •
+            <a href="{% url 'surveys:submission_list' cohort_id=cohort.id survey_slug='weekly-reflection' %}">View Past Reflections</a>
         </small>
     </p>
 
 {% endif %}
 
 {% endblock %}
-

@@ -1,0 +1,132 @@
+// DBML for digital-minimalism Django App
+
+Project "Digital Minimalism Cohorts" {
+  database_type: 'PostgreSQL' // Assuming PostgreSQL, common for Django
+  Note: 'Schema for the 30-day digital minimalism cohort web application.'
+}
+
+//// --------------------------------------------------
+//// Auth and Accounts
+//// --------------------------------------------------
+
+// Django's built-in User model
+Table auth_user {
+  id integer [pk, increment]
+  password varchar(128) [not null]
+  last_login datetime
+  is_superuser boolean [not null]
+  username varchar(150) [unique, not null]
+  first_name varchar(150) [not null]
+  last_name varchar(150) [not null]
+  email varchar(254) [not null]
+  is_staff boolean [not null]
+  is_active boolean [not null]
+  date_joined datetime [not null]
+}
+
+// User profile with additional settings
+Table accounts_userprofile {
+  id integer [pk, increment]
+  email_daily_reminder boolean [not null, default: false, note: 'Opt-in for daily check-in reminders']
+  email_weekly_reminder boolean [not null, default: false, note: 'Opt-in for weekly reflection reminders']
+  timezone varchar(50) [not null, default: 'UTC', note: 'Users timezone for accurate daily check-in dates']
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  user_id integer [unique, not null, ref: > auth_user.id]
+}
+
+//// --------------------------------------------------
+//// Cohorts and Enrollments
+//// --------------------------------------------------
+
+Table cohorts_cohort {
+  id integer [pk, increment]
+  name varchar(200) [not null]
+  start_date date [not null]
+  end_date date [not null]
+  is_active boolean [not null, default: true, note: 'Whether this cohort is currently accepting enrollments']
+  created_at datetime [not null]
+  updated_at datetime [not null]
+  is_paid boolean [not null, default: true, note: 'Whether this cohort requires payment']
+  max_seats integer [note: 'Maximum number of seats (null = unlimited)']
+  minimum_price_cents integer [not null, default: 1000, note: 'Minimum price in cents (e.g., 1000 = $10.00)']
+}
+
+Table cohorts_enrollment {
+  id integer [pk, increment]
+  paid_at datetime [note: 'When payment was completed (null if free or pending)']
+  enrolled_at datetime [not null]
+  cohort_id integer [not null, ref: > cohorts_cohort.id]
+  user_id integer [not null, ref: > auth_user.id]
+  amount_paid_cents integer [note: 'Amount paid in cents (null if free or pending)']
+  status varchar(20) [not null, default: 'pending', note: 'Enrollment status (pending, paid, free, refunded)']
+
+  indexes {
+    (user_id, cohort_id) [unique]
+  }
+}
+
+//// --------------------------------------------------
+//// Surveys
+//// --------------------------------------------------
+
+Table surveys_survey {
+  id integer [pk, increment]
+  name varchar(200) [not null]
+  slug varchar(200) [unique, not null, note: "A unique slug for identifying the survey type (e.g., 'entry', 'daily-checkin')."]
+  description text
+  created_at datetime [not null]
+  title_template varchar(255) [not null, default: '{survey_name}']
+}
+
+Table surveys_question {
+  id integer [pk, increment]
+  survey_id integer [not null, ref: > surveys_survey.id]
+  key varchar(100) [not null, note: "A unique key for this question within the survey (e.g., 'mood_1to5')."]
+  text varchar(500) [not null, note: "The question text presented to the user."]
+  question_type varchar(20) [not null, note: "e.g., 'text', 'textarea', 'integer', 'radio'"]
+  order integer [not null, default: 0]
+  is_required boolean [not null, default: true]
+  choices json [note: "JSON object for choices if question_type is 'radio'."]
+}
+
+Table surveys_surveysubmission {
+  id integer [pk, increment]
+  survey_id integer [not null, ref: > surveys_survey.id]
+  user_id integer [not null, ref: > auth_user.id]
+  cohort_id integer [not null, ref: > cohorts_cohort.id]
+  completed_at datetime [not null]
+  due_date date [note: "The specific due date of the task this submission fulfills."]
+  scheduler_id integer [ref: > surveys_taskscheduler.id, ondelete: 'set null', note: 'Link to the scheduler if this was a scheduled task.']
+}
+
+Table surveys_taskscheduler {
+  id integer [pk, increment]
+  survey_id integer [not null, ref: > surveys_survey.id]
+  cohort_id integer [not null, ref: > cohorts_cohort.id, note: 'The cohort this schedule applies to.']
+  purpose varchar(20) [not null, default: 'GENERIC', note: "Role of the task: ENTRY, EXIT, DAILY_CHECKIN, etc."]
+  task_title_template varchar(200)
+  task_description_template text
+  frequency varchar(20) [not null, note: "'ONCE', 'DAILY', 'WEEKLY'"]
+  is_cumulative boolean [not null, default: false, note: 'If true, missed tasks will accumulate.']
+  day_of_week integer [note: "For WEEKLY frequency (e.g., 0=Sun, 1=Mon). Null for other frequencies."]
+  offset_days integer [note: "For ONCE frequency. Number of days from the start/end date."]
+  offset_from varchar(10) [note: "For ONCE frequency. 'start',  'end', or 'middle' of the cohort."]
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  indexes {
+    (cohort_id, survey_id) [unique]
+  }
+}
+
+Table surveys_answer {
+  id integer [pk, increment]
+  submission_id integer [not null, ref: > surveys_surveysubmission.id, note: 'An answer belongs to one submission.']
+  question_id integer [not null, ref: > surveys_question.id]
+  value text [not null]
+
+  indexes {
+    (submission_id, question_id) [unique]
+  }
+}
