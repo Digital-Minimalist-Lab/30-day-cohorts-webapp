@@ -23,7 +23,11 @@ class SurveyTaskView(FormView):
     This replaces the `survey_view` function and the `SurveyViewType` registry.
     """
     form_class = DynamicSurveyForm
-    template_name = "surveys/survey_form.html"
+
+    def get_template_names(self):
+        return [
+            "surveys/views/default/survey_form.html"
+        ]
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         """Initialize attributes for the view."""
@@ -99,7 +103,11 @@ class SurveyTaskView(FormView):
 
 class ExitSurveyFormView(SurveyTaskView):
     """A specialized view for the exit survey that shows baseline answers."""
-    template_name = "survey_views/exit_survey_form.html"
+    
+    def get_template_names(self):
+        return [
+            "surveys/views/exit_survey_form.html"
+        ]
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -140,9 +148,9 @@ class PastSubmissionsListView(ListView):
     """
     A generic base view to list past survey submissions for a given survey.
     """
-    template_name = "surveys/past_submissions_list.html"
+    template_name = "surveys/default/past_submissions_list.html"
     page_title: str
-    summary_template_path: str = "surveys/generic_summary.html"
+    summary_template_path: str = "surveys/fragments/default/survey_summary.html"
     empty_message: str
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
@@ -184,13 +192,13 @@ class PastSubmissionsListView(ListView):
 
 class PastCheckinsView(PastSubmissionsListView):
     page_title = "Past Check-Ins"
-    summary_template_path = "survey_views/checkin_summary.html"
+    summary_template_path = "surveys/fragments/checkin_summary.html"
     empty_message = "No check-ins yet."
     ordering = ['-completed_at']
 
 class PastReflectionsView(PastSubmissionsListView):
     page_title = "Past Weekly Reflections"
-    summary_template_path = "survey_views/reflection_summary.html"
+    summary_template_path = "surveys/fragments/reflection_summary.html"
     empty_message = "No reflections yet."
     ordering = ['completed_at']
 
