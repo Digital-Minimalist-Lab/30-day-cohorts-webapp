@@ -4,7 +4,7 @@ from django.utils.text import slugify
 SURVEYS_TO_CREATE = {
     "Entry Survey": {
         "purpose": "ENTRY",
-        "description": "Baseline survey completed at the start of a cohort.",
+        "description": "This survey establishes your baseline. Be honest with yourself—this is for your reflection, not judgment.",
         "questions": [
             {"key": "mood_1to5", "text": "How do you feel right now? (1=low, 5=high)", "type": "integer"},
             {"key": "baseline_screentime_min", "text": "Average daily smartphone usage (minutes)", "type": "integer"},
@@ -14,7 +14,7 @@ SURVEYS_TO_CREATE = {
     },
     "Exit Survey": {
         "purpose": "EXIT",
-        "description": "Final survey completed at the end of a cohort.",
+        "description": "You've completed the 30-day journey. Reflect on your experience—what changed, what you learned, and what comes next.",
         "questions": [
             {"key": "mood_1to5", "text": "How do you feel now? (1=low, 5=high)", "type": "integer"},
             {"key": "final_screentime_min", "text": "Current daily screen time (minutes)", "type": "integer"},

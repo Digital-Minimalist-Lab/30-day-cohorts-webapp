@@ -9,7 +9,7 @@
 
 {% if object_list %}
     {% for submission in object_list %}
-      {% include summary_template_path with submission=submission %}
+      {% include summary_template_names with submission=submission %}
     {% endfor %}
 {% else %}
     <p>{{ empty_message }}</p>

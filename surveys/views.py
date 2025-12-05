@@ -11,23 +11,19 @@ from cohorts.models import Cohort, Enrollment
 from .services import create_survey_submission
 from .forms import DynamicSurveyForm
 from .models import Survey, SurveySubmission
+from django.db.models import QuerySet
+from dataclasses import dataclass
 
 import logging
 logger = logging.getLogger(__name__)
 
 
 @method_decorator(login_required, name='dispatch')
-class SurveyTaskView(FormView):
+class SurveyFormView(FormView):
     """
-    A class-based view to handle displaying and processing a survey task.
-    This replaces the `survey_view` function and the `SurveyViewType` registry.
+    A class-based view to handle displaying and processing a survey form.
     """
     form_class = DynamicSurveyForm
-
-    def get_template_names(self):
-        return [
-            "surveys/views/default/survey_form.html"
-        ]
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         """Initialize attributes for the view."""
@@ -41,6 +37,17 @@ class SurveyTaskView(FormView):
         except (ValueError, TypeError, KeyError):
             self.due_date = None
 
+    def get_template_names(self):
+        """
+        Return a list of template names to search for.
+        Looks for a survey-specific template first, then a default.
+        e.g., for an exit survey -> ['surveys/views/exit-survey_survey_form.html', 'surveys/views/default/survey_form.html']
+        """
+        return [
+            f"surveys/views/{self.survey.slug.lower()}_survey_form.html",
+            "surveys/views/default/survey_form.html",
+        ]
+
     def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """
         Central entry point for the view. Handles validation and authorization.
@@ -52,12 +59,12 @@ class SurveyTaskView(FormView):
 
         # Validate due_date
         if not self.due_date:
-            messages.error(request, "A valid due date is required to perform this task.")
+            messages.error(request, "A valid due date is required to perform this survey.")
             return redirect('cohorts:homepage')
 
         # Check if already completed
         if SurveySubmission.objects.filter(user=request.user, cohort=self.cohort, survey=self.survey, due_date=self.due_date).exists():
-            messages.info(request, "You have already completed this task.")
+            messages.info(request, "You have already completed this survey.")
             return redirect('cohorts:homepage')
 
         return super().dispatch(request, *args, **kwargs)
@@ -73,11 +80,11 @@ class SurveyTaskView(FormView):
         context = super().get_context_data(**kwargs)
         
         # Attempt to find the scheduler to get templates and frequency context
-        task_title_template = self.survey.name
+        survey_title_template = self.survey.title_template
 
         week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
         title_context = {'survey_name': self.survey.name, 'due_date': self.due_date, 'week_number': week_number}
-        page_title = (task_title_template).format(**title_context)
+        page_title = (survey_title_template).format(**title_context)
 
         context.update({
             'survey': self.survey,
@@ -101,12 +108,12 @@ class SurveyTaskView(FormView):
         return redirect('cohorts:homepage')
 
 
-class ExitSurveyFormView(SurveyTaskView):
+class ExitSurveyFormView(SurveyFormView):
     """A specialized view for the exit survey that shows baseline answers."""
-    
+
     def get_template_names(self):
         return [
-            "surveys/views/exit_survey_form.html"
+            "surveys/views/exit-survey_survey_form.html",
         ]
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -117,12 +124,15 @@ class ExitSurveyFormView(SurveyTaskView):
     def _get_entry_survey_answers(self) -> Dict[str, str]:
         """Helper to fetch answers from the user's entry survey for a given cohort."""
         try:
+            logger.info(f"Getting entry survey answers for cohort {self.cohort.id}")
             entry_submission = SurveySubmission.objects.filter(
                 user=self.request.user,
                 cohort=self.cohort,
                 survey__purpose=Survey.Purpose.ENTRY,
             ).prefetch_related('answers', 'answers__question').order_by('completed_at').first()
+            
             if entry_submission:
+                logger.info(f"Found entry survey answers for cohort {self.cohort.id}: {entry_submission.answers.all()}")
                 return {answer.question.key: answer.value for answer in entry_submission.answers.all()}
         except (Survey.DoesNotExist):
             logger.warning(f"No entry survey found for cohort {self.cohort.id} when trying to get entry answers.")
@@ -136,25 +146,23 @@ def survey_view(request: HttpRequest, cohort_id: int, survey_slug: str, due_date
     This acts as a dispatcher to select the correct view class.
     """
     survey = get_object_or_404(Survey, slug=survey_slug)
+    logger.info(f"survey: {survey}")
     if survey.purpose == Survey.Purpose.EXIT:
         view_class = ExitSurveyFormView
     else:
-        view_class = SurveyTaskView
+        view_class = SurveyFormView
     return view_class.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug, due_date=due_date)
 
 
 @method_decorator(login_required, name='dispatch')
 class PastSubmissionsListView(ListView):
     """
-    A generic base view to list past survey submissions for a given survey.
+    A view which can list survey results. 
     """
-    template_name = "surveys/default/past_submissions_list.html"
-    page_title: str
-    summary_template_path: str = "surveys/fragments/default/survey_summary.html"
-    empty_message: str
+    template_name = "surveys/views/default/past_submissions_list.html"
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
-        """Initialize the cohort."""
+        """Initialize the cohort and survey."""
         super().setup(request, *args, **kwargs)
         self.cohort = get_object_or_404(Cohort, id=self.kwargs['cohort_id'])
         self.survey = get_object_or_404(Survey, slug=self.kwargs['survey_slug'])
@@ -166,53 +174,32 @@ class PastSubmissionsListView(ListView):
             return redirect('cohorts:cohort_list')
         return super().dispatch(request, *args, **kwargs)
 
-    def get_queryset(self):
-        """Return the submissions for the user, cohort, and survey"""
-        return SurveySubmission.objects.filter(
+    def get_queryset(self) -> QuerySet[SurveySubmission]:
+        """Return submissions for the user, cohort, and survey, with specific ordering."""
+        qs = SurveySubmission.objects.filter(
             user=self.request.user,
             survey=self.survey,
             cohort=self.cohort,
         ).prefetch_related('answers', 'answers__question')
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        # Dynamically create a page title if not explicitly set.
-        page_title = self.page_title if hasattr(self, 'page_title') else f"Past {self.survey.name}s"
-        empty_message = self.empty_message if hasattr(self, 'empty_message') else f"No submissions for '{self.survey.name}' yet."
+        return qs.order_by('-completed_at')
 
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Add dynamic page title, empty message, and summary template names."""
         context = super().get_context_data(**kwargs)
+
+        # Dynamically generate summary template names to try.
+        summary_template_names = [
+            f"surveys/fragments/{self.survey.slug}_survey_summary.html",
+            "surveys/fragments/default/survey_summary.html",
+        ]
+
+        logger.info(f"Using summary templates: {summary_template_names}")
+
         context.update({
-            'page_title': page_title,
+            'page_title': f"Past {self.survey.name}s",
             'cohort': self.cohort,
-            'summary_template_path': self.summary_template_path,
-            'empty_message': empty_message,
+            'summary_template_names': summary_template_names,
+            'empty_message': f"No submissions for '{self.survey.name}' yet.",
         })
         return context
-
-
-
-class PastCheckinsView(PastSubmissionsListView):
-    page_title = "Past Check-Ins"
-    summary_template_path = "surveys/fragments/checkin_summary.html"
-    empty_message = "No check-ins yet."
-    ordering = ['-completed_at']
-
-class PastReflectionsView(PastSubmissionsListView):
-    page_title = "Past Weekly Reflections"
-    summary_template_path = "surveys/fragments/reflection_summary.html"
-    empty_message = "No reflections yet."
-    ordering = ['completed_at']
-
-@login_required
-def past_submission_view(request: HttpRequest, cohort_id: int, survey_slug: str) -> HttpResponse:
-    """
-    View to display and process a survey.
-    This acts as a dispatcher to select the correct view class.
-    """
-    survey = get_object_or_404(Survey, slug=survey_slug)
-    if survey.purpose == Survey.Purpose.DAILY_CHECKIN:
-        view_class = PastCheckinsView
-    elif survey.purpose == Survey.Purpose.WEEKLY_REFLECTION: 
-        view_class = PastReflectionsView
-    else:
-        view_class = PastSubmissionsListView
-    return view_class.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug)
