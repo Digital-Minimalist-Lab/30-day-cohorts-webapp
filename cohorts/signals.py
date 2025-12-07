@@ -40,7 +40,7 @@ def create_default_task_schedulers(sender, instance: Cohort, created: bool, **kw
         {
             'slug': 'weekly-reflection',
             'frequency': TaskScheduler.Frequency.WEEKLY,
-            'day_of_week': 0,  # Sunday
+            'day_of_week': 6,  # Sunday
             'is_cumulative': True,
         },
     ]

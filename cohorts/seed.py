@@ -54,7 +54,7 @@ def seed_surveys(apps=None, update=False):
         Survey = apps.get_model('surveys', 'Survey')
         Question = apps.get_model('surveys', 'Question')
     else:
-        from .models import Survey, Question
+        from ..surveys.models import Survey, Question
 
     for survey_name, survey_data in SURVEYS_TO_CREATE.items():
         survey_defaults = {

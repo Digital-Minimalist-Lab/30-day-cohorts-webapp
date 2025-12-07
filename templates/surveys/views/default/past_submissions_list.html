@@ -8,8 +8,8 @@
 </header>
 
 {% if object_list %}
-    {% for submission in object_list %}
-      {% include summary_template_names with submission=submission %}
+    {% for response in object_list %}
+      {% include summary_template_names %}
     {% endfor %}
 {% else %}
     <p>{{ empty_message }}</p>

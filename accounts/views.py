@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from .forms import UserProfileForm
 from surveys.models import Survey, SurveySubmission
+from cohorts.models import UserSurveyResponse
 from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
 from cohorts.services import aggregate_checkin_data
 
@@ -79,11 +80,15 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     
     if enrollment:
         cohort = enrollment.cohort
-        checkins = SurveySubmission.objects.none()
-        
+        # Fetch check-in submissions with a single, more efficient query
+        # by filtering SurveySubmission through its reverse relationship to UserSurveyResponse.
         checkins = SurveySubmission.objects.filter(
-            user=request.user, cohort=cohort, survey__purpose=Survey.Purpose.DAILY_CHECKIN,
-        ).prefetch_related('answers', 'answers__question').order_by('completed_at')
+            survey__purpose=Survey.Purpose.DAILY_CHECKIN,
+            user_responses__user=request.user,
+            user_responses__cohort=cohort
+        ).prefetch_related(
+            'answers', 'answers__question'
+        ).order_by('completed_at').distinct()
         
         aggregated_data = aggregate_checkin_data(checkins)
     
@@ -114,7 +119,7 @@ def export_user_data(request: HttpRequest) -> HttpResponse:
         },
         'profile': profile.to_dict(),
         'enrollments': [e.to_dict() for e in Enrollment.objects.filter(user=user)],
-        'submissions': [s.to_dict() for s in SurveySubmission.objects.filter(user=user).order_by('completed_at')],
+        'submissions': [s.to_dict() for s in UserSurveyResponse.objects.filter(user=user).order_by('completed_at')],
     }
     
     # Return as JSON file

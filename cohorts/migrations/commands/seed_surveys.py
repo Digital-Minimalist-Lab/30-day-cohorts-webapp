@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from surveys.seed import seed_surveys
+from cohorts.seed import seed_surveys
 
 
 class Command(BaseCommand):

@@ -7,12 +7,13 @@ from typing import Any, Dict
 from datetime import date
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
-from cohorts.models import Cohort, Enrollment 
+
+from surveys.forms import DynamicSurveyForm
+from surveys.models import Survey, SurveySubmission
+
+from .contexts import SurveyContext
+from .models import Cohort, Enrollment, UserSurveyResponse
 from .services import create_survey_submission
-from .forms import DynamicSurveyForm
-from .models import Survey, SurveySubmission
-from django.db.models import QuerySet
-from dataclasses import dataclass
 
 import logging
 logger = logging.getLogger(__name__)
@@ -63,7 +64,7 @@ class SurveyFormView(FormView):
             return redirect('cohorts:homepage')
 
         # Check if already completed
-        if SurveySubmission.objects.filter(user=request.user, cohort=self.cohort, survey=self.survey, due_date=self.due_date).exists():
+        if UserSurveyResponse.objects.filter(user=request.user, cohort=self.cohort, submission__survey=self.survey, due_date=self.due_date).exists():
             messages.info(request, "You have already completed this survey.")
             return redirect('cohorts:homepage')
 
@@ -78,21 +79,12 @@ class SurveyFormView(FormView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """Add survey, cohort, and title information to the template context."""
         context = super().get_context_data(**kwargs)
-        
-        # Attempt to find the scheduler to get templates and frequency context
-        survey_title_template = self.survey.title_template
-
-        week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
-        title_context = {'survey_name': self.survey.name, 'due_date': self.due_date, 'week_number': week_number}
-        page_title = (survey_title_template).format(**title_context)
-
+        survey_context = SurveyContext(survey=self.survey, cohort=self.cohort, due_date=self.due_date).as_dict()
         context.update({
-            'survey': self.survey,
-            'cohort': self.cohort,
-            'page_title': page_title,
-            'due_date': self.due_date,
-            'week_number': week_number,
+            'page_title': self.survey.title_template.format(**survey_context),
+            'description': self.survey.description.format(**survey_context),
         })
+        context.update(survey_context)
         return context
 
     def form_valid(self, form: DynamicSurveyForm) -> HttpResponse:
@@ -124,17 +116,17 @@ class ExitSurveyFormView(SurveyFormView):
     def _get_entry_survey_answers(self) -> Dict[str, str]:
         """Helper to fetch answers from the user's entry survey for a given cohort."""
         try:
-            logger.info(f"Getting entry survey answers for cohort {self.cohort.id}")
-            entry_submission = SurveySubmission.objects.filter(
+            entry_response = UserSurveyResponse.objects.filter(
                 user=self.request.user,
                 cohort=self.cohort,
-                survey__purpose=Survey.Purpose.ENTRY,
-            ).prefetch_related('answers', 'answers__question').order_by('completed_at').first()
+                submission__survey__purpose=Survey.Purpose.ENTRY,
+            ) .select_related('submission__survey').prefetch_related('submission__answers', 'submission__answers__question').order_by('submission__completed_at').first()
             
-            if entry_submission:
+            if entry_response:
+                entry_submission = entry_response.submission
                 logger.info(f"Found entry survey answers for cohort {self.cohort.id}: {entry_submission.answers.all()}")
                 return {answer.question.key: answer.value for answer in entry_submission.answers.all()}
-        except (Survey.DoesNotExist):
+        except Survey.DoesNotExist:
             logger.warning(f"No entry survey found for cohort {self.cohort.id} when trying to get entry answers.")
         return {}
 
@@ -174,15 +166,13 @@ class PastSubmissionsListView(ListView):
             return redirect('cohorts:cohort_list')
         return super().dispatch(request, *args, **kwargs)
 
-    def get_queryset(self) -> QuerySet[SurveySubmission]:
+    def get_queryset(self):
         """Return submissions for the user, cohort, and survey, with specific ordering."""
-        qs = SurveySubmission.objects.filter(
+        return UserSurveyResponse.objects.filter(
             user=self.request.user,
-            survey=self.survey,
             cohort=self.cohort,
-        ).prefetch_related('answers', 'answers__question')
-
-        return qs.order_by('-completed_at')
+            submission__survey=self.survey,
+        ).select_related('submission').prefetch_related('submission__answers', 'submission__answers__question').order_by('-submission__completed_at')
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """Add dynamic page title, empty message, and summary template names."""

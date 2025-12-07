@@ -1,10 +1,6 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-
-User = get_user_model()
-
-
+from django.utils.functional import cached_property
 
 class Survey(models.Model):
     """A collection of questions, like 'Entry Survey' or 'Daily Check-in'."""
@@ -64,40 +60,21 @@ class Question(models.Model):
 class SurveySubmission(models.Model):
     """A user's submission for a specific survey."""
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='submissions')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='survey_submissions')
-    cohort = models.ForeignKey('cohorts.Cohort', on_delete=models.CASCADE, related_name='survey_submissions')
     completed_at = models.DateTimeField(auto_now_add=True)
-    due_date = models.DateField(null=True, blank=True, help_text="The specific due date of the task this submission fulfills.")
 
     class Meta:
         ordering = ['-completed_at']
 
     def __str__(self) -> str:
-        return f"Submission for {self.survey.name} by {self.user.email} on {self.completed_at.strftime('%Y-%m-%d')}"
+        return f"Submission for {self.survey.name} on {self.completed_at.strftime('%Y-%m-%d')}"
 
-    @property
-    def week_number(self) -> int | None:
-        """Calculate the week number of the submission relative to the cohort start date."""
-        if not self.cohort.start_date:
-            return None
-        days_since_start = (self.due_date - self.cohort.start_date).days
-        return (days_since_start // 7) + 1
-
-    def to_dict(self):        
-        answers = {ans.question.key: ans.value for ans in self.answers.all()}
-        
-        data = {
-            'cohort': self.cohort.name,
-            'survey_name': self.survey.name,
-            'survey_purpose': self.survey.purpose,
-            'completed_at': self.completed_at.isoformat(),
-            'answers': answers,
-        }
-        if self.due_date:
-            data['due_date'] = self.due_date.isoformat()
-        if self.week_number:
-            data['week_number'] = self.week_number
-        return data
+    @cached_property
+    def answer_dict(self):
+        """
+        Returns the submission's answers as a dictionary of {question_key: answer_value}.
+        This is most efficient when `answers` and `answers__question` have been prefetched.
+        """
+        return {answer.question.key: answer.value for answer in self.answers.all()}
 
 
 

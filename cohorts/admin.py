@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Cohort, Enrollment
-from cohorts.models import TaskScheduler
+from cohorts.models import TaskScheduler, UserSurveyResponse
 
 
 class TaskSchedulerInline(admin.TabularInline):
@@ -50,3 +50,26 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ['user__email', 'cohort__name']
     date_hierarchy = 'enrolled_at'
     readonly_fields = ['enrolled_at']
+
+
+@admin.register(UserSurveyResponse)
+class UserSurveyResponseAdmin(admin.ModelAdmin):
+    list_display = ('user', 'cohort', 'get_survey_name', 'due_date', 'get_completed_at', 'get_submission_id')
+    list_filter = ('cohort', 'due_date')
+    search_fields = ('user__email', 'cohort__name', 'submission__survey__name')
+    readonly_fields = ('user', 'cohort', 'submission', 'due_date', 'get_completed_at', 'get_submission_id')
+
+    def get_survey_name(self, obj):
+        return obj.submission.survey.name if obj.submission else 'N/A'
+    get_survey_name.short_description = 'Survey'
+
+    def get_completed_at(self, obj):
+        return obj.submission.completed_at if obj.submission else 'N/A'
+    get_completed_at.short_description = 'Completed At'
+
+    def get_submission_id(self, obj):
+        return obj.submission.id if obj.submission else 'N/A'
+    get_submission_id.short_description = 'Submission ID'
+
+    def has_add_permission(self, request):
+        return False
