@@ -5,13 +5,13 @@ from django.db import connection
 from django.contrib import messages
 import json
 from datetime import datetime
-from .forms import UserProfileForm
-from surveys.models import Survey, SurveySubmission
-from cohorts.models import UserSurveyResponse
 from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
 
+from surveys.models import Survey, SurveySubmission
+from cohorts.models import UserSurveyResponse, Enrollment
 from cohorts.surveys import aggregate_checkin_data
-from cohorts.models import Enrollment
+
+from .forms import UserProfileForm
 from .models import UserProfile
 
 class CustomLoginView(LoginView):

@@ -13,7 +13,6 @@ urlpatterns = [
     path('accounts/signup/', CustomSignupView.as_view(), name='account_signup'),
     path('accounts/', include('allauth.urls')),
     path('', include('cohorts.urls')),
-    # path('dashboard/', include('dashboard.urls')),
     path('payments/', include('payments.urls')),
     path('health/', include('accounts.urls')),  # Health check and settings
 ]

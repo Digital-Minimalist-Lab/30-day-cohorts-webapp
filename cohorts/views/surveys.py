@@ -9,9 +9,9 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from surveys.forms import DynamicSurveyForm
-from surveys.models import Survey, SurveySubmission
+from surveys.models import Survey
 
-from cohorts.contexts import SurveyContext
+from cohorts.views.contexts import SurveyContext
 from cohorts.models import Cohort, Enrollment, UserSurveyResponse
 from cohorts.surveys import create_survey_submission
 
