@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'cohorts',
     'surveys',
     'payments',
+    'health_check',
 ]
 
 MIDDLEWARE = [
@@ -215,4 +216,3 @@ LOGGING = {
         'level': 'INFO',
     },
 }
-
