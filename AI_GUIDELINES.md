@@ -1,4 +1,4 @@
-# CLAUDE.md - AI Agent Guidelines
+# AI Agent Guidelines
 
 This document provides comprehensive guidelines for AI agents working on the Digital Minimalist Lab 30-Day Cohort Platform. Following these principles ensures code quality, data privacy, security, and alignment with the project's philosophy.
 
@@ -13,6 +13,7 @@ This document provides comprehensive guidelines for AI agents working on the Dig
 - [User Experience Guidelines](#user-experience-guidelines)
 - [Testing & Quality Assurance](#testing--quality-assurance)
 - [Common Patterns](#common-patterns)
+- [Recommended Project Structure](#recommended-project-structure)
 - [Anti-Patterns to Avoid](#anti-patterns-to-avoid)
 
 ---
@@ -385,55 +386,6 @@ def helper(user: AbstractUser, obj: Model) -> Optional[Model]:
 - Use `forms.ModelForm` (without generic syntax for compatibility)
 - Run `pyright` to verify types
 
-**Common patterns:**
-
-```python
-# Views
-from django.http import HttpRequest, HttpResponse
-
-@login_required
-def my_view(request: HttpRequest, id: int) -> HttpResponse:
-    pass
-
-# Forms
-from typing import Any, Dict, Optional
-
-class MyForm(forms.ModelForm):
-    class Meta:
-        model = MyModel
-        fields = ['field1', 'field2']
-    
-    def clean(self) -> Optional[Dict[str, Any]]:
-        return super().clean()
-
-# Models
-class MyModel(models.Model):
-    def __str__(self) -> str:
-        return self.name
-    
-    def my_method(self) -> bool:
-        return True
-
-# Management Commands
-from typing import Any
-
-class Command(BaseCommand):
-    def handle(self, *args: Any, **options: Any) -> None:
-        pass
-
-# Signals
-from typing import Any
-
-@receiver(post_save, sender=User)
-def my_signal(
-    sender: type[AbstractUser],
-    instance: AbstractUser,
-    created: bool,
-    **kwargs: Any
-) -> None:
-    pass
-```
-
 ---
 
 ## Django Best Practices
@@ -679,22 +631,6 @@ updated_at = models.DateTimeField(auto_now=True)
 - Minimal animations (if any)
 - No popups or modals (unless critical)
 
-### Tailwind CSS Usage
-
-```html
-<!-- ✅ Good - clean, minimal styling -->
-<div class="max-w-2xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-semibold mb-4">Settings</h1>
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Save Changes
-        </button>
-    </form>
-</div>
-```
-
 ### Messaging
 
 **Use Django messages framework:**
@@ -737,63 +673,6 @@ messages.warning(request, 'Your session is about to expire.')
 
 ## Testing & Quality Assurance
 
-### Writing Tests
-
-**Test structure (when implemented):**
-
-```python
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from .models import DailyCheckin
-from cohorts.models import Cohort, Enrollment
-
-User = get_user_model()
-
-class DailyCheckinTestCase(TestCase):
-    def setUp(self):
-        """Set up test fixtures."""
-        self.user = User.objects.create_user(
-            email='test@example.com',
-            password='testpass123'
-        )
-        self.cohort = Cohort.objects.create(
-            name='Test Cohort',
-            start_date='2024-01-01',
-            end_date='2024-01-30'
-        )
-        Enrollment.objects.create(user=self.user, cohort=self.cohort)
-    
-    def test_user_can_create_daily_checkin(self):
-        """User can create one check-in per day."""
-        checkin = DailyCheckin.objects.create(
-            user=self.user,
-            cohort=self.cohort,
-            date='2024-01-01',
-            mood_1to5=4,
-            # ... other fields
-        )
-        self.assertEqual(checkin.user, self.user)
-    
-    def test_user_cannot_create_duplicate_checkin(self):
-        """User cannot create multiple check-ins for same day."""
-        # First check-in succeeds
-        DailyCheckin.objects.create(
-            user=self.user,
-            cohort=self.cohort,
-            date='2024-01-01',
-            # ... fields
-        )
-        
-        # Second check-in fails
-        with self.assertRaises(IntegrityError):
-            DailyCheckin.objects.create(
-                user=self.user,
-                cohort=self.cohort,
-                date='2024-01-01',
-                # ... fields
-            )
-```
-
 ### What to Test
 
 **Priority testing areas:**
@@ -818,40 +697,65 @@ class DailyCheckinTestCase(TestCase):
 
 ## Common Patterns
 
-### Pattern: Verify Enrollment
+### Pattern: Centralized Utility Functions
 
+To avoid code duplication (DRY principle), place shared helper functions in a central `utils.py` file within a relevant app (e.g., `cohorts/utils.py`).
+
+**`cohorts/utils.py`:**
 ```python
-def verify_enrollment(user, cohort):
-    """
-    Verify user is enrolled in cohort.
-    
-    Returns:
-        Enrollment or None
-    """
-    return Enrollment.objects.filter(
-        user=user,
-        cohort=cohort
-    ).first()
+import pytz
+from django.utils import timezone
+from accounts.models import UserProfile
 
-# Usage in views
-enrollment = verify_enrollment(request.user, cohort)
-if not enrollment:
-    messages.error(request, 'You must be enrolled in this cohort.')
-    return redirect('cohorts:cohort_list')
-```
-
-### Pattern: Get User's Timezone Date
-
-```python
 def get_user_today(user):
-    """Get today's date in user's timezone."""
-    from accounts.models import UserProfile
+    """
+    Get today's date in the user's timezone.
+    
+    Handles creating a UserProfile if it doesn't exist.
+    """
     profile, _ = UserProfile.objects.get_or_create(user=user)
     user_tz = pytz.timezone(profile.timezone)
     return timezone.now().astimezone(user_tz).date()
 ```
 
-### Pattern: Prevent Duplicate Submissions
+### Pattern: Enrollment Verification Decorator
+
+Instead of repeating enrollment checks in every view, use a decorator. This is cleaner and less error-prone.
+
+**`cohorts/decorators.py`:**
+```python
+from functools import wraps
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
+from .models import Cohort, Enrollment
+
+def user_is_enrolled(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, cohort_id, *args, **kwargs):
+        cohort = get_object_or_404(Cohort, id=cohort_id)
+        is_enrolled = Enrollment.objects.filter(user=request.user, cohort=cohort).exists()
+        
+        if not is_enrolled:
+            messages.error(request, "You are not enrolled in this cohort.")
+            return redirect('cohorts:cohort_list')
+            
+        return view_func(request, cohort_id, *args, **kwargs)
+    return _wrapped_view
+```
+
+**Usage in `checkins/views.py`:**
+```python
+from cohorts.decorators import user_is_enrolled
+
+@login_required
+@user_is_enrolled
+def daily_checkin(request, cohort_id):
+    # No need to check enrollment here, the decorator handles it.
+    cohort = get_object_or_404(Cohort, id=cohort_id)
+    # ... view logic ...
+```
+
+### Pattern: Prevent Duplicate Daily Submissions
 
 ```python
 # Check if already completed
@@ -879,6 +783,23 @@ if request.method == 'POST':
         instance.save()
         messages.success(request, 'Success!')
         return redirect('app:view_name')
+```
+
+---
+
+## Recommended Project Structure
+
+For clarity and maintainability, follow this structure for shared code:
+
+```
+core/
+├── utils.py         # Global, project-wide utilities
+└── management/
+
+cohorts/
+├── utils.py         # Utilities specific to cohorts/enrollment
+└── decorators.py    # Authorization decorators like @user_is_enrolled
+
 ```
 
 ---
@@ -991,4 +912,3 @@ When in doubt:
 5. Choose the simpler, clearer solution
 
 **Remember**: This platform exists to help users reclaim their attention and autonomy. Every line of code should serve that mission.
-
