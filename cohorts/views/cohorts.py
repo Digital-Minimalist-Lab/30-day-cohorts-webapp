@@ -3,14 +3,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AbstractUser
 from django.http import HttpRequest, HttpResponse
-from django.utils import timezone 
-from django.db.models import Q, Count
-from .models import Cohort, Enrollment
-from .utils import get_user_today
-from cohorts.services import get_user_tasks
 from allauth.account.forms import LoginForm, SignupForm
-import logging
+from django.conf import settings
+from django.urls import reverse
 
+from ..models import Cohort, Enrollment
+from ..forms import PaymentAmountForm
+
+import logging
 logger = logging.getLogger(__name__)
 
 def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment]:
@@ -29,57 +29,6 @@ def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment
     """
     return Enrollment.objects.filter(user=user, cohort=cohort).first()
 
-
-# This is a temporary landing page which exists until the rest of the application is ready.
-# That should be _fine_. There is now way this will go wrong.
-def landing(request: HttpRequest) -> HttpResponse:
-    context = None
-    return render(request, 'landing/index.html', context)
-
-
-def homepage(request: HttpRequest) -> HttpResponse:
-    """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
-    if not request.user.is_authenticated:
-        # Get next active cohort for enrollment landing
-        next_cohort = Cohort.objects.get_upcoming().first()
-        
-        context = {
-            'cohort': next_cohort,
-        }
-        if next_cohort:
-            context['seats_available'] = next_cohort.seats_available()
-        return render(request, 'cohorts/landing.html', context)
-    
-    # Get user's most recent enrollment (assuming one active cohort at a time)
-    # Also fetch the total number of enrollments for the cohort in the same query.
-    enrollment = Enrollment.objects.filter(
-        user=request.user
-    ).select_related('cohort').annotate(
-        enrollment_count=Count('cohort__enrollments')
-    ).order_by('-enrolled_at').first()
-    
-    
-    if not enrollment or enrollment.status == 'pending':
-        # No enrollment, show signup prompt
-        return render(request, 'cohorts/homepage.html', {
-            'no_enrollment': True,
-            'available_cohort': Cohort.objects.get_upcoming().first(),
-        })
-    
-    cohort = enrollment.cohort
-    today = get_user_today(request.user)
-    tasks, completed_tasks = get_user_tasks(request.user, cohort, today)
-    
-    context = {
-        'enrollment': enrollment,
-        'cohort': cohort,
-        'enrollment_count': enrollment.enrollment_count, # Use the annotated value
-        'tasks': tasks,
-        'completed_tasks': completed_tasks,
-        'today': today,
-    }
-    
-    return render(request, 'cohorts/homepage.html', context)
 
 
 @login_required
@@ -122,7 +71,6 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
         return redirect('cohorts:homepage')
     
     # If payment is enabled, redirect to payment
-    from django.conf import settings
     if settings.STRIPE_ENABLED and cohort.minimum_price_cents > 0:
         return redirect('payments:create_checkout', cohort_id=cohort.id)
     
@@ -156,8 +104,6 @@ def join_start(request: HttpRequest) -> HttpResponse:
 @login_required
 def join_checkout(request: HttpRequest) -> HttpResponse:
     """Step 2: Payment checkout (or skip if free cohort)."""
-    from django.conf import settings
-    from .forms import PaymentAmountForm
     
     # Find the next upcoming or recently started cohort
     cohort = Cohort.objects.get_joinable().first() or Cohort.objects.get_upcoming().first()
@@ -207,7 +153,6 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
                 defaults={'status': 'pending'}
             )
             # Redirect to Stripe checkout
-            from django.urls import reverse
             return redirect(
                 reverse('payments:create_checkout', kwargs={'cohort_id': cohort.id}) + 
                 f'?amount={amount_cents}'

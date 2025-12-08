@@ -11,9 +11,9 @@ from django.views.generic.list import ListView
 from surveys.forms import DynamicSurveyForm
 from surveys.models import Survey, SurveySubmission
 
-from .contexts import SurveyContext
-from .models import Cohort, Enrollment, UserSurveyResponse
-from .services import create_survey_submission
+from cohorts.contexts import SurveyContext
+from cohorts.models import Cohort, Enrollment, UserSurveyResponse
+from cohorts.surveys import create_survey_submission
 
 import logging
 logger = logging.getLogger(__name__)

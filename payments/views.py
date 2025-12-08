@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpRequest
 from django.conf import settings
@@ -126,8 +128,6 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
                 amount_cents = session.get('amount_total', 0)
             
             try:
-                from django.contrib.auth import get_user_model
-                from django.utils import timezone
                 User = get_user_model()
                 user = User.objects.get(id=user_id)
                 cohort = Cohort.objects.get(id=cohort_id)

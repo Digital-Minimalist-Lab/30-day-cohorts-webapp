@@ -2,6 +2,7 @@ import pytz
 from django.contrib.auth.models import AbstractUser
 from datetime import date
 from django.utils import timezone
+from accounts.models import UserProfile
 
 def get_user_today(user: AbstractUser) -> date:
     """
@@ -13,7 +14,6 @@ def get_user_today(user: AbstractUser) -> date:
     Returns:
         datetime.date: Today's date in user's timezone
     """
-    from accounts.models import UserProfile
     
     # Get or create profile (defensive programming)
     profile, _ = UserProfile.objects.get_or_create(user=user)

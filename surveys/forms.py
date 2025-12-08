@@ -9,6 +9,8 @@ logger = logging.getLogger(__name__)
 class DynamicSurveyForm(forms.Form):
     """
     A form that is dynamically built from a Survey's Questions.
+
+    Intended to be used as the 'form_class' in a FormView. 
     """
     def __init__(self, *args, survey, **kwargs):
         self.survey = survey

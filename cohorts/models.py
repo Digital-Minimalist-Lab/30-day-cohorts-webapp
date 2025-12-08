@@ -81,7 +81,6 @@ class Cohort(models.Model):
 
     def can_join(self) -> bool:
         """Check if users can still join (within 7 days of start and seats available)."""
-        from django.utils import timezone
         today = timezone.now().date()
         days_since_start = (today - self.start_date).days
         return days_since_start <= 7 and self.is_active and not self.is_full()

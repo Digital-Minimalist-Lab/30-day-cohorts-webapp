@@ -4,7 +4,6 @@
         {
             "name": "Python: Attach to Django (Docker)",
             "type": "debugpy",
-            "preLaunchTask": "docker-compose-up",
             "request": "attach",
             "connect": {
                 "host": "localhost",

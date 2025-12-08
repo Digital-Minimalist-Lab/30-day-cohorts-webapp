@@ -9,8 +9,10 @@ from .forms import UserProfileForm
 from surveys.models import Survey, SurveySubmission
 from cohorts.models import UserSurveyResponse
 from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
-from cohorts.services import aggregate_checkin_data
 
+from cohorts.surveys import aggregate_checkin_data
+from cohorts.models import Enrollment
+from .models import UserProfile
 
 class CustomLoginView(LoginView):
     def get_context_data(self, **kwargs):
@@ -56,8 +58,6 @@ def health_check(request: HttpRequest) -> JsonResponse:
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
     """User profile page with settings and data view."""
-    from .models import UserProfile
-    from cohorts.models import Enrollment
     
     # Get or create profile (in case signal didn't fire)
     profile, created = UserProfile.objects.get_or_create(user=request.user)
@@ -102,10 +102,7 @@ def profile_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def export_user_data(request: HttpRequest) -> HttpResponse:
-    """Export all user data (GDPR compliance)."""
-    from .models import UserProfile
-    from cohorts.models import Enrollment
-    
+    """Export all user data (GDPR compliance)."""    
     user = request.user
     
     # Get or create profile

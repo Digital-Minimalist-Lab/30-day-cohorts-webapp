@@ -4,6 +4,7 @@ Django settings for digital minimalist cohorts project.
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables
 load_dotenv()
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'accounts',
     'cohorts',
     'surveys',
-    'dashboard',
     'payments',
 ]
 
@@ -91,7 +91,6 @@ if os.getenv('LANDING_ONLY', '') == '':
 
     # Use DATABASE_URL if provided (for production)
     if os.getenv('DATABASE_URL'):
-        import dj_database_url
         DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
 
 # Password validation
