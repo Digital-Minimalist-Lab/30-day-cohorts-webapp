@@ -1,6 +1,6 @@
 # AI Agent Guidelines
 
-This document provides comprehensive guidelines for AI agents working on the Digital Minimalist Lab 30-Day Cohort Platform. Following these principles ensures code quality, data privacy, security, and alignment with the project's philosophy.
+This document provides the essential guidelines for AI agents contributing to this project. Adherence to these principles is mandatory to ensure code quality, data privacy, security, and alignment with our project philosophy.
 
 ## Table of Contents
 
@@ -673,25 +673,65 @@ messages.warning(request, 'Your session is about to expire.')
 
 ## Testing & Quality Assurance
 
+### Writing Tests is Mandatory
+
+**All new functionality, bug fixes, or changes must include tests.** This is not optional. Contributions without tests will be rejected.
+
 ### What to Test
 
-**Priority testing areas:**
-- Authentication and authorization
-- Data privacy (cascade deletes, exports)
-- Input validation
-- Business logic
-- Edge cases
+Focus on testing the most critical paths:
+- **Authentication & Authorization**: Can a user access data they shouldn't?
+- **Data Privacy**: Does deleting a user cascade correctly? Can a user export their data?
+- **Business Logic**: Does the feature work as expected under normal conditions?
+- **Input Validation**: Does the application handle invalid or malicious input gracefully?
+- **Edge Cases**: What happens with empty inputs, zero values, or unexpected state?
 
-### Code Quality
+### Test Structure Example
 
-**Before committing:**
-- [ ] No hardcoded secrets or credentials
-- [ ] No personal data in logs
-- [ ] All views have `@login_required` where needed
-- [ ] All user input is validated
-- [ ] Foreign keys use proper `on_delete`
-- [ ] Functions follow SRP
-- [ ] Code is readable and maintainable
+Use Django's `TestCase` to write clear, isolated tests.
+
+```python
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from django.db import IntegrityError
+from .models import DailyCheckin
+from cohorts.models import Cohort, Enrollment
+
+User = get_user_model()
+
+class DailyCheckinTestCase(TestCase):
+    def setUp(self):
+        """Set up test fixtures."""
+        self.user = User.objects.create_user(
+            email='test@example.com',
+            password='testpass123'
+        )
+        self.cohort = Cohort.objects.create(
+            name='Test Cohort',
+            start_date='2024-01-01',
+            end_date='2024-01-30'
+        )
+        Enrollment.objects.create(user=self.user, cohort=self.cohort)
+
+    def test_user_can_create_daily_checkin(self):
+        """Ensures a user can create a valid daily check-in."""
+        checkin_count = DailyCheckin.objects.count()
+        response = self.client.post(
+            reverse('checkins:daily_checkin', args=[self.cohort.id]),
+            {'mood_1to5': 4, 'reflection_text': 'A good day.'}
+        )
+        self.assertEqual(DailyCheckin.objects.count(), checkin_count + 1)
+        self.assertRedirects(response, expected_url_or_pattern)
+
+    def test_user_cannot_create_duplicate_checkin(self):
+        """Ensures a user cannot submit more than one check-in per day."""
+        # Create the first check-in successfully
+        DailyCheckin.objects.create(user=self.user, cohort=self.cohort, date='2024-01-01', mood_1to5=4)
+        
+        # Attempting to create a second one for the same day should fail at the database level
+        with self.assertRaises(IntegrityError):
+            DailyCheckin.objects.create(user=self.user, cohort=self.cohort, date='2024-01-01', mood_1to5=3)
+```
 
 ---
 
@@ -884,21 +924,6 @@ class UserProfile(models.Model):
     total_points = models.IntegerField(default=0)
     badges = models.JSONField(default=list)
 ```
-
----
-
-## Summary Checklist
-
-When writing code, ensure:
-
-- [ ] **Privacy**: User data can be exported and hard-deleted
-- [ ] **Security**: Views use `@login_required` and verify authorization
-- [ ] **Validation**: All input validated via Django Forms
-- [ ] **Architecture**: Functions follow SRP, code is DRY
-- [ ] **Database**: Foreign keys use proper `on_delete` behavior
-- [ ] **UX**: Interface is calm, minimal, and accessible
-- [ ] **Philosophy**: No gamification or attention manipulation
-- [ ] **Quality**: Code is readable, maintainable, and tested
 
 ---
 

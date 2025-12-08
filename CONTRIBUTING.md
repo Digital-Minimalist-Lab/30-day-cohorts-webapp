@@ -70,6 +70,7 @@ All contributions should align with these principles.
    - Clear description of changes
    - Reference to related issues
    - Screenshots if UI changes
+   - Confirmation that tests have been added and are passing
 
 ## Development Setup
 
@@ -173,6 +174,7 @@ Use clear, descriptive commit messages:
 
 When tests are added:
 
+- **All new code must be tested.**
 - Write tests for new features
 - Ensure existing tests pass
 - Aim for meaningful coverage (not 100% for its own sake)
@@ -281,4 +283,3 @@ By contributing, you agree that your contributions will be licensed under the sa
 ---
 
 Thank you for contributing! 🎉
-

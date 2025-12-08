@@ -2,9 +2,10 @@ from datetime import date, timedelta
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+import json
 
 from .models import Cohort, TaskScheduler, UserSurveyResponse
-from .services import (
+from .tasks import (
     _get_once_task_due_dates,
     _get_daily_task_due_dates,
     _get_weekly_task_due_dates,
@@ -215,5 +216,5 @@ class GetUserTasksServiceTests(TestCase):
 
         # The entry survey should still be pending.
         self.assertIn(self.entry_survey, pending_surveys)
-        self.assertEqual(len(pending_tasks), 1)
+        self.assertEqual(len(pending_tasks), 1, f"Found pending tasks: {json.dumps(pending_tasks)}")
         self.assertEqual(pending_tasks[0].scheduler.survey, self.entry_survey)
