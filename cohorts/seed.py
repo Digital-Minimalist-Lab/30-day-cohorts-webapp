@@ -1,5 +1,5 @@
 from django.utils.text import slugify
-
+from surveys.models import Survey, Question
 
 SURVEYS_TO_CREATE = {
     "Entry Survey": {
@@ -50,11 +50,6 @@ def seed_surveys(apps=None, update=False):
     Seeds the database with surveys and questions from SURVEYS_TO_CREATE.
     Can be used in migrations or management commands.
     """
-    if apps:
-        Survey = apps.get_model('surveys', 'Survey')
-        Question = apps.get_model('surveys', 'Question')
-    else:
-        from ..surveys.models import Survey, Question
 
     for survey_name, survey_data in SURVEYS_TO_CREATE.items():
         survey_defaults = {

@@ -17,7 +17,8 @@ dependencies = [
     "stripe>=7.0.0",
     "whitenoise>=6.6.0",
     "gunicorn>=21.2.0",
-    "pytz>=2023.3",
+    "pytz>=2023.3", # timezone support
+    "debugpy>=1.8.0", # for debugging in Docker
 ]
 
 [project.optional-dependencies]
@@ -80,4 +81,3 @@ typeCheckingMode = "basic"
 reportMissingImports = true
 reportMissingTypeStubs = false
 reportPrivateUsage = false
-

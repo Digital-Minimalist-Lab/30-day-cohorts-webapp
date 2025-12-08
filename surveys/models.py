@@ -30,7 +30,7 @@ class Survey(models.Model):
         return self.name
 
     def title(self):
-        return self.title_template if self.title_template is not "" else self.name
+        return self.title_template if self.title_template != "" else self.name
  
 class Question(models.Model):
     """A single question within a survey."""

@@ -90,7 +90,7 @@ Table surveys_question {
   choices json [note: "JSON object for choices if question_type is 'radio'."]
 }
 
-Table surveys_surveysubmission {
+Table surveys_surveyresponse {
   id integer [pk, increment]
   survey_id integer [not null, ref: > surveys_survey.id]
   user_id integer [not null, ref: > auth_user.id]

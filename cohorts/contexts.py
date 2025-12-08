@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Dict
-from .models import Survey
+from surveys.models import Survey
 from cohorts.models import Cohort
 
 @dataclass
