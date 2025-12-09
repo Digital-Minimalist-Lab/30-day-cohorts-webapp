@@ -114,18 +114,3 @@ def delete_account(request: HttpRequest) -> HttpResponse:
             messages.error(request, 'Please type DELETE to confirm account deletion.')
     
     return render(request, 'accounts/delete_account.html')
-
-
-def privacy_policy(request: HttpRequest) -> HttpResponse:
-    """Privacy policy page."""
-    return render(request, 'accounts/privacy.html')
-
-
-def protocol_view(request: HttpRequest) -> HttpResponse:
-    """30-day digital declutter protocol page."""
-    return render(request, 'accounts/protocol.html')
-
-
-def resources_view(request: HttpRequest) -> HttpResponse:
-    """Resources page."""
-    return render(request, 'accounts/resources.html')

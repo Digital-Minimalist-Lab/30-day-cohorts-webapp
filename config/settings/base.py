@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     
     # Local apps
     'config',  # For management commands
+    'core',
     'accounts',
     'cohorts',
     'surveys',

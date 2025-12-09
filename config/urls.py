@@ -10,6 +10,7 @@ from health_check import urls as health_check_urls
 from accounts import urls as accounts_urls
 from allauth import urls as allauth_urls
 from payments import urls as payments_urls
+from core import urls as core_urls
 from cohorts import urls as cohorts_urls
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('payments/', include(payments_urls)),
 
     path('', include(cohorts_urls)),
+    path('', include(core_urls)),
 ]
 
 if settings.DEBUG:
