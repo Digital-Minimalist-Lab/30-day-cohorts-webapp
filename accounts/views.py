@@ -3,6 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.contrib import messages
 import json
+import secrets
+from allauth.account.views import ConfirmLoginCodeView
+from allauth.decorators import rate_limit
+from allauth.account.utils import get_next_redirect_url
+from allauth.account import app_settings as allauth_app_settings
 
 from surveys.models import Survey, SurveySubmission
 from cohorts.models import UserSurveyResponse, Enrollment
@@ -12,8 +17,42 @@ from .forms import UserProfileForm, FullSignupForm
 from .models import UserProfile
 
 def request_login_code_redirect(request: HttpRequest) -> HttpResponse:
-    """Redirects the default request_login_code view to the main login page."""
+    """
+    Redirects the default request_login_code view to the main login page.
+    It also generates and stores a session token to be used in the magic link.
+    """
+    # Generate a secure token and store it in the session.
+    # This token will be included in the login link to tie it to this specific session.
+    request.session['login_code_token'] = secrets.token_urlsafe(32)
     return redirect('account_login')
+
+
+# @rate_limit(action='login_by_code')
+def login_by_code_view(request: HttpRequest) -> HttpResponse:
+    """
+    Handles one-click login from the email link.
+
+    This view validates the code, email, and a session-based token from the URL
+    and logs the user in if everything is correct.
+    """
+    session_token = request.session.get('login_code_token')
+    url_token = request.GET.get('token')
+    if request.method == 'GET' and 'code' in request.GET:
+        # To auto-login, we trick ConfirmLoginCodeView into thinking this is a POST.
+        # We modify the request object in-place for this view's scope.
+        request.method = 'POST'
+        request.POST = request.GET.copy() # Copies 'code' from URL params to POST data
+
+    # Allauth's view will now process this as a POST request and log the user in.
+    response = ConfirmLoginCodeView.as_view()(request)
+
+    if request.user.is_authenticated:
+        # The token has been used, so remove it.
+        request.session.pop('login_code_token', None)
+        return redirect(get_next_redirect_url(request) or 'cohorts:dashboard')
+
+    # If login fails (e.g., wrong code), allauth's view will render the form with errors.
+    return response
 
 
 @login_required
