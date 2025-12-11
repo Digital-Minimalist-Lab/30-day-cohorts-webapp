@@ -1,6 +1,67 @@
+
+import pytz
+
 from django import forms
+from allauth.account.forms import SignupForm
 from .models import UserProfile
 
+class FullSignupForm(SignupForm):
+    """Extended signup form with timezone and email preferences."""
+    timezone = forms.ChoiceField(
+        choices=[(tz, tz) for tz in pytz.common_timezones],
+        initial='America/New_York',
+        required=True,
+        help_text="Your timezone for accurate daily check-in dates"
+    )
+    email_daily_reminder = forms.BooleanField(
+        required=False,
+        initial=False,
+        label="Send me daily check-in reminders",
+        help_text="Optional email reminders for daily reflections"
+    )
+    email_weekly_reminder = forms.BooleanField(
+        required=False,
+        initial=False,
+        label="Send me weekly reflection reminders",
+        help_text="Optional email reminders for weekly intentions"
+    )
+
+    field_order = [
+        'email',
+        'password1',
+        'password2',
+        'timezone',
+        'email_daily_reminder',
+        'email_weekly_reminder'
+    ]
+
+    def get_email_preference_fields(self):
+        """Returns only the email preference fields for easier rendering."""
+        return [
+            self['email_daily_reminder'],
+            self['email_weekly_reminder']
+        ]
+
+    @property
+    def email_preference_field_names(self):
+        """Returns the names of the email preference fields for easier filtering in templates."""
+        return [field.name for field in self.get_email_preference_fields()]
+
+    def save(self, request):
+        """Save the user and create associated UserProfile."""
+        user = super().save(request)
+        
+        # Create or update UserProfile with timezone and email preferences
+        UserProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                'timezone': self.cleaned_data['timezone'],
+                'email_daily_reminder': self.cleaned_data['email_daily_reminder'],
+                'email_weekly_reminder': self.cleaned_data['email_weekly_reminder'],
+            }
+        )
+        
+        return user
 
 class UserProfileForm(forms.ModelForm):
     """Form for updating user profile settings."""
@@ -12,4 +73,3 @@ class UserProfileForm(forms.ModelForm):
             'email_daily_reminder': forms.CheckboxInput(),
             'email_weekly_reminder': forms.CheckboxInput(),
         }
-

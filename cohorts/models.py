@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
+from django.db.models import Q
 from django.utils import timezone
 from typing import Optional
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -11,24 +12,31 @@ from surveys.models import SurveySubmission, Survey
 User = get_user_model()
 
 class CohortManager(models.Manager):
-    def get_active(self):
-        """Returns active cohorts that have started but not ended."""
-        today = timezone.now().date()
-        return self.filter(is_active=True, start_date__lte=today, end_date__gte=today)
-
-    def get_upcoming(self):
-        """Returns active cohorts that have not started yet."""
-        today = timezone.now().date()
-        return self.filter(is_active=True, start_date__gt=today).order_by('start_date')
-
     def get_joinable(self):
         """
-        Returns active cohorts that started within the last 7 days.
+        Returns active, non-full cohorts that are within their joining period.
         This mirrors the logic in the Cohort.can_join() method.
         """
         today = timezone.now().date()
-        one_week_ago = today - timezone.timedelta(days=7)
-        return self.filter(is_active=True, start_date__gte=one_week_ago, start_date__lte=today).order_by('-start_date')
+
+        # A cohort is joinable if it's within an explicit enrollment period...
+        within_enrollment_period = Q(
+            enrollment_start_date__lte=today,
+            enrollment_end_date__gte=today
+        )
+        # ...or if no specific enrollment period is defined.
+        no_enrollment_period = Q(
+            enrollment_start_date__isnull=True,
+            enrollment_end_date__isnull=True
+        )
+
+        joinable_cohorts = self.filter(
+            Q(within_enrollment_period | no_enrollment_period),
+            is_active=True,
+        )
+
+        # Exclude full cohorts in Python, as this is simpler than a complex subquery.
+        return [c for c in joinable_cohorts if not c.is_full()]
 
 
 class Cohort(models.Model):
@@ -55,6 +63,12 @@ class Cohort(models.Model):
         default=True,
         help_text="Whether this cohort is currently accepting enrollments"
     )
+    enrollment_start_date = models.DateField(
+        null=True, blank=True, help_text="The first day users can join the cohort."
+    )
+    enrollment_end_date = models.DateField(
+        null=True, blank=True, help_text="The last day users can join the cohort."
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -78,13 +92,6 @@ class Cohort(models.Model):
         if self.max_seats is None:
             return False
         return self.enrollments.count() >= self.max_seats
-
-    def can_join(self) -> bool:
-        """Check if users can still join (within 7 days of start and seats available)."""
-        today = timezone.now().date()
-        days_since_start = (today - self.start_date).days
-        return days_since_start <= 7 and self.is_active and not self.is_full()
-
 
 class Enrollment(models.Model):
     """User enrollment in a cohort."""

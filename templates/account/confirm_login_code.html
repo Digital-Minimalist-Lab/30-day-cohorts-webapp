@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Enter Login Code{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin-inline: auto;">
+    <header style="text-align: center; margin-bottom: 2rem;">
+        <h1>Enter Your Login Code</h1>
+        <p style="color: var(--pico-muted-color);">
+            A login code was sent to your email address.
+        </p>
+    </header>
+
+    <form class="login" method="post" action="{% url 'account_confirm_login_code' %}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <article>
+                {{ form.non_field_errors }}
+            </article>
+        {% endif %}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                <input type="{{ field.field.widget.input_type }}"
+                       name="{{ field.name }}"
+                       id="{{ field.id_for_label }}"
+                       value="{{ field.value|default:'' }}"
+                       {% if field.field.required %}required{% endif %}
+                       autofocus>
+                {% for error in field.errors %}<small style="color: var(--pico-form-element-invalid-border-color);">{{ error }}</small>{% endfor %}
+            </label>
+        {% endfor %}
+
+        {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />{% endif %}
+
+        <button type="submit">Sign In</button>
+
+        {% if cancel_url %}
+            <a href="{{ cancel_url }}" role="button" class="secondary">Cancel</a>
+        {% else %}
+            <button type="submit" form="logout-from-stage" class="btn-link">Cancel</button>
+        {% endif %}
+    </form>
+
+    {% if not cancel_url %}
+        <form id="logout-from-stage"
+              method="post"
+              action="{% url 'account_logout' %}">
+            <input type="hidden" name="next" value="{% url 'account_login' %}">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+
+</div>
+{% endblock %}

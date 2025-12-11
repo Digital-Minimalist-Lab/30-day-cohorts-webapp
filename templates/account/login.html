@@ -1,10 +1,48 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Login - Digital Minimalist Lab{% endblock %}
+{% block title %}Log In{% endblock %}
 
 {% block content %}
+<div style="max-width: 500px; margin-inline: auto;">
+    <header style="text-align: center; margin-bottom: 2rem;">
+        <h1>Log In</h1>
+        <p style="color: var(--pico-muted-color);">
+            Need an account? <a href="{{ signup_url }}">Create an Account</a>
+        </p>
+    </header>
 
-{% include 'account/_auth_forms.html' with login_form=login_form signup_form=signup_form %}
+    <form class="login" method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            <article>
+                {{ form.non_field_errors }}
+            </article>
+        {% endif %}
+
+        {% for field in form %}
+            {% if field.name == 'remember' %}
+                <label for="{{ field.id_for_label }}">
+                    <input type="checkbox" id="{{ field.id_for_label }}" name="{{ field.name }}" role="switch" {% if field.value %}checked{% endif %}>
+                    {{ field.label }}
+                </label>
+            {% else %}
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    <input type="{{ field.field.widget.input_type }}"
+                           name="{{ field.name }}"
+                           id="{{ field.id_for_label }}"
+                           value="{{ field.value|default:'' }}"
+                           {% if field.field.required %}required{% endif %}
+                           {% if field.name == 'login' %}autofocus{% endif %}>
+                    {% for error in field.errors %}<small style="color: var(--pico-form-element-invalid-border-color);">{{ error }}</small>{% endfor %}
+                </label>
+            {% endif %}
+        {% endfor %}
+
+        {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />{% endif %}
+
+        <button type="submit">Log In</button>
+    </form>
+</div>
 {% endblock %}
-

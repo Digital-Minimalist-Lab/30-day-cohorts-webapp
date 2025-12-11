@@ -6,11 +6,11 @@
     <!-- Header -->
     <nav class="container">
         <ul>
-            <li><strong><a href="{% url 'cohorts:homepage' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
+            <li><strong><a href="{% url 'cohorts:dashboard' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
         </ul>
         <ul>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'cohorts:homepage' %}">Home</a></li>
+                <li><a href="{% url 'cohorts:dashboard' %}">Home</a></li>
                 <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
                 <li>
                     <form method="post" action="{% url 'account_logout' %}" style="display: inline;">

@@ -948,3 +948,16 @@ sl-alert {
 .story-link a:hover {
 	text-decoration: underline;
 }
+
+/* A reusable class for link-styled buttons */
+.btn-link {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  color: var(--pico-primary);
+  text-decoration: underline;
+  font-size: inherit;
+  cursor: pointer;
+}
+

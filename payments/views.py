@@ -19,7 +19,7 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
     """Create Stripe checkout session for cohort payment."""
     if not settings.STRIPE_ENABLED:
         messages.error(request, 'Payments are not enabled.')
-        return redirect('cohorts:cohort_list')
+        return redirect('cohorts:dashboard')
     
     cohort = get_object_or_404(Cohort, id=cohort_id)
     
@@ -27,7 +27,7 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
     enrollment = Enrollment.objects.filter(user=request.user, cohort=cohort).first()
     if enrollment and enrollment.status in ['paid', 'free']:
         messages.info(request, 'You have already enrolled in this cohort.')
-        return redirect('cohorts:homepage')
+        return redirect('cohorts:dashboard')
     
     # Get custom amount from query parameter (in cents)
     amount_cents = request.GET.get('amount')

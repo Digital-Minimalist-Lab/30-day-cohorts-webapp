@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Today's Tasks - Digital Minimalist Lab{% endblock %}
+
+{% block content %}
+
+<!-- Enrolled state -->
+<header>
+    <h1>{{ cohort.name }}</h1>
+</header>
+
+<!-- Cohort Information -->
+<section>
+    <p><small>{{ cohort.start_date|date:"F d, Y" }} – {{ cohort.end_date|date:"F d, Y" }}</small></p>
+    <p><small>There are {{ enrollment_count }} people rethinking their digital habits with you!</small></p>
+</section>
+
+<!-- Tasks Section -->
+<section>
+    <h2>Today's Tasks</h2>
+    
+    {% if tasks %}
+        <!-- Vertical list of tasks -->
+        {% for task in tasks %}
+        <article style="margin-bottom: 1rem;">
+            <h3><a href="{{ task.url }}">{{ task.title }}</a></h3>
+            <p>{{ task.description|safe }}</p>
+        </article>
+        {% endfor %}
+    {% else %}
+        <!-- No tasks state -->
+        <article>
+            <p>There's nothing to do but seize the day!</p>
+        </article>
+    {% endif %}
+</section>
+
+<!-- Completed Tasks -->
+{% if completed_tasks %}
+<details>
+    <summary>Completed Tasks ({{ completed_tasks|length }})</summary>
+    <ul>
+        {% for task in completed_tasks %}
+        <li>
+            <strong>{{ task.title }}</strong>
+            <small>{{ task.completed_at|date:"M d, Y" }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+</details>
+{% endif %}
+
+<!-- Links -->
+<p>
+    <small>
+        <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='daily-check-in' %}">View Past Check-Ins</a> •
+        <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='weekly-reflection' %}">View Past Reflections</a>
+    </small>
+</p>
+
+
+{% endblock %}

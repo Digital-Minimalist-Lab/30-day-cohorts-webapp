@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.db.models import Count
 from cohorts.tasks import get_user_tasks
@@ -6,41 +6,33 @@ from cohorts.tasks import get_user_tasks
 from ..models import Cohort, Enrollment
 from ..utils import get_user_today
 
-# This is a temporary landing page which exists until the rest of the application is ready.
-# That should be _fine_. There is now way this will go wrong.
-def landing(request: HttpRequest) -> HttpResponse:
-    context = None
-    return render(request, 'landing/index.html', context)
+import logging
+logger = logging.getLogger(__name__)
 
-
-def homepage(request: HttpRequest) -> HttpResponse:
+def dashboard(request: HttpRequest) -> HttpResponse:
     """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
-    if not request.user.is_authenticated:
-        # Get next active cohort for enrollment landing
-        next_cohort = Cohort.objects.get_upcoming().first()
+    # Get next active cohort for enrollment landing
+    next_cohort = next(iter(Cohort.objects.get_joinable()), None)
+
+    # Get user's most recent enrollment (assuming one active cohort at a time)
+    # Also fetch the total number of enrollments for the cohort in the same query.
+    enrollment = None
+    logger.info("User: %s", request.user if request.user else "None")
+    if not request.user.is_anonymous:
+        enrollment = Enrollment.objects.filter(
+            user=request.user
+        ).select_related('cohort').annotate(
+            enrollment_count=Count('cohort__enrollments')
+        ).order_by('-enrolled_at').first()
         
+
+    if not request.user.is_authenticated or not enrollment or enrollment.status == 'pending':
         context = {
             'cohort': next_cohort,
         }
         if next_cohort:
             context['seats_available'] = next_cohort.seats_available()
-        return render(request, 'cohorts/landing.html', context)
-    
-    # Get user's most recent enrollment (assuming one active cohort at a time)
-    # Also fetch the total number of enrollments for the cohort in the same query.
-    enrollment = Enrollment.objects.filter(
-        user=request.user
-    ).select_related('cohort').annotate(
-        enrollment_count=Count('cohort__enrollments')
-    ).order_by('-enrolled_at').first()
-    
-    
-    if not enrollment or enrollment.status == 'pending':
-        # No enrollment, show signup prompt
-        return render(request, 'cohorts/homepage.html', {
-            'no_enrollment': True,
-            'available_cohort': Cohort.objects.get_upcoming().first(),
-        })
+        return render(request, 'cohorts/homepage.html', context)
     
     cohort = enrollment.cohort
     today = get_user_today(request.user)
@@ -55,5 +47,5 @@ def homepage(request: HttpRequest) -> HttpResponse:
         'today': today,
     }
     
-    return render(request, 'cohorts/homepage.html', context)
+    return render(request, 'cohorts/dashboard.html', context)
 

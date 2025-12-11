@@ -56,17 +56,17 @@ class SurveyFormView(FormView):
         # Verify enrollment
         if not Enrollment.objects.filter(user=request.user, cohort=self.cohort).exists():
             messages.error(request, "You are not enrolled in this cohort.")
-            return redirect('cohorts:cohort_list')
+            return redirect('cohorts:dashboard')
 
         # Validate due_date
         if not self.due_date:
             messages.error(request, "A valid due date is required to perform this survey.")
-            return redirect('cohorts:homepage')
+            return redirect('cohorts:dashboard')
 
         # Check if already completed
         if UserSurveyResponse.objects.filter(user=request.user, cohort=self.cohort, submission__survey=self.survey, due_date=self.due_date).exists():
             messages.info(request, "You have already completed this survey.")
-            return redirect('cohorts:homepage')
+            return redirect('cohorts:dashboard')
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -97,7 +97,7 @@ class SurveyFormView(FormView):
             due_date=self.due_date,
         )
         messages.success(self.request, f"'{self.survey.name}' completed successfully!")
-        return redirect('cohorts:homepage')
+        return redirect('cohorts:dashboard')
 
 
 class ExitSurveyFormView(SurveyFormView):
@@ -163,7 +163,7 @@ class PastSubmissionsListView(ListView):
         """Verify enrollment before proceeding."""
         if not Enrollment.objects.filter(user=request.user, cohort=self.cohort).exists():
             messages.error(request, 'You must be enrolled in this cohort.')
-            return redirect('cohorts:cohort_list')
+            return redirect('cohorts:homepage')
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):

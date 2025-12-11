@@ -1,82 +1,193 @@
 {% extends 'base.html' %}
-
-{% block title %}{% if no_enrollment %}Welcome{% else %}Today's Tasks{% endif %} - Digital Minimalist Lab{% endblock %}
+{% load cohort_filters %}
+{% block title %}Join the 30-Day Digital Declutter – Digital Minimalist Lab{% endblock %}
 
 {% block content %}
+<!-- HERO -->
+<section class="hero">
+  <h1>Join the 30-Day Digital Declutter</h1>
 
-{% if no_enrollment %}
-    <!-- No enrollment state -->
-    <header>
-        <h1>Welcome to Digital Minimalist Lab</h1>
-        <p>Ready to start your 30-day digital declutter?</p>
-    </header>
-    
-    <section>
-        <h2>Today's Tasks</h2>
-        <article>
-            {% if available_cohorts %}
-                <p><a href="{% url 'cohorts:cohort_list' %}" role="button">Sign up for the next cohort</a></p>
-            {% else %}
-                <p><a href="{% url 'cohorts:cohort_list' %}" role="button">View available cohorts</a></p>
-            {% endif %}
-        </article>
-    </section>
+  <p class="subheading">
+    Not just “less screen time.” Rebuild an intentional digital environment so you can reconnect with the people, hobbies, and values that actually matter to you.
+    <!-- Reset your relationship with technology and break free of the Attention Economy. -->
+  </p>
 
-{% else %}
-    <!-- Enrolled state -->
-    <header>
-        <h1>{{ cohort.name }}</h1>
-    </header>
-    
-    <!-- Cohort Information -->
-    <section>
-        <p><small>{{ cohort.start_date|date:"F d, Y" }} – {{ cohort.end_date|date:"F d, Y" }}</small></p>
-        <p><small>There are {{ enrollment_count }} people rethinking their digital habits with you!</small></p>
-    </section>
-    
-    <!-- Tasks Section -->
-    <section>
-        <h2>Today's Tasks</h2>
-        
-        {% if tasks %}
-            <!-- Vertical list of tasks -->
-            {% for task in tasks %}
-            <article style="margin-bottom: 1rem;">
-                <h3><a href="{{ task.url }}">{{ task.title }}</a></h3>
-                <p>{{ task.description|safe }}</p>
-            </article>
-            {% endfor %}
-        {% else %}
-            <!-- No tasks state -->
-            <article>
-                <p>There's nothing to do but seize the day!</p>
-            </article>
-        {% endif %}
-    </section>
-    
-    <!-- Completed Tasks -->
-    {% if completed_tasks %}
-    <details>
-        <summary>Completed Tasks ({{ completed_tasks|length }})</summary>
-        <ul>
-            {% for task in completed_tasks %}
-            <li>
-                <strong>{{ task.title }}</strong>
-                <small>{{ task.completed_at|date:"M d, Y" }}</small>
-            </li>
-            {% endfor %}
-        </ul>
-    </details>
+  {% if cohort %}
+  <p class="muted" style="margin-bottom: 2rem;">
+    {% if cohort.is_paid %}
+      ${{ cohort.minimum_price_cents|cents_to_dollars }}+ • 
+    {% else %}
+      Free • 
     {% endif %}
-    
-    <!-- Links -->
-    <p>
-        <small>
-            <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='daily-check-in' %}">View Past Check-Ins</a> •
-            <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='weekly-reflection' %}">View Past Reflections</a>
-        </small>
-    </p>
+    ~5 min/day • 
+    Starts {{ cohort.start_date|date:"M j, Y" }}
+    {% if seats_available is not None %}
+      • {{ seats_available }} spot{{ seats_available|pluralize }} left
+    {% endif %}
+  </p>
+  {% endif %}
 
+  <div class="btn-group">
+    <sl-button variant="primary" size="large" href="{% url 'cohorts:join_start' %}">
+      Join the Next Cohort
+    </sl-button>
+  </div>
+</section>
+
+<!-- PROBLEM → PROMISE -->
+<section>
+  <div class="card" style="padding:3rem; text-align:center;">
+    <p style="font-size: 1.25rem; margin: 0; max-width: 40rem; margin-inline: auto;">
+      You don't have a "willpower" problem. You have an <em>environment</em> problem. For 30 days we'll rebuild it.
+    </p>
+  </div>
+</section>
+
+<!-- WHAT YOU'LL EXPERIENCE -->
+<section>
+  <h2 style="text-align: center; margin-bottom: 2rem;">What You'll Experience</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+    <div class="card" style="padding: 1.5rem;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Daily prompts & tiny actions</h3>
+      <p style="margin: 0; color: var(--pico-muted-color);">Small, concrete steps that compound over time</p>
+    </div>
+    <div class="card" style="padding: 1.5rem;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">A simple protocol (no apps required)</h3>
+      <p style="margin: 0; color: var(--pico-muted-color);">Research-informed, no gimmicks</p>
+    </div>
+    <div class="card" style="padding: 1.5rem;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Light community accountability</h3>
+      <p style="margin: 0; color: var(--pico-muted-color);">Structure without spam or social pressure</p>
+    </div>
+    <div class="card" style="padding: 1.5rem;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">A private dashboard you actually use</h3>
+      <p style="margin: 0; color: var(--pico-muted-color);">Track progress, not metrics</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section>
+  <div class="card" style="padding: 2rem;">
+    <h2>What You Get</h2>
+    <ul style="line-height: 1.9;">
+      <li>Cohort dashboard with day-by-day guidance</li>
+      <li>Reflection journal + progress tracker</li>
+      <li>Optional buddy system</li>
+      <li>Post-cohort maintenance plan</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SCHEDULE & FORMAT -->
+{% if cohort %}
+<section>
+  <div class="card" style="padding: 2rem;">
+    <h2>Schedule & Format</h2>
+    <p>
+      <strong>Starts {{ cohort.start_date|date:"F j, Y" }} • Ends {{ cohort.end_date|date:"F j, Y" }} • ~5 min/day</strong>
+    </p>
+    <p style="margin: 0;">
+      Delivered via your web dashboard + email reminders (opt-in).
+    </p>
+  </div>
+</section>
 {% endif %}
 
+<!-- SOCIAL PROOF -->
+<section>
+  <h2 style="text-align: center; margin-bottom: 2rem;">What Participants Say</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+    <div class="card" style="padding: 1.5rem;">
+      <p style="font-style: italic; margin-bottom: 1rem;">"Finally broke my doomscrolling habit. The daily prompts kept me on track."</p>
+      <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— J.S.</p>
+    </div>
+    <div class="card" style="padding: 1.5rem;">
+      <p style="font-style: italic; margin-bottom: 1rem;">"I thought I needed more willpower. Turns out I needed better systems."</p>
+      <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— A.M.</p>
+    </div>
+    <div class="card" style="padding: 1.5rem;">
+      <p style="font-style: italic; margin-bottom: 1rem;">"The cohort structure made all the difference. I wasn't doing this alone."</p>
+      <p style="margin: 0; color: var(--pico-muted-color); font-size: 0.9rem;">— R.K.</p>
+    </div>
+  </div>
+  <p style="text-align: center; margin-top: 1.5rem; color: var(--pico-muted-color);">
+    <em>First-time? Start anyway.</em>
+  </p>
+</section>
+
+<!-- PRICING -->
+{% if cohort %}
+<section id="pricing">
+  <div class="card" style="padding: 3rem; text-align: center; max-width: 500px; margin-inline: auto;">
+    <h2 style="margin-bottom: 1rem;">Join the Next Cohort</h2>
+    {% if cohort.is_paid %}
+      <p style="font-size: 2.5rem; font-weight: 700; margin: 0;">
+        ${{ cohort.minimum_price_cents|cents_to_dollars }}+
+      </p>
+      <p style="color: var(--pico-muted-color); margin-bottom: 1.5rem;">
+        Pay what feels meaningful to you (minimum ${{ cohort.minimum_price_cents|cents_to_dollars }})
+      </p>
+    {% else %}
+      <p style="font-size: 2.5rem; font-weight: 700; margin: 0;">Free</p>
+      <p style="color: var(--pico-muted-color); margin-bottom: 1.5rem;">No payment required</p>
+    {% endif %}
+    
+    {% if seats_available is not None %}
+      <p style="color: var(--pico-muted-color); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Limited to {{ cohort.max_seats }} spots • {{ seats_available }} remaining
+      </p>
+    {% else %}
+      <p style="color: var(--pico-muted-color); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Limited spots to keep cohorts focused
+      </p>
+    {% endif %}
+    
+    <sl-button variant="primary" size="large" href="{% url 'cohorts:join_start' %}" style="width: 100%; max-width: 300px;">
+      Join the Next Cohort
+    </sl-button>
+  </div>
+</section>
+{% endif %}
+
+<!-- FAQ -->
+<section>
+  <h2 style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+  
+  <div style="max-width: 700px; margin-inline: auto;">
+    <sl-details summary="When do I start?">
+      <p>Cohorts start on the scheduled date listed above. You can join up to 7 days after the start date if there are spots available.</p>
+    </sl-details>
+
+    <sl-details summary="What if I'm too busy?">
+      <p>Each day takes approximately 5 minutes. The prompts are designed to fit into your existing routine. You can catch up on your own schedule—there's no falling behind.</p>
+    </sl-details>
+
+    <sl-details summary="What's your refund policy?">
+      <p>Full refund up to the cohort start date, no questions asked. Email us and we'll process it immediately.</p>
+    </sl-details>
+
+    <sl-details summary="Do I need to quit my phone?">
+      <p>No. This isn't about digital abstinence. It's about intentional use. You'll learn to use technology on your terms, not the other way around.</p>
+    </sl-details>
+
+    <sl-details summary="Is this religious or political?">
+      <p>No. This is a secular, evidence-based program focused on digital wellness and attention management. No ideology required.</p>
+    </sl-details>
+
+    <sl-details summary="Is this accessible?">
+      <p>We've designed the dashboard to be screen reader friendly and keyboard navigable. If you have specific accessibility needs, please contact us and we'll work with you.</p>
+    </sl-details>
+  </div>
+</section>
+
+<!-- FOOTER REASSURANCE -->
+<section style="text-align: center; padding: 2rem; background: var(--pico-card-background-color); border-radius: var(--radius);">
+  <p style="color: var(--pico-muted-color); margin: 0;">
+    <strong>Secure payment via Stripe</strong> • 
+    Full refund up to the start date • 
+    <a href="{% url 'core:privacy' %}">Privacy Policy</a>
+  </p>
+</section>
 {% endblock %}
+

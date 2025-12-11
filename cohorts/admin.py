@@ -10,13 +10,13 @@ class TaskSchedulerInline(admin.TabularInline):
 
 @admin.register(Cohort)
 class CohortAdmin(admin.ModelAdmin):
-    list_display = ['name', 'start_date', 'end_date', 'minimum_price_cents', 'is_paid', 'seats_display', 'is_active']
+    list_display = ['name', 'start_date', 'end_date', 'enrollment_start_date', 'enrollment_end_date', 'minimum_price_cents', 'is_paid', 'seats_display', 'is_active']
     list_filter = ['is_active', 'is_paid', 'start_date']
     search_fields = ['name']
     date_hierarchy = 'start_date'
     fieldsets = [
         ('Basic Information', {
-            'fields': ['name', 'start_date', 'end_date', 'is_active']
+            'fields': ['name', 'start_date', 'end_date', 'is_active', 'enrollment_start_date', 'enrollment_end_date']
         }),
         ('Pricing', {
             'fields': ['is_paid', 'minimum_price_cents']

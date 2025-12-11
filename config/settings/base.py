@@ -20,6 +20,8 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+LANDING_ONLY = os.getenv('LANDING_ONLY', 'False') == 'True'
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,7 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+    "django.contrib.humanize",
+
     # Third-party apps
     'allauth',
     'allauth.account',
@@ -45,6 +48,13 @@ INSTALLED_APPS = [
     'health_check',
 ]
 
+if LANDING_ONLY:
+    # In landing-only mode, we only need these two apps.
+    INSTALLED_APPS = [
+        'django.contrib.staticfiles',
+        'core',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -55,6 +65,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+] if not LANDING_ONLY else [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,10 +89,14 @@ TEMPLATES = [
     },
 ]
 
+if LANDING_ONLY:
+    # In landing-only mode, remove context processors for apps that are not installed.
+    TEMPLATES[0]['OPTIONS']['context_processors'] = [p for p in TEMPLATES[0]['OPTIONS']['context_processors'] if 'auth' not in p and 'messages' not in p]
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-if os.getenv('LANDING_ONLY', '') == '':
+if not LANDING_ONLY:
     # Database
     DATABASES = {
         'default': {
@@ -138,15 +156,19 @@ AUTHENTICATION_BACKENDS = [
 
 # Django Allauth Settings (updated to new format)
 ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Set to 'mandatory' in production if desired
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Set to 'mandatory' in production if desired
 ACCOUNT_UNIQUE_EMAIL = True
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'
 ACCOUNT_FORMS = {
-    'signup': 'cohorts.forms.EnrollmentSignupForm',
+    'signup': 'accounts.forms.FullSignupForm',
 }
+
+# passwordless
+ACCOUNT_SIGNUP_FIELDS = ['email*']
+ACCOUNT_LOGIN_BY_CODE_ENABLED = True
+ACCOUNT_LOGIN_BY_CODE_REQUIRED = True
 
 # Email Configuration
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

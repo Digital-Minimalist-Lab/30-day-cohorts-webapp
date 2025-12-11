@@ -163,16 +163,15 @@ def daily_checkin(request, cohort_id):
 
 **Always verify user authorization:**
 
-```python
-# ✅ Good - verify enrollment before allowing access
-enrollment = Enrollment.objects.filter(
-    user=request.user, 
-    cohort=cohort
-).first()
+In the view, use the enrollment_required decorator:
 
-if not enrollment:
-    messages.error(request, 'You must be enrolled in this cohort.')
-    return redirect('cohorts:cohort_list')
+```python
+from cohorts.decorators import enrollment_required
+
+@enrollment_required
+def daily_checkin(request, cohort_id):
+    # View logic
+    pass
 ```
 
 **Never trust user input:**
@@ -314,20 +313,6 @@ profile, created = UserProfile.objects.get_or_create(user=request.user)
 
 # ❌ Bad - assumes profile exists
 profile = request.user.profile  # May raise exception
-```
-
-**Check enrollment before operations:**
-
-```python
-# ✅ Good - verify first
-enrollment = Enrollment.objects.filter(
-    user=request.user, 
-    cohort=cohort
-).first()
-
-if not enrollment:
-    messages.error(request, 'You must be enrolled in this cohort.')
-    return redirect('cohorts:cohort_list')
 ```
 
 ### DRY (Don't Repeat Yourself)
@@ -762,33 +747,12 @@ def get_user_today(user):
 
 Instead of repeating enrollment checks in every view, use a decorator. This is cleaner and less error-prone.
 
-**`cohorts/decorators.py`:**
-```python
-from functools import wraps
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib import messages
-from .models import Cohort, Enrollment
-
-def user_is_enrolled(view_func):
-    @wraps(view_func)
-    def _wrapped_view(request, cohort_id, *args, **kwargs):
-        cohort = get_object_or_404(Cohort, id=cohort_id)
-        is_enrolled = Enrollment.objects.filter(user=request.user, cohort=cohort).exists()
-        
-        if not is_enrolled:
-            messages.error(request, "You are not enrolled in this cohort.")
-            return redirect('cohorts:cohort_list')
-            
-        return view_func(request, cohort_id, *args, **kwargs)
-    return _wrapped_view
-```
-
 **Usage in `checkins/views.py`:**
 ```python
 from cohorts.decorators import user_is_enrolled
 
 @login_required
-@user_is_enrolled
+@enrollment_required
 def daily_checkin(request, cohort_id):
     # No need to check enrollment here, the decorator handles it.
     cohort = get_object_or_404(Cohort, id=cohort_id)

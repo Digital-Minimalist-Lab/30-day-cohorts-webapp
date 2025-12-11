@@ -3,62 +3,34 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AbstractUser
 from django.http import HttpRequest, HttpResponse
-from allauth.account.forms import LoginForm, SignupForm
+from allauth.account.forms import LoginForm
 from django.conf import settings
 from django.urls import reverse
 
 from ..models import Cohort, Enrollment
 from ..forms import PaymentAmountForm
+from ..decorators import enrollment_required
+
+from accounts.forms import FullSignupForm
 
 import logging
 logger = logging.getLogger(__name__)
-
-def verify_enrollment(user: AbstractUser, cohort: Cohort) -> Optional[Enrollment]:
-    """
-    Verify that a user is enrolled in a cohort.
-    
-    This is a common pattern used across multiple views to ensure
-    authorization before allowing access to cohort-specific resources.
-    
-    Args:
-        user: Django User instance
-        cohort: Cohort instance
-        
-    Returns:
-        Enrollment instance if user is enrolled, None otherwise
-    """
-    return Enrollment.objects.filter(user=user, cohort=cohort).first()
-
-
-
-@login_required
-def cohort_list(request: HttpRequest) -> HttpResponse:
-    """List available cohorts."""
-    # Get cohorts that can be joined (within 7 days of start and active)
-    available_cohorts = Cohort.objects.get_joinable()
-
-    # Get user's enrollments
-    user_enrollments = Enrollment.objects.filter(
-        user=request.user
-    ).exclude(status='pending').values_list('cohort_id', flat=True)
-    
-    context = {
-        'available_cohorts': available_cohorts,
-        'user_enrollments': user_enrollments,
-    }
-    
-    return render(request, 'cohorts/cohort_list.html', context)
 
 
 @login_required
 def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
     """Join a cohort (with or without payment)."""
-    cohort = get_object_or_404(Cohort, id=cohort_id)
-    
-    if not cohort.can_join():
-        return render(request, 'cohorts/cohort_join_error.html', {
+    # Find the specific cohort from the list of joinable cohorts.
+    # This is more efficient as it reuses the manager's logic.
+    joinable_cohorts = Cohort.objects.get_joinable()
+    cohort = next((c for c in joinable_cohorts if c.id == cohort_id), None)
+
+    if not cohort:
+        # If not found, fetch it to provide a specific error message.
+        cohort = get_object_or_404(Cohort, id=cohort_id)
+        return render(request, 'cohorts/join_error.html', {
             'cohort': cohort,
-            'message': 'This cohort is no longer accepting new members. You can join within 7 days of the start date.'
+            'message': f'This cohort is not currently accepting new members. The enrollment period may be over, or it might be full.'
         })
     
     # Check if already enrolled
@@ -68,7 +40,7 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
     )
     
     if enrollment.status != 'pending':
-        return redirect('cohorts:homepage')
+        return redirect('cohorts:dashboard')
     
     # If payment is enabled, redirect to payment
     if settings.STRIPE_ENABLED and cohort.minimum_price_cents > 0:
@@ -80,25 +52,12 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
 
 def join_start(request: HttpRequest) -> HttpResponse:
     """Step 1: Account creation or login for cohort enrollment."""
-    # If user is authenticated, redirect to checkout
-    # Find the next upcoming or recently started cohort
-    joinable_cohort = Cohort.objects.get_joinable().first() or Cohort.objects.get_upcoming().first()
-
     if request.user.is_authenticated:
-        # If user is already enrolled in the target cohort, redirect to homepage
-        if joinable_cohort and Enrollment.objects.filter(user=request.user, cohort=joinable_cohort).exists():
-            return redirect('cohorts:homepage')
-        
-        # Otherwise redirect to checkout
         return redirect('cohorts:join_checkout')
     
-    context = {
-        'cohort': joinable_cohort,
-        'login_form': LoginForm(),
-        'signup_form': SignupForm(),
-    }
-    
-    return render(request, 'cohorts/join_start.html', context)
+    # For unauthenticated users, redirect to the standard allauth signup page.
+    # We pass 'next' to ensure they land on the checkout page after signup.
+    return redirect(reverse('account_signup') + f"?next={reverse('cohorts:join_checkout')}")
 
 
 @login_required
@@ -106,16 +65,16 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
     """Step 2: Payment checkout (or skip if free cohort)."""
     
     # Find the next upcoming or recently started cohort
-    cohort = Cohort.objects.get_joinable().first() or Cohort.objects.get_upcoming().first()
+    cohort = next(iter(Cohort.objects.get_joinable()), None)
 
     if not cohort:
-        return render(request, 'cohorts/cohort_join_error.html', {
+        return render(request, 'cohorts/join_error.html', {
             'message': 'No active cohorts available at the moment.'
         })
     
     # Check if cohort is full
     if cohort.is_full():
-        return render(request, 'cohorts/cohort_join_error.html', {
+        return render(request, 'cohorts/join_error.html', {
             'cohort': cohort,
             'message': f'This cohort is full. Please check back for the next cohort.'
         })
@@ -127,7 +86,7 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
     ).first()
     
     if existing_enrollment and existing_enrollment.status in ['paid', 'free']:
-        return redirect('cohorts:homepage')
+        return redirect('cohorts:dashboard')
     
     # If free cohort, create enrollment and redirect to success
     if not cohort.is_paid:
@@ -170,19 +129,7 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def join_success(request: HttpRequest) -> HttpResponse:
-    """Step 3: Onboarding success page after enrollment."""
-    # Get user's most recent enrollment
-    enrollment = Enrollment.objects.filter(
-        user=request.user
-    ).select_related('cohort').order_by('-enrolled_at').first()
-    
-    if not enrollment:
-        return redirect('cohorts:homepage')
-    
-    context = {
-        'enrollment': enrollment,
-        'cohort': enrollment.cohort,
-    }
-    
-    return render(request, 'cohorts/join_success.html', context)
+@enrollment_required
+def join_success(request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    """Step 3: Onboarding success page after enrollment."""        
+    return render(request, 'cohorts/join_success.html', kwargs['context'])

@@ -1,5 +1,4 @@
 {% extends 'base_nocontent.html' %}
-{% load cohort_filters %}
 {% block title %}Join the 30-Day Digital Declutter – Digital Minimalist Lab{% endblock %}
 
 {% block page_content %}
@@ -7,7 +6,7 @@
 <!-- Header -->
 <nav class="container">
     <ul>
-        <li><strong><a href="{% url 'cohorts:landing' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
+        <li><strong><a href="{% url 'core:landing' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
     </ul>
 </nav>
 
@@ -489,7 +488,7 @@
     <!-- FOOTER REASSURANCE -->
     <section style="text-align: center; padding: 2rem; background: var(--pico-card-background-color); border-radius: var(--radius);">
     <p style="color: var(--pico-muted-color); margin: 0;">
-        <a href="{% url 'accounts:privacy' %}">Privacy Policy</a>
+        <a href="{% url 'core:privacy' %}">Privacy Policy</a>
     </p>
     </section>
 </main>
@@ -497,12 +496,11 @@
 <!-- Footer -->
 <footer class="container">
     <p>
-        <a href="{% url 'accounts:protocol' %}">Protocol</a> •
-        <a href="{% url 'accounts:resources' %}">Resources</a> •
-        <a href="{% url 'accounts:privacy' %}">Privacy</a>
+        <a href="{% url 'core:protocol' %}">Protocol</a> •
+        <a href="{% url 'core:resources' %}">Resources</a> •
+        <a href="{% url 'core:privacy' %}">Privacy</a>
     </p>
     <p><small>Digital Minimalist Lab © 2024 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
 </footer>
 
 {% endblock %}
-

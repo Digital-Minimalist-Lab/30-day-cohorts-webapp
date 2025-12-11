@@ -1,10 +1,51 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Sign Up - Digital Minimalist Lab{% endblock %}
+{% block title %}Create an Account{% endblock %}
 
 {% block content %}
-
-{% include 'account/_auth_forms.html' with login_form=login_form signup_form=signup_form %}
-
-{% endblock %}
-
+<div style="max-width: 500px; margin-inline: auto;">
+    <header style="text-align: center; margin-bottom: 2rem;">
+        <h1>Create an Account</h1>
+        <p style="color: var(--pico-muted-color);">
+            Already have an account? <a href="{{ login_url }}">Log In</a>
+        </p>
+    </header>
+    
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <article>
+                {{ form.non_field_errors }}
+            </article>
+        {% endif %}
+        
+        {# Render standard fields first #}
+        {% for field in form %}
+            {% if field.name not in form.email_preference_field_names %}
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }} 
+                    {{ field }} {# Let Django render the correct widget #}
+                    {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}<small style="color: var(--pico-form-element-invalid-border-color);">{{ error }}</small>{% endfor %}
+                </label>
+            {% endif %}
+        {% endfor %}
+        
+        {# Render email preferences in their own group #}
+        <fieldset>
+            <legend>Email Preferences</legend>
+            {% for field in form.get_email_preference_fields %}
+                <label for="{{ field.id_for_label }}">
+                    <input type="checkbox" id="{{ field.id_for_label }}" name="{{ field.name }}" role="switch" {% if field.value %}checked{% endif %}>
+                    {{ field.label }}
+                </label>
+            {% endfor %}
+        </fieldset>
+        
+        {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />{% endif %}
+        
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+{% endblock content %}

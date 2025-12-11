@@ -1,10 +1,7 @@
 from typing import Any, Dict, Optional
 from django import forms
 from django.core.validators import MinValueValidator
-from allauth.account.forms import SignupForm
-import pytz
 from .models import Cohort
-from accounts.models import UserProfile
 
 import logging
 
@@ -14,7 +11,7 @@ class CohortForm(forms.ModelForm):
     """Form for creating and updating cohorts."""
     class Meta:
         model = Cohort
-        fields = ['name', 'start_date', 'end_date', 'minimum_price_cents', 'is_paid', 'max_seats', 'is_active']
+        fields = ['name', 'start_date', 'end_date', 'enrollment_start_date', 'enrollment_end_date', 'minimum_price_cents', 'is_paid', 'max_seats', 'is_active']
         widgets = {
             'name': forms.TextInput(attrs={
                 'placeholder': 'e.g., January 2024 Cohort'
@@ -23,6 +20,12 @@ class CohortForm(forms.ModelForm):
                 'type': 'date'
             }),
             'end_date': forms.DateInput(attrs={
+                'type': 'date'
+            }),
+            'enrollment_start_date': forms.DateInput(attrs={
+                'type': 'date'
+            }),
+            'enrollment_end_date': forms.DateInput(attrs={
                 'type': 'date'
             }),
             'minimum_price_cents': forms.NumberInput(attrs={
@@ -39,59 +42,31 @@ class CohortForm(forms.ModelForm):
             'is_paid': 'Whether this cohort requires payment',
             'max_seats': 'Maximum number of seats (leave blank for unlimited)',
             'is_active': 'Whether this cohort is currently accepting enrollments',
+            'enrollment_start_date': 'The first day users can join.',
+            'enrollment_end_date': 'The last day users can join.',
         }
     
     def clean(self) -> Optional[Dict[str, Any]]:
-        """Validate that end_date is after start_date."""
+        """Validate date logic."""
         cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
+        enrollment_start = cleaned_data.get('enrollment_start_date')
+        enrollment_end = cleaned_data.get('enrollment_end_date')
         
         if start_date and end_date:
             if end_date <= start_date:
                 raise forms.ValidationError(
                     'End date must be after start date.'
                 )
+
+        if enrollment_start and enrollment_end:
+            if enrollment_end < enrollment_start:
+                raise forms.ValidationError(
+                    'Enrollment end date must be on or after the enrollment start date.'
+                )
         
         return cleaned_data
-
-
-class EnrollmentSignupForm(SignupForm):
-    """Extended signup form with timezone and email preferences."""
-    timezone = forms.ChoiceField(
-        choices=[(tz, tz) for tz in pytz.common_timezones],
-        initial='America/New_York',
-        required=True,
-        help_text="Your timezone for accurate daily check-in dates"
-    )
-    email_daily_reminder = forms.BooleanField(
-        required=False,
-        initial=False,
-        label="Send me daily check-in reminders",
-        help_text="Optional email reminders for daily reflections"
-    )
-    email_weekly_reminder = forms.BooleanField(
-        required=False,
-        initial=False,
-        label="Send me weekly reflection reminders",
-        help_text="Optional email reminders for weekly intentions"
-    )
-
-    def save(self, request):
-        """Save the user and create associated UserProfile."""
-        user = super().save(request)
-        
-        # Create or update UserProfile with timezone and email preferences
-        UserProfile.objects.update_or_create(
-            user=user,
-            defaults={
-                'timezone': self.cleaned_data['timezone'],
-                'email_daily_reminder': self.cleaned_data['email_daily_reminder'],
-                'email_weekly_reminder': self.cleaned_data['email_weekly_reminder'],
-            }
-        )
-        
-        return user
 
 
 class PaymentAmountForm(forms.Form):
@@ -138,4 +113,3 @@ class PaymentAmountForm(forms.Form):
             cleaned_data['amount_cents'] = amount_cents
 
         return cleaned_data
-

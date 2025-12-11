@@ -1,32 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse, HttpRequest
-from django.db import connection
+from django.http import HttpResponse, HttpRequest
 from django.contrib import messages
 import json
-from datetime import datetime
-from allauth.account.views import LoginView, SignupView, LoginForm, SignupForm
 
 from surveys.models import Survey, SurveySubmission
 from cohorts.models import UserSurveyResponse, Enrollment
 from cohorts.surveys import aggregate_checkin_data
 
-from .forms import UserProfileForm
+from .forms import UserProfileForm, FullSignupForm
 from .models import UserProfile
 
-class CustomLoginView(LoginView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['signup_form'] = SignupForm()
-        context['login_form'] = context.pop('form')
-        return context
+def request_login_code_redirect(request: HttpRequest) -> HttpResponse:
+    """Redirects the default request_login_code view to the main login page."""
+    return redirect('account_login')
 
-class CustomSignupView(SignupView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['login_form'] = LoginForm()
-        context['signup_form'] = context.pop('form')
-        return context
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
@@ -65,7 +53,7 @@ def profile_view(request: HttpRequest) -> HttpResponse:
         
         aggregated_data = aggregate_checkin_data(checkins)
     
-    return render(request, 'accounts/profile.html', {
+    return render(request, 'account/profile.html', {
         'form': form,
         'cohort': cohort,
         'checkins': checkins,
@@ -109,8 +97,8 @@ def delete_account(request: HttpRequest) -> HttpResponse:
             user = request.user
             user.delete()  # Cascade delete all related data
             messages.success(request, 'Your account has been permanently deleted.')
-            return redirect('cohorts:homepage')
+            return redirect('cohorts:dashboard')
         else:
             messages.error(request, 'Please type DELETE to confirm account deletion.')
     
-    return render(request, 'accounts/delete_account.html')
+    return render(request, 'account/delete_account.html')
