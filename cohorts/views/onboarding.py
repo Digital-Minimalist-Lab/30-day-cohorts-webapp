@@ -53,17 +53,18 @@ def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
 def join_start(request: HttpRequest) -> HttpResponse:
     """Step 1: Account creation or login for cohort enrollment."""
     if request.user.is_authenticated:
-        return redirect('cohorts:join_checkout')
-    
+        return redirect('cohorts:join_entry_survey')
+
     # For unauthenticated users, redirect to the standard allauth signup page.
-    # We pass 'next' to ensure they land on the checkout page after signup.
-    return redirect(reverse('account_signup') + f"?next={reverse('cohorts:join_checkout')}")
+    # We pass 'next' to ensure they land on the entry survey after signup.
+    return redirect(reverse('account_signup') + f"?next={reverse('cohorts:join_entry_survey')}")
 
 
 @login_required
-def join_checkout(request: HttpRequest) -> HttpResponse:
-    """Step 2: Payment checkout (or skip if free cohort)."""
-    
+def join_entry_survey(request: HttpRequest) -> HttpResponse:
+    """Step 2: Entry survey before checkout."""
+    from surveys.models import Survey
+
     # Find the next upcoming or recently started cohort
     cohort = next(iter(Cohort.objects.get_joinable()), None)
 
@@ -71,23 +72,77 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
         return render(request, 'cohorts/join_error.html', {
             'message': 'No active cohorts available at the moment.'
         })
-    
+
     # Check if cohort is full
     if cohort.is_full():
         return render(request, 'cohorts/join_error.html', {
             'cohort': cohort,
             'message': f'This cohort is full. Please check back for the next cohort.'
         })
-    
+
+    # Create pending enrollment if it doesn't exist
+    Enrollment.objects.get_or_create(
+        user=request.user,
+        cohort=cohort,
+        defaults={'status': 'pending'}
+    )
+
+    # If already completed entry survey, skip to checkout
+    from cohorts.models import UserSurveyResponse
+    entry_survey = Survey.objects.filter(purpose=Survey.Purpose.ENTRY).first()
+    if entry_survey:
+        has_completed_entry = UserSurveyResponse.objects.filter(
+            user=request.user,
+            cohort=cohort,
+            submission__survey=entry_survey
+        ).exists()
+
+        if has_completed_entry:
+            return redirect('cohorts:join_checkout')
+
+    # Get entry survey and redirect to the onboarding entry survey view
+    if not entry_survey:
+        # No entry survey configured, skip to checkout
+        return redirect('cohorts:join_checkout')
+
+    # Calculate due date (start of cohort)
+    due_date = cohort.start_date
+
+    # Redirect to the entry survey with special onboarding handling
+    return redirect('cohorts:onboarding_entry_survey',
+                   cohort_id=cohort.id,
+                   survey_slug=entry_survey.slug,
+                   due_date=due_date.isoformat())
+
+
+@login_required
+def join_checkout(request: HttpRequest) -> HttpResponse:
+    """Step 3: Payment checkout (or skip if free cohort)."""
+
+    # Find the next upcoming or recently started cohort
+    cohort = next(iter(Cohort.objects.get_joinable()), None)
+
+    if not cohort:
+        return render(request, 'cohorts/join_error.html', {
+            'message': 'No active cohorts available at the moment.'
+        })
+
+    # Check if cohort is full
+    if cohort.is_full():
+        return render(request, 'cohorts/join_error.html', {
+            'cohort': cohort,
+            'message': f'This cohort is full. Please check back for the next cohort.'
+        })
+
     # Check if already enrolled
     existing_enrollment = Enrollment.objects.filter(
         user=request.user,
         cohort=cohort
     ).first()
-    
+
     if existing_enrollment and existing_enrollment.status in ['paid', 'free']:
         return redirect('cohorts:dashboard')
-    
+
     # If free cohort, create enrollment and redirect to success
     if not cohort.is_paid:
         enrollment, created = Enrollment.objects.get_or_create(
@@ -99,7 +154,7 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
             enrollment.status = 'free'
             enrollment.save()
         return redirect('cohorts:join_success')
-    
+
     # Paid cohort - show payment form
     if request.method == 'POST':
         form = PaymentAmountForm(request.POST, minimum_price_cents=cohort.minimum_price_cents)
@@ -111,25 +166,34 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
                 cohort=cohort,
                 defaults={'status': 'pending'}
             )
-            # Redirect to Stripe checkout
-            return redirect(
-                reverse('payments:create_checkout', kwargs={'cohort_id': cohort.id}) + 
-                f'?amount={amount_cents}'
-            )
+
+            if amount_cents > 0:
+                # Redirect to Stripe checkout
+                return redirect(
+                    reverse('payments:create_checkout', kwargs={'cohort_id': cohort.id}) +
+                    f'?amount={amount_cents}'
+                )
+            else:
+                # Free enrollment
+                enrollment.status = 'paid'
+                enrollment.amount_paid_cents = 0
+                enrollment.save()
+                return redirect('cohorts:join_success')
+
     else:
         form = PaymentAmountForm(minimum_price_cents=cohort.minimum_price_cents)
-    
+
     context = {
         'cohort': cohort,
         'form': form,
         'minimum_price_dollars': cohort.minimum_price_cents / 100,
     }
-    
+
     return render(request, 'cohorts/join_checkout.html', context)
 
 
 @login_required
 @enrollment_required
 def join_success(request: HttpRequest, *args, **kwargs) -> HttpResponse:
-    """Step 3: Onboarding success page after enrollment."""        
+    """Step 4: Onboarding success page after enrollment."""
     return render(request, 'cohorts/join_success.html', kwargs['context'])

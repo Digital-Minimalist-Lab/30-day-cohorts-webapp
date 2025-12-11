@@ -121,7 +121,7 @@ class ExitSurveyFormView(SurveyFormView):
                 cohort=self.cohort,
                 submission__survey__purpose=Survey.Purpose.ENTRY,
             ) .select_related('submission__survey').prefetch_related('submission__answers', 'submission__answers__question').order_by('submission__completed_at').first()
-            
+
             if entry_response:
                 entry_submission = entry_response.submission
                 logger.info(f"Found entry survey answers for cohort {self.cohort.id}: {entry_submission.answers.all()}")
@@ -129,6 +129,23 @@ class ExitSurveyFormView(SurveyFormView):
         except Survey.DoesNotExist:
             logger.warning(f"No entry survey found for cohort {self.cohort.id} when trying to get entry answers.")
         return {}
+
+# Required for redirection to the checkout page. 
+class EntrySurveyOnboardingFormView(SurveyFormView):
+    """A specialized view for the entry survey during onboarding that redirects to checkout."""
+
+    def form_valid(self, form: DynamicSurveyForm) -> HttpResponse:
+        """Process the valid form and redirect to checkout instead of dashboard."""
+        create_survey_submission(
+            user=self.request.user,
+            cohort=self.cohort,
+            survey=self.survey,
+            form=form,
+            due_date=self.due_date,
+        )
+        messages.success(self.request, f"'{self.survey.name}' completed successfully!")
+        # Redirect to checkout instead of dashboard
+        return redirect('cohorts:join_checkout')
 
 
 @login_required
@@ -143,6 +160,19 @@ def survey_view(request: HttpRequest, cohort_id: int, survey_slug: str, due_date
         view_class = ExitSurveyFormView
     else:
         view_class = SurveyFormView
+    return view_class.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug, due_date=due_date)
+
+
+@login_required
+def onboarding_survey_view(request: HttpRequest, cohort_id: int, survey_slug: str, due_date: str) -> HttpResponse:
+    """
+    View to display and process a survey during onboarding.
+    This uses the EntrySurveyOnboardingFormView which redirects to checkout after completion.
+    """
+    survey = get_object_or_404(Survey, slug=survey_slug)
+    logger.info(f"Onboarding survey: {survey}")
+    # Use the onboarding view that redirects to checkout
+    view_class = EntrySurveyOnboardingFormView
     return view_class.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug, due_date=due_date)
 
 

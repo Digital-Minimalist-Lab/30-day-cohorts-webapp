@@ -101,15 +101,18 @@ class PaymentAmountForm(forms.Form):
         cleaned_data = super().clean()
         amount_dollars = cleaned_data.get('amount')
 
-        if amount_dollars:
-            amount_cents = int(amount_dollars * 100)
+        # If amount is None (field validation failed), skip further validation
+        if amount_dollars is None:
+            return cleaned_data
 
-            if amount_cents < self.minimum_price_cents:
-                logger.warning("validation error...")
-                raise forms.ValidationError(
-                    f"Minimum amount is ${self.minimum_price_cents / 100:.2f}"
-                )
+        amount_cents = int(amount_dollars * 100)
 
-            cleaned_data['amount_cents'] = amount_cents
+        if amount_cents < self.minimum_price_cents:
+            logger.warning("validation error...")
+            raise forms.ValidationError(
+                f"Minimum amount is ${self.minimum_price_cents / 100:.2f}"
+            )
+
+        cleaned_data['amount_cents'] = amount_cents
 
         return cleaned_data
