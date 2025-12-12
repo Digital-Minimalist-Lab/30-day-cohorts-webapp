@@ -10,11 +10,11 @@ TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.common_timezones]
 class UserProfile(models.Model):
     """Extended user profile with email preferences and timezone."""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    email_daily_reminder = models.BooleanField(
+    email_product_updates = models.BooleanField(
         default=False,
         help_text="Opt-in for daily check-in reminders"
     )
-    email_weekly_reminder = models.BooleanField(
+    email_daily_reminder = models.BooleanField(
         default=False,
         help_text="Opt-in for weekly reflection reminders"
     )
@@ -34,8 +34,8 @@ class UserProfile(models.Model):
     def to_dict(self):
         return {
             'timezone': self.timezone,
+            'email_product_updates': self.email_product_updates,
             'email_daily_reminder': self.email_daily_reminder,
-            'email_weekly_reminder': self.email_weekly_reminder,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
         }
