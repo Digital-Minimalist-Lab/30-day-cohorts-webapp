@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    
+    'django_q',  # Task queue for scheduled email reminders
+
     # Local apps
     'config',  # For management commands
     'core',
@@ -244,4 +245,16 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO',
     },
+}
+
+# Django-Q2 Configuration (Task Queue for Email Reminders)
+Q_CLUSTER = {
+    'name': 'DjangORM',
+    'workers': 2,
+    'timeout': 300,  # 5 minutes
+    'retry': 360,  # 6 minutes
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default',  # Uses PostgreSQL database for queue
+    'catch_up': False,  # Don't run missed scheduled tasks
 }

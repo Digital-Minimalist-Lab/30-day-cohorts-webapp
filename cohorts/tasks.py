@@ -6,7 +6,6 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 
 from .models import Cohort, TaskScheduler, UserSurveyResponse
-from surveys.models import SurveySubmission
 
 import logging
 logger = logging.getLogger(__name__)
