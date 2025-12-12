@@ -193,7 +193,7 @@ class PastSubmissionsListView(ListView):
         """Verify enrollment before proceeding."""
         if not Enrollment.objects.filter(user=request.user, cohort=self.cohort).exists():
             messages.error(request, 'You must be enrolled in this cohort.')
-            return redirect('cohorts:homepage')
+            return redirect('cohorts:dashboard')
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):

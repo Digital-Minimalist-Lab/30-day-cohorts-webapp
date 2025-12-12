@@ -165,6 +165,11 @@ ACCOUNT_FORMS = {
     'signup': 'accounts.forms.FullSignupForm',
 }
 
+# passwords!
+# ACCOUNT_SIGNUP_FIELDS = ['email*', "password1*"]
+# ACCOUNT_LOGIN_BY_CODE_ENABLED = False
+# ACCOUNT_LOGIN_BY_CODE_REQUIRED = False
+
 # passwordless
 ACCOUNT_SIGNUP_FIELDS = ['email*']
 ACCOUNT_LOGIN_BY_CODE_ENABLED = True

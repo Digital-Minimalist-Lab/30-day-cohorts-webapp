@@ -7,5 +7,6 @@ urlpatterns = [
     path('privacy/', privacy_policy, name='privacy'),
     path('protocol/', protocol_view, name='protocol'),
     path('resources/', resources_view, name='resources'),
-    path('', landing, name='landing'),
+    path('', landing, name='index_landing'),
+    path('landing/', landing, name='landing'),
 ]
