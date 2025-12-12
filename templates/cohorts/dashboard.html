@@ -36,7 +36,7 @@
 </section>
 
 <!-- Completed Tasks -->
-{% if completed_tasks %}
+<!-- {% if completed_tasks %}
 <details>
     <summary>Completed Tasks ({{ completed_tasks|length }})</summary>
     <ul>
@@ -48,15 +48,15 @@
         {% endfor %}
     </ul>
 </details>
-{% endif %}
+{% endif %} -->
 
 <!-- Links -->
-<p>
+<!-- <p>
     <small>
         <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='daily-check-in' %}">View Past Check-Ins</a> •
         <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='weekly-reflection' %}">View Past Reflections</a>
     </small>
-</p>
+</p> -->
 
 
 {% endblock %}
