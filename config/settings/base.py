@@ -164,6 +164,7 @@ ACCOUNT_SIGNUP_REDIRECT_URL = '/'
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.FullSignupForm',
 }
+ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = False
 
 # passwords!
 # ACCOUNT_SIGNUP_FIELDS = ['email*', "password1*"]
