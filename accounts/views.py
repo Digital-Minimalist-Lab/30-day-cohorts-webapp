@@ -11,7 +11,6 @@ from allauth.account import app_settings as allauth_app_settings
 
 from surveys.models import Survey, SurveySubmission
 from cohorts.models import UserSurveyResponse, Enrollment
-from cohorts.surveys import aggregate_checkin_data
 
 from .forms import UserProfileForm, FullSignupForm
 from .models import UserProfile
@@ -71,32 +70,8 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     else:
         form = UserProfileForm(instance=profile)
     
-    # Get data view information
-    enrollment = Enrollment.objects.filter(user=request.user).select_related('cohort').order_by('-enrolled_at').first()
-    
-    cohort = None
-    checkins = None
-    aggregated_data = {}
-    
-    if enrollment:
-        cohort = enrollment.cohort
-        # Fetch check-in submissions with a single, more efficient query
-        # by filtering SurveySubmission through its reverse relationship to UserSurveyResponse.
-        checkins = SurveySubmission.objects.filter(
-            survey__purpose=Survey.Purpose.DAILY_CHECKIN,
-            user_responses__user=request.user,
-            user_responses__cohort=cohort
-        ).prefetch_related(
-            'answers', 'answers__question'
-        ).order_by('completed_at').distinct()
-        
-        aggregated_data = aggregate_checkin_data(checkins)
-    
     return render(request, 'account/profile.html', {
         'form': form,
-        'cohort': cohort,
-        'checkins': checkins,
-        'checkin_aggregation': aggregated_data,
     })
 
 
