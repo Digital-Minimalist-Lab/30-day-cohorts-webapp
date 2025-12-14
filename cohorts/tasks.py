@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 class PendingTask:
     """Represents a survey task that is due but not yet completed."""
     scheduler: TaskScheduler
+    user: AbstractUser
     due_date: date
     title: str
     description: str
@@ -119,6 +120,7 @@ def get_user_tasks(user: AbstractUser, cohort: Cohort, today: date) -> List[Pend
 
             pending_tasks.append(PendingTask(
                 scheduler=scheduler,
+                user=user,
                 due_date=due_date,
                 title=title,
                 description=description,

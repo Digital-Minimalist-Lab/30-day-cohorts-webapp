@@ -32,7 +32,6 @@ from cohorts.utils import get_user_today
 from cohorts.models import EmailSendLog
 
 logger = logging.getLogger(__name__)
-logger.level = logging.DEBUG
 
 
 def _build_idempotency_key(user_id: int, reminder_date: date) -> str:
@@ -62,10 +61,10 @@ def send_task_reminders_for_timezone(timezone_name: str, dry_run: bool = False) 
 
     current_time = datetime.now(tz)
 
-    # Only send at 10am
-    # if current_time.hour != 10:
-    #     logger.debug(f"Skipping {timezone_name} - current hour is {current_time.hour}, not 10")
-    #     return 0
+    # Start attempting sends of emails at 10am
+    if current_time.hour < 10:
+        logger.debug(f"Skipping {timezone_name} - current hour is {current_time.hour}, which is before 10am")
+        return 0
 
     logger.info(f"Processing email reminders for timezone: {timezone_name} at {current_time}")
 
@@ -79,6 +78,7 @@ def send_task_reminders_for_timezone(timezone_name: str, dry_run: bool = False) 
 
 
     logger.info(f"Found {profiles.count()} consenting users in timezone: {timezone_name}")
+    logger.debug(f"Reminder already sent for")
 
     emails_sent = 0
 
@@ -150,7 +150,7 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
 
     # Send the email
     try:
-        send_task_reminder_email(user, all_pending_tasks)
+        _send_email_with_template(user, all_pending_tasks, "emails/task_reminder")
         EmailSendLog.objects.record_sent(
             idempotency_key=idempotency_key,
             recipient_email=user.email,
@@ -162,31 +162,6 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     except Exception as e:
         logger.error(f"Failed to send email to {user.email}: {e}", exc_info=True)
         raise  # Let Django Q handle the failure/retry
-
-
-def send_task_reminder_email(user: AbstractUser, pending_tasks: List[PendingTask]) -> None:
-    """
-    Send the actual email with pending tasks.
-
-    Supports custom email templates per task type. If a task has a custom
-    email_template_name, it will be sent in a separate email.
-
-    Args:
-        user: User to send email to
-        pending_tasks: List of PendingTask objects to include in email
-    """
-    # Group tasks by email template
-    tasks_by_template = {}
-
-    for task in pending_tasks:
-        template_name = getattr(task.scheduler, 'email_template_name', None) or 'emails/task_reminder'
-        if template_name not in tasks_by_template:
-            tasks_by_template[template_name] = []
-        tasks_by_template[template_name].append(task)
-
-    # Send one email per template type
-    for template_name, tasks in tasks_by_template.items():
-        _send_email_with_template(user, tasks, template_name)
 
 
 def send_email_task(subject: str, plain_message: str, from_email: str, recipient_list: List[str], html_message: str) -> None:

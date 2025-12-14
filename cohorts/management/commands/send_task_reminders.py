@@ -82,6 +82,6 @@ class Command(BaseCommand):
             else:
                 if verbosity >= 1:
                     self.stdout.write(
-                        self.style.WARNING('No emails sent (no users at 10am in their timezone)')
+                        self.style.WARNING('No emails sent')
                     )
 
