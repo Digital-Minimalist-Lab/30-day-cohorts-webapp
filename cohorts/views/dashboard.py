@@ -36,14 +36,13 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     
     cohort = enrollment.cohort
     today = get_user_today(request.user)
-    tasks, completed_tasks = get_user_tasks(request.user, cohort, today)
+    tasks = get_user_tasks(request.user, cohort, today)
     
     context = {
         'enrollment': enrollment,
         'cohort': cohort,
         'enrollment_count': enrollment.enrollment_count, # Use the annotated value
         'tasks': tasks,
-        'completed_tasks': completed_tasks,
         'today': today,
     }
     

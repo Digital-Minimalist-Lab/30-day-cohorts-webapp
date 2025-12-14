@@ -23,7 +23,7 @@
         <!-- Vertical list of tasks -->
         {% for task in tasks %}
         <article style="margin-bottom: 1rem;">
-            <h3><a href="{{ task.url }}">{{ task.title }}</a></h3>
+            <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
             <p>{{ task.description|safe }}</p>
         </article>
         {% endfor %}
@@ -34,29 +34,5 @@
         </article>
     {% endif %}
 </section>
-
-<!-- Completed Tasks -->
-<!-- {% if completed_tasks %}
-<details>
-    <summary>Completed Tasks ({{ completed_tasks|length }})</summary>
-    <ul>
-        {% for task in completed_tasks %}
-        <li>
-            <strong>{{ task.title }}</strong>
-            <small>{{ task.completed_at|date:"M d, Y" }}</small>
-        </li>
-        {% endfor %}
-    </ul>
-</details>
-{% endif %} -->
-
-<!-- Links -->
-<!-- <p>
-    <small>
-        <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='daily-check-in' %}">View Past Check-Ins</a> •
-        <a href="{% url 'cohorts:submission_list' cohort_id=cohort.id survey_slug='weekly-reflection' %}">View Past Reflections</a>
-    </small>
-</p> -->
-
 
 {% endblock %}

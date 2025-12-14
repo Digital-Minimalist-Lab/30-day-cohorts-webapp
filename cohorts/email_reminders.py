@@ -132,7 +132,7 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     all_pending_tasks: List[PendingTask] = []
 
     for enrollment in enrollments:
-        pending_tasks, _ = get_user_tasks(user, enrollment.cohort, today)
+        pending_tasks = get_user_tasks(user, enrollment.cohort, today)
         logger.info(f"Found {len(pending_tasks)} pending tasks for {user.email} in {enrollment.cohort.name}")
         all_pending_tasks.extend(pending_tasks)
 
