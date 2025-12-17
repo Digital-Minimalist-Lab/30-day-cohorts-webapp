@@ -1,6 +1,10 @@
-from django.contrib import admin
-from .models import Cohort, Enrollment
-from cohorts.models import TaskScheduler, UserSurveyResponse
+import json
+from datetime import datetime
+from django.contrib import admin, messages
+from django.http import HttpResponse
+from django.shortcuts import redirect
+
+from .models import Cohort, Enrollment, TaskScheduler, UserSurveyResponse
 
 
 class TaskSchedulerInline(admin.TabularInline):
@@ -8,12 +12,16 @@ class TaskSchedulerInline(admin.TabularInline):
     extra = 1
     fields = ('survey', 'frequency', 'is_cumulative', 'day_of_week', 'offset_days', 'offset_from', 'task_title_template', 'task_description_template')
 
+
 @admin.register(Cohort)
 class CohortAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'enrollment_start_date', 'enrollment_end_date', 'minimum_price_cents', 'is_paid', 'seats_display', 'is_active']
     list_filter = ['is_active', 'is_paid', 'start_date']
     search_fields = ['name']
     date_hierarchy = 'start_date'
+    actions = ['export_cohort_design']  # Only export action
+    add_form_template = 'admin/cohorts/cohort_add_form.html'
+    
     fieldsets = [
         ('Basic Information', {
             'fields': ['name', 'start_date', 'end_date', 'is_active', 'enrollment_start_date', 'enrollment_end_date']
@@ -41,6 +49,69 @@ class CohortAdmin(admin.ModelAdmin):
             return f"{enrolled_count} / ∞"
         return f"{enrolled_count} / {obj.max_seats}"
     seats_display.short_description = 'Seats'
+
+    @admin.action(description='📥 Export selected cohort as JSON')
+    def export_cohort_design(self, request, queryset):
+        """Export cohort design - downloads immediately."""
+        if queryset.count() > 1:
+            self.message_user(
+                request,
+                "Please select only one cohort to export.",
+                level=messages.WARNING
+            )
+            return
+        
+        cohort = queryset.first()
+        response = HttpResponse(
+            cohort.to_json(indent=2),
+            content_type='application/json'
+        )
+        filename = f"{cohort.name.lower().replace(' ', '_')}_design.json"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+
+    def add_view(self, request, form_url='', extra_context=None):
+        """Override add view to handle JSON upload for quick import."""
+        
+        # Check if JSON file was uploaded
+        if request.method == 'POST' and 'json_file' in request.FILES:
+            try:
+                json_file = request.FILES['json_file']
+                start_date_str = request.POST.get('import_start_date')
+                name_override = request.POST.get('import_name', '').strip() or None
+                update_surveys = request.POST.get('import_update_surveys') == 'on'
+                
+                if not start_date_str:
+                    raise ValueError("Start date is required")
+                
+                # Parse and create
+                data = json.load(json_file)
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+                
+                cohort = Cohort.from_design_dict(
+                    data,
+                    start_date=start_date,
+                    name_override=name_override,
+                    update_existing_surveys=update_surveys
+                )
+                
+                self.message_user(
+                    request,
+                    f"✅ Successfully imported cohort '{cohort.name}' (ID: {cohort.pk})",
+                    messages.SUCCESS
+                )
+                # Redirect to change page for the new cohort
+                return redirect('admin:cohorts_cohort_change', cohort.pk)
+                
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"❌ Import failed: {str(e)}",
+                    messages.ERROR
+                )
+        
+        # Continue with normal add view
+        return super().add_view(request, form_url, extra_context)
 
 
 @admin.register(Enrollment)

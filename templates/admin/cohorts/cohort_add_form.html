@@ -1,0 +1,88 @@
+{% extends "admin/change_form.html" %}
+
+{% block field_sets %}
+  {# Quick Import Section - Django Admin Style #}
+  <fieldset class="module aligned">
+    <h2>Quick Import from JSON</h2>
+    
+    <div class="form-row">
+      <div style="padding: 10px 12px; background: #ffc; border: 1px solid #ed9; border-radius: 4px; margin-bottom: 15px;">
+        <p style="margin: 0;">
+          <strong>💡 Already have a cohort design?</strong> Upload a JSON file to create a new cohort instantly. 
+          You can export an existing cohort from the list page to get the JSON format.
+        </p>
+      </div>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="form-row">
+        <div>
+          <label class="required" for="id_json_file">JSON File:</label>
+          <input 
+            type="file" 
+            name="json_file" 
+            id="id_json_file"
+            accept=".json"
+            required
+          >
+          <p class="help">Upload a cohort design JSON file</p>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div>
+          <label class="required" for="id_import_start_date">Start Date:</label>
+          <input 
+            type="date" 
+            name="import_start_date" 
+            id="id_import_start_date"
+            required
+            class="vDateField"
+          >
+          <p class="help">When should this cohort begin?</p>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div>
+          <label for="id_import_name">Name Override:</label>
+          <input 
+            type="text" 
+            name="import_name" 
+            id="id_import_name"
+            placeholder="Leave blank to use name from JSON"
+            style="width: 300px;"
+          >
+          <p class="help">Optional: Specify a custom name for the cohort</p>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div>
+          <label>
+            <input 
+              type="checkbox" 
+              name="import_update_surveys"
+              id="id_import_update_surveys"
+            >
+            Update existing surveys (instead of reusing them)
+          </label>
+          <p class="help">If checked, surveys with the same slug will be updated instead of reused</p>
+        </div>
+      </div>
+      
+      <div class="submit-row">
+        <input type="submit" value="Import Cohort" class="default" name="_import">
+      </div>
+    </form>
+  </fieldset>
+  
+  <div style="margin: 20px 0; text-align: center; color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+    OR create manually below
+  </div>
+  
+  {# Normal Django Admin Form Fields Below #}
+  {{ block.super }}
+{% endblock %}
