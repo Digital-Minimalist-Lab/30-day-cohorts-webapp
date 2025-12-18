@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('surveys', '0003_add_survey_data'),
+        ('surveys', '0002_survey_alter_exitsurvey_unique_together_and_more'),
     ]
 
     operations = [
