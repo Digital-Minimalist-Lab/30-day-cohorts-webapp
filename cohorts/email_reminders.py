@@ -22,7 +22,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.template import TemplateDoesNotExist
 from django.conf import settings
-from django_q.tasks import async_task
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -30,6 +29,8 @@ from accounts.models import UserProfile
 from cohorts.tasks import get_user_tasks, PendingTask
 from cohorts.utils import get_user_today
 from cohorts.models import EmailSendLog
+
+from config.settings.base import *
 
 logger = logging.getLogger(__name__)
 
@@ -82,17 +83,18 @@ def send_task_reminders_for_timezone(timezone_name: str, dry_run: bool = False) 
 
     emails_sent = 0
 
-    for profile in profiles:
-        user = profile.user
+    for i in range(0, 10):
+        for profile in profiles:
+            user = profile.user
 
-        try:
-            if send_task_reminder_to_user(user, dry_run=dry_run):
-                emails_sent += 1
-        except Exception as e:
-            logger.error(f"Error sending reminder to {user.email}: {e}", exc_info=True)
-            raise  # Let Django Q handle the failure/retry
+            try:
+                if send_task_reminder_to_user(user, dry_run=dry_run):
+                    emails_sent += 1
+            except Exception as e:
+                logger.error(f"Error sending reminder to {user.email}: {e}", exc_info=True)
+                raise  # Let Django Q handle the failure/retry
 
-    logger.info(f"Sent {emails_sent} email reminders for timezone {timezone_name}")
+        logger.info(f"Sent {emails_sent} email reminders for timezone {timezone_name}")
     return emails_sent
 
 
@@ -113,9 +115,9 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     # Check idempotency - skip if already sent today
     idempotency_key = _build_idempotency_key(user.id, today)
 
-    if EmailSendLog.objects.was_sent(idempotency_key):
-        logger.debug(f"Reminder already sent for {user.email} on {today}")
-        return False
+    #if EmailSendLog.objects.was_sent(idempotency_key):
+    #    logger.debug(f"Reminder already sent for {user.email} on {today}")
+    #    return False
 
 
     # Get all active cohorts for user
@@ -151,36 +153,17 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     # Send the email
     try:
         _send_email_with_template(user, all_pending_tasks, "emails/task_reminder")
-        EmailSendLog.objects.record_sent(
-            idempotency_key=idempotency_key,
-            recipient_email=user.email,
-            recipient_user=user,
-            email_type='task_reminder',
-        )
-        logger.info(f"Sent task reminder email to {user.email} with {len(all_pending_tasks)} tasks")
+        #EmailSendLog.objects.record_sent(
+        #    idempotency_key=idempotency_key,
+        #    recipient_email=user.email,
+        #    recipient_user=user,
+        #    email_type='task_reminder',
+        #)
+        logger.info(f"Sent task reminder email to {user.email} with {len(all_pending_tasks)} tasks, with {EMAIL_BACKEND}")
         return True
     except Exception as e:
         logger.error(f"Failed to send email to {user.email}: {e}", exc_info=True)
         raise  # Let Django Q handle the failure/retry
-
-
-def send_email_task(subject: str, plain_message: str, from_email: str, recipient_list: List[str], html_message: str) -> None:
-    """
-    A Django Q task to send a single email.
-
-    This allows email sending to be offloaded to workers to avoid
-    rate limiting and blocking the main reminder task.
-    """
-    logger.debug(f"Sending email task to {recipient_list}")
-    send_mail(
-        subject=subject,
-        message=plain_message,
-        from_email=from_email,
-        recipient_list=recipient_list,
-        html_message=html_message,
-        fail_silently=False,
-    )
-    logger.info(f"Successfully queued email to {recipient_list}")
 
 
 def _send_email_with_template(user: AbstractUser, pending_tasks: List[PendingTask], template_name: str) -> None:
@@ -217,12 +200,14 @@ def _send_email_with_template(user: AbstractUser, pending_tasks: List[PendingTas
     else:
         subject = f"You have {len(pending_tasks)} pending task{'s' if len(pending_tasks) > 1 else ''}"
 
-    # Offload actual email sending to a background task
-    async_task(
-        'cohorts.email_reminders.send_email_task',
+    # With the django-q-email backend configured, this call is automatically
+    # and transparently queued as a background task.
+    send_mail(
         subject=subject,
-        plain_message=plain_message,
+        message=plain_message,
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[user.email],
         html_message=html_message,
+        fail_silently=False,
     )
+

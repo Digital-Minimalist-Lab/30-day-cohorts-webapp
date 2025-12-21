@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'django_q',  # Task queue for scheduled email reminders
+    'django_q',  # Task queue
+    'django_q2_email_backend',  # Email backend for Django Q
 
     # Local apps
     'config',  # For management commands
@@ -179,6 +180,7 @@ ACCOUNT_LOGIN_BY_CODE_REQUIRED = True
 
 # Email Configuration
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
@@ -247,14 +249,21 @@ LOGGING = {
     },
 }
 
-# Django-Q2 Configuration (Task Queue for Email Reminders)
+
+# Django Q Configuration
 Q_CLUSTER = {
-    'name': 'DjangORM',
-    'workers': 2,
-    'timeout': 300,  # 5 minutes
-    'retry': 360,  # 6 minutes
-    'queue_limit': 50,
-    'bulk': 10,
-    'orm': 'default',  # Uses PostgreSQL database for queue
-    'catch_up': False,  # Don't run missed scheduled tasks
+    'name': 'digital_minimalist',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'compress': True,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'cpu_affinity': 1,
+    'label': 'Django Q',
+    'orm': 'default',  # Use Django ORM (Database) as the broker
 }
+
+# Django Q Email Setup
+Q2_EMAIL_BACKEND = EMAIL_BACKEND  # The actual backend (SMTP/Console)
+EMAIL_BACKEND = 'django_q2_email_backend.backends.Q2EmailBackend'  # The wrapper that queues emails
