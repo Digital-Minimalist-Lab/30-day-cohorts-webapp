@@ -16,15 +16,36 @@
     Reclaim Time and Attention for what you love.
 </p>
 
-<p class="muted">
-Cohort is in development. Get updates and early access via my newsletter.
-</p>
+  {% if cohort %}
+    <p class="muted" style="margin-bottom: 2rem;">
+        {% if cohort.is_paid %}
+        ${{ cohort.minimum_price_cents|cents_to_dollars }}+ • 
+        {% else %}
+        Free • 
+        {% endif %}
+        ~5 min/day • 
+        Starts {{ cohort.start_date|date:"M j, Y" }}
+        {% if seats_available is not None %}
+        • {{ seats_available }} spot{{ seats_available|pluralize }} left
+        {% endif %}
+    </p>
+    <div class="btn-group">
+        <sl-button variant="primary" size="large" href="{% url 'cohorts:join_start' %}">
+        Join the Next Cohort
+        </sl-button>
+    </div>
+  {% else %}
+    <p class="muted">
+    Cohort is in development. Get updates and early access via my newsletter.
+    </p>
 
-<div class="btn-group">
-<sl-button variant="primary" size="large" href="https://lifeandlab.substack.com" target="_blank">
-    Get Cohort Updates from our Newsletter!
-</sl-button>
-</div>
+    <div class="btn-group">
+    <sl-button variant="primary" size="large" href="https://lifeandlab.substack.com" target="_blank">
+        Get Cohort Updates from our Newsletter!
+    </sl-button>
+    </div>
+
+  {% endif %}
 
 </section>
 
