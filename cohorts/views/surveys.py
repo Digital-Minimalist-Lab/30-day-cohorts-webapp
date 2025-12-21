@@ -11,7 +11,6 @@ from django.views.generic.list import ListView
 from surveys.forms import DynamicSurveyForm
 from surveys.models import Survey
 
-from cohorts.views.contexts import SurveyContext
 from cohorts.models import Cohort, Enrollment, UserSurveyResponse
 from cohorts.surveys import create_survey_submission
 
@@ -79,7 +78,16 @@ class SurveyFormView(FormView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         """Add survey, cohort, and title information to the template context."""
         context = super().get_context_data(**kwargs)
-        survey_context = SurveyContext(survey=self.survey, cohort=self.cohort, due_date=self.due_date).as_dict()
+        survey_context: dict[str, Any] = {
+            'survey_name': self.survey.name,
+            'cohort_name': self.cohort.name,        
+        }
+        if self.due_date:
+            week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
+            survey_context.update({
+                'due_date': self.due_date.isoformat(),
+                'week_number': week_number,
+            })
         context.update({
             'page_title': self.survey.title_template.format(**survey_context),
             'description': self.survey.description.format(**survey_context),
