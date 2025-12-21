@@ -186,6 +186,8 @@ class Cohort(models.Model):
                             errors.append(f"{prefix}.schedule: ONCE frequency requires 'offset_days'")
                         if "offset_from" not in schedule:
                             errors.append(f"{prefix}.schedule: ONCE frequency requires 'offset_from'")
+                        elif schedule["offset_from"] not in TaskScheduler.OffsetFrom.values:
+                            errors.append(f"{prefix}.schedule: invalid offset_from '{schedule['offset_from']}'")
         
         return errors
 
@@ -370,8 +372,8 @@ class TaskScheduler(models.Model):
         WEEKLY = 'WEEKLY', _('Weekly')
 
     class OffsetFrom(models.TextChoices):
-        START = 'start', _('From Cohort Start')
-        END = 'end', _('From Cohort End')
+        START = 'COHORT_START', _('From Cohort Start')
+        END = 'COHORT_END', _('From Cohort End')
 
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='schedulers')
     cohort = models.ForeignKey(Cohort, on_delete=models.CASCADE, related_name='task_schedulers', help_text="The cohort this schedule applies to.")
@@ -387,7 +389,7 @@ class TaskScheduler(models.Model):
 
     # Fields for ONCE frequency
     offset_days = models.IntegerField(blank=True, null=True, help_text="For ONCE frequency. The number of days to offset from the start/end date.")
-    offset_from = models.CharField(max_length=10, choices=OffsetFrom.choices, blank=True, null=True, help_text="For ONCE frequency. The reference point for the offset.")
+    offset_from = models.CharField(max_length=50, choices=OffsetFrom.choices, blank=True, null=True, help_text="For ONCE frequency. The reference point for the offset.")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
