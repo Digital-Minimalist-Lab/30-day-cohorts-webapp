@@ -83,18 +83,17 @@ def send_task_reminders_for_timezone(timezone_name: str, dry_run: bool = False) 
 
     emails_sent = 0
 
-    for i in range(0, 10):
-        for profile in profiles:
-            user = profile.user
+    for profile in profiles:
+        user = profile.user
 
-            try:
-                if send_task_reminder_to_user(user, dry_run=dry_run):
-                    emails_sent += 1
-            except Exception as e:
-                logger.error(f"Error sending reminder to {user.email}: {e}", exc_info=True)
-                raise  # Let Django Q handle the failure/retry
+        try:
+            if send_task_reminder_to_user(user, dry_run=dry_run):
+                emails_sent += 1
+        except Exception as e:
+            logger.error(f"Error sending reminder to {user.email}: {e}", exc_info=True)
+            raise  # Let Django Q handle the failure/retry
 
-        logger.info(f"Sent {emails_sent} email reminders for timezone {timezone_name}")
+    logger.info(f"Sent {emails_sent} email reminders for timezone {timezone_name}")
     return emails_sent
 
 
@@ -115,9 +114,9 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     # Check idempotency - skip if already sent today
     idempotency_key = _build_idempotency_key(user.id, today)
 
-    #if EmailSendLog.objects.was_sent(idempotency_key):
-    #    logger.debug(f"Reminder already sent for {user.email} on {today}")
-    #    return False
+    if EmailSendLog.objects.was_sent(idempotency_key):
+       logger.debug(f"Reminder already sent for {user.email} on {today}")
+       return False
 
 
     # Get all active cohorts for user
@@ -153,12 +152,12 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
     # Send the email
     try:
         _send_email_with_template(user, all_pending_tasks, "emails/task_reminder")
-        #EmailSendLog.objects.record_sent(
-        #    idempotency_key=idempotency_key,
-        #    recipient_email=user.email,
-        #    recipient_user=user,
-        #    email_type='task_reminder',
-        #)
+        EmailSendLog.objects.record_sent(
+           idempotency_key=idempotency_key,
+           recipient_email=user.email,
+           recipient_user=user,
+           email_type='task_reminder',
+        )
         logger.info(f"Sent task reminder email to {user.email} with {len(all_pending_tasks)} tasks, with {EMAIL_BACKEND}")
         return True
     except Exception as e:

@@ -25,7 +25,7 @@ class PendingTask:
 
 def _get_once_task_due_dates(scheduler: TaskScheduler, today: date) -> List[date]:
     """Generates due dates for a ONCE frequency scheduler."""
-    if scheduler.offset_from == 'start':
+    if scheduler.offset_from == TaskScheduler.OffsetFrom.START:
         due_date = scheduler.cohort.start_date + timedelta(days=scheduler.offset_days)
     else: # 'end'
         due_date = scheduler.cohort.end_date + timedelta(days=scheduler.offset_days)
@@ -71,7 +71,7 @@ def _get_weekly_task_due_dates(scheduler: TaskScheduler, today: date) -> List[da
 TASK_FREQUENCY_HANDLERS = {
     TaskScheduler.Frequency.ONCE: {
         'handler': _get_once_task_due_dates,
-        'order': lambda s: 1 if s.offset_from == 'start' else 4
+        'order': lambda s: 1 if s.offset_from == TaskScheduler.OffsetFrom.START else 4
     },
     TaskScheduler.Frequency.DAILY: {
         'handler': _get_daily_task_due_dates,
