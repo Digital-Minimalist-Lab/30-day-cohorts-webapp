@@ -411,7 +411,7 @@
           "section": "H. Values Primer",
           "is_required": true,
           "order": 31
-        }
+        },
         {
           "key": "wrap_up",
           "text": "Thank you for taking the time to assess yourself honestly. This will help you assess your progress and us assess the efficacy of this project.",
@@ -447,7 +447,7 @@
         },
         {
           "key": "step1_intro",
-          "text": "For a moment, let's talk about motivation. It requires some motivation to go through 30 days of big changes to your life - what you're doing now. So, it's important to ask how motivation works. </br>Often in psychology, we break motivation into two types: avoidance motivation, and approach motivation. </br>Avoidance motivation comes from our desire to avoid some harm, discomfort, suffering. For our purposes that would be something like 'I want to reduce my smartphone use because scrolling for 4 hours makes me feel anxious." </br>Approach motivation comes from our desire to bring about something positive in our own lives or in the lives of our loved ones, communities, or some greater good. That's what we're focusing on right now. We want to ask 'By reducing our smartphone use, what positive things might I enable or reconnect with?' What are we approaching? </br>Neither of these motivational framings is right or wrong or better. However, I've found most people take the avoidance motivation approach ONLY. Why not make use of both? Let's reduce the harm of the attention economy AND use that extra time we've freed up on things we love! We're going to call these things we're APPROACHING, Cherished Goals (drawing from the Recovery Oriented Cognitive Therapy tradition),
+          "text": "For a moment, let's talk about motivation. It requires some motivation to go through 30 days of big changes to your life - what you're doing now. So, it's important to ask how motivation works. </br>Often in psychology, we break motivation into two types: avoidance motivation, and approach motivation. </br>Avoidance motivation comes from our desire to avoid some harm, discomfort, suffering. For our purposes that would be something like 'I want to reduce my smartphone use because scrolling for 4 hours makes me feel anxious. </br>Approach motivation comes from our desire to bring about something positive in our own lives or in the lives of our loved ones, communities, or some greater good. That's what we're focusing on right now. We want to ask 'By reducing our smartphone use, what positive things might I enable or reconnect with?' What are we approaching? </br>Neither of these motivational framings is right or wrong or better. However, I've found most people take the avoidance motivation approach ONLY. Why not make use of both? Let's reduce the harm of the attention economy AND use that extra time we've freed up on things we love! We're going to call these things we're APPROACHING, Cherished Goals (drawing from the Recovery Oriented Cognitive Therapy tradition)",
           "type": "info",
           "section": "Step 1: Identify Your Cherished Goals",
           "order": 1
@@ -507,7 +507,7 @@
         },
         {
           "key": "anchor1_intro",
-          "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. We highly recommend reading. </br> Reading is easy to fit into many of the times and spaces we would often scroll which makes it highly effective at replacing doomscrolling. Want to scroll on Saturday morning? Good thing your book is on your night stand. Waiting for the subway? Good thing you brought your book. Nobody's available to hang out this evening and you can't watch Netflix? Good thing you've got your book. 
+          "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. We highly recommend reading. </br> Reading is easy to fit into many of the times and spaces we would often scroll which makes it highly effective at replacing doomscrolling. Want to scroll on Saturday morning? Good thing your book is on your night stand. Waiting for the subway? Good thing you brought your book. Nobody's available to hang out this evening and you can't watch Netflix? Good thing you've got your book.",
           "type": "info",
           "section": "Anchor 1: Low-Energy Solo Activity",
           "order": 8
@@ -909,8 +909,7 @@
         "is_cumulative": true,
         "task_title_template": "Day 1: Environment Redesign",
         "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes."
-      }
-      ],
+      },
       "schedule": {
         "frequency": "ONCE",
         "offset_days": 14,
@@ -918,8 +917,7 @@
         "is_cumulative": true,
         "task_title_template": "Day 1: Environment Redesign",
         "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes."
-      }
-      ],
+      },
       "schedule": {
         "frequency": "ONCE",
         "offset_days": 14,
