@@ -1,0 +1,188 @@
+{
+  "cohort_template": {
+    "name": "test",
+    "duration_days": 14,
+    "is_paid": false,
+    "minimum_price_cents": 0,
+    "max_seats": 100
+  },
+  "surveys": [
+    {
+      "slug": "daily-check-in",
+      "name": "Daily Check-in",
+      "purpose": "DAILY_CHECKIN",
+      "description": "<b>5-step daily reflection</b>: Rate your mood and digital satisfaction, note your screen time, celebrate a proud moment, acknowledge any slips, and reflect on your day.",
+      "title_template": "{survey_name}",
+      "questions": [
+        {
+          "key": "mood_1to5",
+          "text": "How do you feel today? (1-5)",
+          "type": "integer",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "digital_satisfaction_1to5",
+          "text": "Satisfaction with your digital use today (1-5)",
+          "type": "integer",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "screentime_min",
+          "text": "Screen time in minutes (estimated or actual)",
+          "type": "integer",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "proud_moment_text",
+          "text": "One thing you're proud of doing that replaced scrolling",
+          "type": "textarea",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "digital_slip_text",
+          "text": "If you slipped into digital use in any way, how?",
+          "type": "textarea",
+          "is_required": false,
+          "order": 4
+        },
+        {
+          "key": "reflection_text",
+          "text": "1-2 sentences about how today went",
+          "type": "textarea",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "DAILY",
+        "is_cumulative": false,
+        "task_title_template": "",
+        "task_description_template": ""
+      }
+    },
+    {
+      "slug": "entry-survey",
+      "name": "Entry Survey",
+      "purpose": "ENTRY",
+      "description": "This survey establishes your baseline. Be honest with yourself\u2014this is for your reflection, not judgment.",
+      "title_template": "{survey_name}",
+      "questions": [
+        {
+          "key": "mood_1to5",
+          "text": "How do you feel right now? (1=low, 5=high)",
+          "type": "integer",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "baseline_screentime_min",
+          "text": "Average daily smartphone usage (minutes)",
+          "type": "integer",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "intention_text",
+          "text": "Why are you interested in participating?",
+          "type": "textarea",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "challenge_text",
+          "text": "What would you like to reclaim?",
+          "type": "textarea",
+          "is_required": false,
+          "order": 3
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "is_cumulative": false,
+        "task_title_template": "",
+        "task_description_template": "",
+        "offset_days": 0,
+        "offset_from": "start"
+      }
+    },
+    {
+      "slug": "exit-survey",
+      "name": "Exit Survey",
+      "purpose": "EXIT",
+      "description": "You've completed the 30-day journey. Reflect on your experience\u2014what changed, what you learned, and what comes next.",
+      "title_template": "{survey_name}",
+      "questions": [
+        {
+          "key": "mood_1to5",
+          "text": "How do you feel now? (1=low, 5=high)",
+          "type": "integer",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "final_screentime_min",
+          "text": "Current daily screen time (minutes)",
+          "type": "integer",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "wins_text",
+          "text": "What were your wins?",
+          "type": "textarea",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "insight_text",
+          "text": "What insights did you gain?",
+          "type": "textarea",
+          "is_required": true,
+          "order": 3
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "is_cumulative": false,
+        "task_title_template": "",
+        "task_description_template": "",
+        "offset_days": 0,
+        "offset_from": "end"
+      }
+    },
+    {
+      "slug": "weekly-reflection",
+      "name": "Weekly Reflection",
+      "purpose": "WEEKLY_REFLECTION",
+      "description": "Weekly reflection and goal setting.",
+      "title_template": "{survey_name}",
+      "questions": [
+        {
+          "key": "goal_text",
+          "text": "What's your intention for this week?",
+          "type": "textarea",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "reflection_text",
+          "text": "Optional reflection on last week",
+          "type": "textarea",
+          "is_required": false,
+          "order": 1
+        }
+      ],
+      "schedule": {
+        "frequency": "WEEKLY",
+        "is_cumulative": true,
+        "task_title_template": "",
+        "task_description_template": "",
+        "day_of_week": 6
+      }
+    }
+  ]
+}
