@@ -1,0 +1,2052 @@
+{
+  "cohort_template": {
+    "name": "30-Day Digital Declutter Cohort",
+    "duration_days": 43,
+    "is_paid": false,
+    "minimum_price_cents": 2000,
+    "max_seats": 100
+  },
+  "surveys": [
+    {
+      "slug": "entry-survey",
+      "name": "Entry Survey",
+      "purpose": "ENTRY",
+      "description": "This survey establishes your baseline. Be honest with yourself—this is for your reflection, not judgment.",
+      "title_template": "Entry Survey",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "section_a_intro",
+          "text": "The following questions help us understand your relationship with your smartphone. Please rate each statement based on how true it feels for you.",
+          "type": "info",
+          "section": "A. Smartphone Compulsion",
+          "order": 0
+        },
+        {
+          "key": "sc_1_pickup_unintended",
+          "text": "I often pick up my phone even when I didn't intend to use it.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "sc_2_gets_in_way",
+          "text": "My phone gets in the way of focusing on work or school.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "sc_3_lose_track_time",
+          "text": "I often lose track of time while scrolling on my phone.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "sc_4_feel_uneasy",
+          "text": "I feel uneasy when I don't have my phone with me.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "sc_5_tried_cut_back",
+          "text": "I've tried to cut back on my phone use but found it difficult.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "sc_6_escape_feelings",
+          "text": "Using my phone helps me escape uncomfortable feelings.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 6
+        },
+        {
+          "key": "sc_7_check_habit",
+          "text": "I find myself checking my phone out of habit, even when I don't need to.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 7
+        },
+        {
+          "key": "sc_8_notifications_pull",
+          "text": "Notifications often pull me out of what I'm doing.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 8
+        },
+        {
+          "key": "sc_9_wish_done_else",
+          "text": "After a period of smartphone or digital use, I wish I had done something else with my time.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 9
+        },
+        {
+          "key": "sc_10_avoid_engaging",
+          "text": "I sometimes use my phone to avoid engaging with people or tasks around me.",
+          "type": "radio",
+          "section": "A. Smartphone Compulsion",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 10
+        },
+        {
+          "key": "usage_hours_daily",
+          "text": "On average, how many hours per day do you use your smartphone?",
+          "type": "integer",
+          "section": "B. Digital Usage Behavior",
+          "is_required": true,
+          "order": 11
+        },
+        {
+          "key": "sleep_quality",
+          "text": "Thinking about the past week, I would describe my sleep quality as good.",
+          "type": "radio",
+          "section": "C. Sleep Quality",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 12
+        },
+        {
+          "key": "section_d_intro",
+          "text": "Over the past two weeks...",
+          "type": "info",
+          "section": "D. Emotional Regulation & Worry",
+          "order": 13
+        },
+        {
+          "key": "gad_1_tense",
+          "text": "How often have you felt keyed-up, tense, or on edge?",
+          "type": "radio",
+          "section": "D. Emotional Regulation & Worry",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 14
+        },
+        {
+          "key": "gad_2_worry",
+          "text": "How often have you found it difficult to settle your mind when it starts worrying about things?",
+          "type": "radio",
+          "section": "D. Emotional Regulation & Worry",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 15
+        },
+        {
+          "key": "section_e_intro",
+          "text": "Over the past two weeks...",
+          "type": "info",
+          "section": "E. Mood & Motivation",
+          "order": 16
+        },
+        {
+          "key": "phq_1_motivation",
+          "text": "How often have you felt low motivation or found it hard to enjoy the things you usually like?",
+          "type": "radio",
+          "section": "E. Mood & Motivation",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 17
+        },
+        {
+          "key": "phq_2_emotionally_low",
+          "text": "How often have you felt weighed down, discouraged, or emotionally low?",
+          "type": "radio",
+          "section": "E. Mood & Motivation",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 18
+        },
+        {
+          "key": "section_f_intro",
+          "text": "Over the past two weeks, how have you felt the following? (1 = Hardly ever, 2 = Some of the time, 3 = Often)",
+          "type": "info",
+          "section": "F. Social Connectedness",
+          "order": 19
+        },
+        {
+          "key": "ucla_1_companionship",
+          "text": "Feeling like you don't have the companionship or closeness you'd like.",
+          "type": "radio",
+          "section": "F. Social Connectedness",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 20
+        },
+        {
+          "key": "ucla_2_left_out",
+          "text": "Feeling left out or not included in things.",
+          "type": "radio",
+          "section": "F. Social Connectedness",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 21
+        },
+        {
+          "key": "ucla_3_disconnected",
+          "text": "Feeling disconnected from others, even when people are around.",
+          "type": "radio",
+          "section": "F. Social Connectedness",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 22
+        },
+        {
+          "key": "section_g_intro",
+          "text": "Over the past two weeks...",
+          "type": "info",
+          "section": "G. Well-Being & Daily Vitality",
+          "order": 23
+        },
+        {
+          "key": "who5_1_cheerful",
+          "text": "I felt generally upbeat, cheerful, or in good spirits.",
+          "type": "radio",
+          "section": "G. Well-Being & Daily Vitality",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 24
+        },
+        {
+          "key": "who5_2_calm",
+          "text": "I felt calm, steady, or at ease.",
+          "type": "radio",
+          "section": "G. Well-Being & Daily Vitality",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 25
+        },
+        {
+          "key": "who5_3_active_engaged",
+          "text": "I felt active and engaged with my day.",
+          "type": "radio",
+          "section": "G. Well-Being & Daily Vitality",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 26
+        },
+        {
+          "key": "who5_4_rested",
+          "text": "I woke up feeling rested or refreshed.",
+          "type": "radio",
+          "section": "G. Well-Being & Daily Vitality",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 27
+        },
+        {
+          "key": "who5_5_meaningful",
+          "text": "My day-to-day life felt interesting or meaningful.",
+          "type": "radio",
+          "section": "G. Well-Being & Daily Vitality",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 28
+        },
+        {
+          "key": "values_1_reclaim",
+          "text": "What is one thing you want to reclaim by reducing your digital consumption? (a hobby, relationships, rest, focus, creativity, etc.)",
+          "type": "textarea",
+          "section": "H. Values Primer",
+          "is_required": true,
+          "order": 29
+        },
+        {
+          "key": "values_2_why_now",
+          "text": "Why do you want to make this change right now? (What made this the right moment to reset your digital habits?)",
+          "type": "textarea",
+          "section": "H. Values Primer",
+          "is_required": true,
+          "order": 30
+        },
+        {
+          "key": "values_3_extra_time",
+          "text": "If you had 30–60 minutes more each day, how would you want to use it? (What would feel meaningful, energizing, or important?)",
+          "type": "textarea",
+          "section": "H. Values Primer",
+          "is_required": true,
+          "order": 31
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 0,
+        "offset_from": "COHORT_START",
+        "is_cumulative": false,
+        "task_title_template": "Complete Your Entry Survey",
+        "task_description_template": "Welcome to the cohort! Please complete your entry survey to establish your baseline."
+      }
+    },
+    {
+      "slug": "reconnect-survey",
+      "name": "Reconnect: Cherished Goals & Anchor Activities",
+      "purpose": "GENERIC",
+      "description": "This month is about more than reducing screen-time - it's about reconnecting with things you love.",
+      "title_template": "Reconnect Survey",
+      "estimated_time_minutes": 15,
+      "questions": [
+        {
+          "key": "reconnect_intro",
+          "text": "This month is about more than reducing screen-time — it's about reconnecting with things you love. This section helps you identify what things you'd like to reconnect with — and gives you simple, practical ways to act on that.",
+          "type": "info",
+          "section": "Introduction",
+          "order": 0
+        },
+        {
+          "key": "step1_intro",
+          "text": "Instead of starting with abstract values, we'll start with cherished goals. A cherished goal is something you genuinely want more of in your life — not because you 'should,' but because it matters to you. These goals don't need to be ambitious or impressive. They should feel personally meaningful and realistic.",
+          "type": "info",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "order": 1
+        },
+        {
+          "key": "step1_prompt",
+          "text": "Take a few minutes to reflect and answer the following:",
+          "type": "info",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "order": 2
+        },
+        {
+          "key": "cherished_1_areas",
+          "text": "What are one or two areas of your life you want to cultivate more right now? (Examples: a skill you want to build, relationships with loved ones, physical health, creative work, community involvement, faith or spiritual practice, rest and calm.)",
+          "type": "textarea",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "cherished_2_doing_more",
+          "text": "When you imagine your life going a little better than it is now, what are you doing more of? (Examples: reading regularly, feeling calmer in the mornings, spending more time with loved ones, exercising consistently, creating something, feeling less scattered.)",
+          "type": "textarea",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "cherished_3_small_goal",
+          "text": "What is one small but meaningful goal you wish your attention supported more right now? (1–2 sentences)",
+          "type": "textarea",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "cherished_4_crowds_out",
+          "text": "What does doomscrolling currently crowd out that you care about? (1 sentence is enough.)",
+          "type": "textarea",
+          "section": "Step 1: Identify Your Cherished Goals",
+          "is_required": true,
+          "order": 6
+        },
+        {
+          "key": "step2_intro",
+          "text": "These four activities will act as anchors throughout the cohort — simple, repeatable ways to shift your attention away from autopilot scrolling and toward the areas of life you want to cultivate. They don't need to be done perfectly. They just need to be easier to reach for than the feed. After choosing each activity, you'll write a short reflection on why it matters to you and how you expect it to feel.",
+          "type": "info",
+          "section": "Step 2: Choose Your Four Anchor Activities",
+          "order": 7
+        },
+        {
+          "key": "anchor1_intro",
+          "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. Examples: Reading, journaling, sketching, puzzles, knitting, meditation, stretching",
+          "type": "info",
+          "section": "Anchor 1: Low-Energy Solo Activity",
+          "order": 8
+        },
+        {
+          "key": "anchor1_activity",
+          "text": "What low-energy solo activity will you choose?",
+          "type": "text",
+          "section": "Anchor 1: Low-Energy Solo Activity",
+          "is_required": true,
+          "order": 9
+        },
+        {
+          "key": "anchor1_reflection",
+          "text": "How does this activity support the areas or goals you named above, and how do you expect it to feel when you do it? (1–2 sentences)",
+          "type": "textarea",
+          "section": "Anchor 1: Low-Energy Solo Activity",
+          "is_required": true,
+          "order": 10
+        },
+        {
+          "key": "anchor2_intro",
+          "text": "An effortful activity that builds competence or momentum. Choose one activity you want to practice or improve at this month. Examples: Writing a blog, learning guitar, drawing, cooking, running, lifting, photography, coding a small project, language learning",
+          "type": "info",
+          "section": "Anchor 2: High-Energy Solo / Skill-Building Activity",
+          "order": 11
+        },
+        {
+          "key": "anchor2_activity",
+          "text": "What high-energy solo or skill-building activity will you choose?",
+          "type": "text",
+          "section": "Anchor 2: High-Energy Solo / Skill-Building Activity",
+          "is_required": true,
+          "order": 12
+        },
+        {
+          "key": "anchor2_reflection",
+          "text": "How does this activity support something you want to cultivate in your life, and how do you imagine feeling after doing it each week? (1–2 sentences)",
+          "type": "textarea",
+          "section": "Anchor 2: High-Energy Solo / Skill-Building Activity",
+          "is_required": true,
+          "order": 13
+        },
+        {
+          "key": "anchor3_intro",
+          "text": "A recurring point of connection. Choose one weekly ritual — in person or virtual — with someone you care about. Examples: Board game night, weekly phone or video call with a sibling or friend, movie night, Sunday dinner, weekly walk",
+          "type": "info",
+          "section": "Anchor 3: Social Ritual With Loved Ones",
+          "order": 14
+        },
+        {
+          "key": "anchor3_activity",
+          "text": "What social ritual with loved ones will you choose?",
+          "type": "text",
+          "section": "Anchor 3: Social Ritual With Loved Ones",
+          "is_required": true,
+          "order": 15
+        },
+        {
+          "key": "anchor3_reflection",
+          "text": "Who does this ritual help you stay connected to, and how do you want this time together to feel? (1–2 sentences)",
+          "type": "textarea",
+          "section": "Anchor 3: Social Ritual With Loved Ones",
+          "is_required": true,
+          "order": 16
+        },
+        {
+          "key": "anchor4_intro",
+          "text": "Something that brings you into shared space with others. Choose one weekly activity that involves a group, class, or community. Examples: Run club, art/dance class, volunteering, religious group, climbing gym, Friday Night Magic at a game store",
+          "type": "info",
+          "section": "Anchor 4: Social Hobby / Community Activity",
+          "order": 17
+        },
+        {
+          "key": "anchor4_activity",
+          "text": "What social hobby or community activity will you choose?",
+          "type": "text",
+          "section": "Anchor 4: Social Hobby / Community Activity",
+          "is_required": true,
+          "order": 18
+        },
+        {
+          "key": "anchor4_reflection",
+          "text": "What part of your life does showing up here support, and why does it matter right now? (1–2 sentences)",
+          "type": "textarea",
+          "section": "Anchor 4: Social Hobby / Community Activity",
+          "is_required": true,
+          "order": 19
+        },
+        {
+          "key": "closing",
+          "text": "Beautiful. You've chosen four small ways to reconnect with what matters to you. None of this needs to be perfect — small steps, small moments, small wins all count. Every bit of reengagement is real progress. Now we'll look at two possible futures: one where nothing changes, and one where these small actions add up to a meaningful shift. This helps your mind see what you're moving toward — and why it's worth protecting your attention.",
+          "type": "info",
+          "section": "Closing",
+          "order": 20
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 0,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Reconnect: Choose Your Anchor Activities",
+        "task_description_template": "Define the meaningful activities you'll reconnect with this month."
+      }
+    },
+    {
+      "slug": "mental-contrasting",
+      "name": "Mental Contrasting",
+      "purpose": "GENERIC",
+      "description": "This step helps you see clearly what's at stake by imagining two futures.",
+      "title_template": "Mental Contrasting Exercise",
+      "estimated_time_minutes": 15,
+      "questions": [
+        {
+          "key": "mc_intro",
+          "text": "This next step helps you see clearly what's at stake. The attention economy competes for the same inner resources that your values and meaningful activities depend on. Doomscrolling isn't just 'bad tech habits' — it crowds out the things you truly care about by soaking up your energy, your time, and your attention. So now, you're going to imagine two futures.",
+          "type": "info",
+          "section": "Introduction",
+          "order": 0
+        },
+        {
+          "key": "future_a_intro",
+          "text": "Imagine your life a year from now if nothing changes — if the same scrolling patterns continue or intensify a little. Be straightforward. No dramatics, no self-shaming. Just an honest projection of the direction you're already on.",
+          "type": "info",
+          "section": "Future A: If Your Digital Habits Stay the Same",
+          "order": 1
+        },
+        {
+          "key": "future_a_prompts",
+          "text": "Consider: How does doomscrolling shape your days? What gets pushed aside — hobbies, relationships, rest, focus, health? What does your attention feel like: scattered, foggy, constantly pulled? How do you feel physically and mentally? Which of your values fade into the background? How do your relationships feel when you're more distracted or drained? What do you miss out on?",
+          "type": "info",
+          "section": "Future A: If Your Digital Habits Stay the Same",
+          "order": 2
+        },
+        {
+          "key": "future_a_response",
+          "text": "Write for 2–3 minutes. Imagine your life a year from now if nothing changes:",
+          "type": "textarea",
+          "section": "Future A: If Your Digital Habits Stay the Same",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "future_b_intro",
+          "text": "Now picture a year from now if you consistently make small shifts toward the things you chose — your calming activity, your skill-building hobby, your social ritual, and your community activity. Nothing heroic. Just steady, reasonable effort.",
+          "type": "info",
+          "section": "Future B: If You Reclaim Your Attention",
+          "order": 4
+        },
+        {
+          "key": "future_b_prompts",
+          "text": "Consider: What do your mornings and evenings look like? How does it feel to reach for something meaningful instead of the feed? How does your energy and focus change over time? How do your relationships feel when you're more present? How do your values show up more often? What are you proud of? What becomes easier when your attention isn't constantly fractured?",
+          "type": "info",
+          "section": "Future B: If You Reclaim Your Attention",
+          "order": 5
+        },
+        {
+          "key": "future_b_response",
+          "text": "Write for 2–3 minutes. Picture a year from now if you make small, consistent shifts:",
+          "type": "textarea",
+          "section": "Future B: If You Reclaim Your Attention",
+          "is_required": true,
+          "order": 6
+        },
+        {
+          "key": "contrast_1_difference",
+          "text": "What's the biggest difference between these two futures? (1–2 sentences)",
+          "type": "textarea",
+          "section": "The Contrast",
+          "is_required": true,
+          "order": 7
+        },
+        {
+          "key": "contrast_2_which_future",
+          "text": "Which future do you want to move toward this month, and why? (1–2 sentences)",
+          "type": "textarea",
+          "section": "The Contrast",
+          "is_required": true,
+          "order": 8
+        },
+        {
+          "key": "mc_closing",
+          "text": "You've now clarified the difference between staying on autopilot and showing up for the parts of life you actually care about. This month doesn't require perfection. But consistent, small effort will move you toward the future you just described — and that progress matters.",
+          "type": "info",
+          "section": "Closing",
+          "order": 9
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 0,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Mental Contrasting: Envision Your Future",
+        "task_description_template": "Imagine two futures and clarify what you're moving toward."
+      }
+    },
+    {
+      "slug": "day-1-environment-redesign",
+      "name": "Day 1: Environment Redesign",
+      "purpose": "GENERIC",
+      "description": "Remove engineered traps and rewire old habits to create space for what you love.",
+      "title_template": "Day 1: Environment Redesign",
+      "estimated_time_minutes": 45,
+      "questions": [
+        {
+          "key": "intro_header",
+          "text": "Pick What Fits — But More = More Effective. You get to choose which tech boundaries, nudges, and intentional integrations fit your life best. You don't need to adopt everything and if something doesn't work for your situation, feel free to adapt it. But here's the truth: The more of these changes you implement, the more likely it is that your screen time will drop — and the easier it becomes to reconnect with your values. This isn't about restricting your life. It's about removing the engineered traps and rewiring old habits to create space for what you love.",
+          "type": "info",
+          "section": "Introduction",
+          "order": 0
+        },
+        {
+          "key": "why_this_works_intro",
+          "text": "Most modern apps are deliberately designed to pull your attention away from your intentions: Infinite scroll, Autoplay, Notifications, Algorithmic feeds, 'Quick checks' that become 20 minutes. This isn't about willpower. It's about design.",
+          "type": "info",
+          "section": "1. Why This Works",
+          "order": 1
+        },
+        {
+          "key": "why_this_works_layers",
+          "text": "Day 1 is about reclaiming control of the design so that your environment starts working for you instead of against you. We do this in three layers: Tech Boundaries (strong defaults that collapse entire habit loops), Nudges (small friction changes that break addictive patterns), Intentional Integrations (rules for bringing tech back in aligned ways). Then we solidify the changes through Implementation Intentions.",
+          "type": "info",
+          "section": "1. Why This Works",
+          "order": 2
+        },
+        {
+          "key": "boundaries_intro",
+          "text": "These are three extremely effective boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.",
+          "type": "info",
+          "section": "2. Tech Boundaries (Default SOPs)",
+          "order": 3
+        },
+        {
+          "key": "boundary_1_info",
+          "text": "Boundary 1: Do phone tasks on your computer. Why it works: Phones are frictionless; computers are less so. On a laptop you need to sit down, you need intention, browser extensions can remove addictive features, and you don't mindlessly tap into apps out of habit. Most people scroll compulsively on phones and thoughtfully on computers. This boundary creates that divide on purpose.",
+          "type": "info",
+          "section": "2. Tech Boundaries (Default SOPs)",
+          "order": 4
+        },
+        {
+          "key": "boundary_2_info",
+          "text": "Boundary 2: No phone in bed (or in the bedroom at night). Why it works: The 'phone in bed' loop is one of the strongest attention habits. Removing the phone from the bedroom eliminates morning doomscrolling, eliminates 'I'll just check one thing' at night, improves sleep, and breaks your most ingrained cue-action loop. This single boundary dramatically improves outcomes for the entire cohort.",
+          "type": "info",
+          "section": "2. Tech Boundaries (Default SOPs)",
+          "order": 5
+        },
+        {
+          "key": "boundary_3_info",
+          "text": "Boundary 3: No YouTube or TV during meals. Why it works: Meals are a predictable trigger for autopilot consumption. Screens during meals strengthen distraction habits and crowd out presence and conversation. Removing screens at meals creates time for mindfulness or conversation with coworkers or loved ones.",
+          "type": "info",
+          "section": "2. Tech Boundaries (Default SOPs)",
+          "order": 6
+        },
+        {
+          "key": "boundaries_commitment",
+          "text": "You can use these boundaries, or define your own. But these are known to be highly effective. It may be useful to keep sticky notes around your home to remind you of these boundaries.",
+          "type": "textarea",
+          "section": "2. Tech Boundaries (Default SOPs)",
+          "is_required": true,
+          "order": 7
+        },
+        {
+          "key": "nudges_intro",
+          "text": "Nudges change behavior not by force, but by shifting defaults. These aren't restrictions — they're environmental adjustments that make your intentions effortless.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 8
+        },
+        {
+          "key": "nudges_smartphone",
+          "text": "Smartphone nudges: Move apps off the home screen, Hide addictive apps in folders, Turn off most notifications, Use grayscale or simple wallpapers, Remove short-form video apps, Use web versions instead of apps.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 9
+        },
+        {
+          "key": "nudges_laptop",
+          "text": "Laptop nudges: Install browser extensions that remove feeds/autoplay/recommendations, Turn off browser notifications, Use a blank or calm start page, Log out of algorithmic accounts, Pin only value-based bookmarks.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 10
+        },
+        {
+          "key": "nudges_tv",
+          "text": "Smart TV / Console nudges: Turn off autoplay, Turn off recommendations, Move apps into a hidden folder, Log out of binge-prone platforms when not in use.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 11
+        },
+        {
+          "key": "nudges_closing",
+          "text": "Nudges don't rely on self-discipline. They change the architecture of your attention.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 12
+        },
+        {
+          "key": "nudges_commitment",
+          "text": "List 3–5 specific nudges you will implement today across your devices:",
+          "type": "textarea",
+          "section": "3. Nudges (Environment Redesign)",
+          "is_required": true,
+          "order": 13
+        },
+        {
+          "key": "integrations_intro",
+          "text": "Intentional Integrations are how you reintroduce technology in ways that align with your values. These replace 'mindless default behaviors' with clear rules of engagement. They're not about deprivation — they're about making tech use purposeful instead of automatic.",
+          "type": "info",
+          "section": "4. Intentional Integrations",
+          "order": 14
+        },
+        {
+          "key": "integrations_examples",
+          "text": "Examples: 'I can watch TV if it's with loved ones in person, or over a video call if we live far apart.' / 'If I use social media, I'll use the web version only — and only on my computer.' / 'I can check algorithmic content on Saturday mornings for one hour.'",
+          "type": "info",
+          "section": "4. Intentional Integrations",
+          "order": 15
+        },
+        {
+          "key": "integrations_commitment",
+          "text": "Choose 2–3 intentional integrations that feel sustainable for you:",
+          "type": "textarea",
+          "section": "4. Intentional Integrations",
+          "is_required": true,
+          "order": 16
+        },
+        {
+          "key": "implementation_intro",
+          "text": "Implementation Intentions prepare you for the exact moments the attention economy usually wins. Format: IF I feel the urge to… THEN I will… Focus on urges, not ongoing behavior. The 'THEN' action should connect directly to one of your Four Anchor Activities, or another healthy alternative (walk, call someone, drink water, step outside).",
+          "type": "info",
+          "section": "5. Implementation Intentions",
+          "order": 17
+        },
+        {
+          "key": "implementation_examples",
+          "text": "Examples: IF I feel the urge to scroll in bed, THEN I will pick up the book I left on my nightstand. / IF I reach for YouTube during lunch, THEN I will read a few pages of my book. / IF I feel bored on a Sunday evening and want to watch Netflix, THEN I will call a friend.",
+          "type": "info",
+          "section": "5. Implementation Intentions",
+          "order": 18
+        },
+        {
+          "key": "implementation_1",
+          "text": "IF I feel the urge to ___, THEN I will ___.",
+          "type": "textarea",
+          "section": "5. Implementation Intentions",
+          "is_required": true,
+          "order": 19
+        },
+        {
+          "key": "implementation_2",
+          "text": "IF I reach for my phone when ___ happens, THEN I will ___.",
+          "type": "textarea",
+          "section": "5. Implementation Intentions",
+          "is_required": true,
+          "order": 20
+        },
+        {
+          "key": "implementation_3",
+          "text": "IF I fall into my old habit of ___, THEN I will ___.",
+          "type": "textarea",
+          "section": "5. Implementation Intentions",
+          "is_required": true,
+          "order": 21
+        },
+        {
+          "key": "closing_message",
+          "text": "Today you removed the design tricks that pull you away from your values — and replaced them with structures that support the life you actually want. These changes will make the rest of the 30 days (and each day after) dramatically easier.",
+          "type": "info",
+          "section": "Closing",
+          "order": 22
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 14,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Day 1: Environment Redesign",
+        "task_description_template": "Reclaim control of your digital environment. Estimated time: 30-60 minutes."
+      }
+    },
+    {
+      "slug": "daily-check-in",
+      "name": "Daily Check-in",
+      "purpose": "DAILY_CHECKIN",
+      "description": "<b>5-step daily reflection</b>: Rate your mood and digital satisfaction, note your screen time, celebrate a proud moment, acknowledge any slips, and reflect on your day.",
+      "title_template": "Daily Check-in",
+      "estimated_time_minutes": 5,
+      "questions": [
+        {
+          "key": "mood_1to5",
+          "text": "How do you feel today? (1-5)",
+          "type": "integer",
+          "section": "Quick Ratings",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "digital_satisfaction_1to5",
+          "text": "Satisfaction with your digital use today (1-5)",
+          "type": "integer",
+          "section": "Quick Ratings",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "screentime_min",
+          "text": "Screen time in minutes (estimated or actual)",
+          "type": "integer",
+          "section": "Quick Ratings",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "proud_moment_text",
+          "text": "One thing you're proud of doing that replaced scrolling",
+          "type": "textarea",
+          "section": "Daily Reflection",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "digital_slip_text",
+          "text": "If you slipped into digital use in any way, how?",
+          "type": "textarea",
+          "section": "Daily Reflection",
+          "is_required": false,
+          "order": 4
+        },
+        {
+          "key": "reflection_text",
+          "text": "1-2 sentences about how today went",
+          "type": "textarea",
+          "section": "Daily Reflection",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "DAILY",
+        "is_cumulative": false,
+        "task_title_template": "Daily Check-in",
+        "task_description_template": "Quick daily reflection on your digital habits and wins."
+      }
+    },
+    {
+      "slug": "weekly-reflection-week-1",
+      "name": "Weekly Reflection: Week 1",
+      "purpose": "WEEKLY_REFLECTION",
+      "description": "Reflect on how Week 1 went with your values, activities, and digital habits.",
+      "title_template": "Weekly Reflection: Week 1",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "values_alignment",
+          "text": "How aligned did you feel with your values this week? (1-10)",
+          "type": "integer",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "anchor_engagement",
+          "text": "Did you engage with your chosen activity this week?",
+          "type": "radio",
+          "section": "Weekly Review",
+          "choices": {
+            "consistently": "Yes, consistently",
+            "little": "Yes, a little",
+            "not_much": "Not much",
+            "not_at_all": "Not at all"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "anchor_feeling",
+          "text": "What did that feel like?",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 2
+        },
+        {
+          "key": "digital_consumption",
+          "text": "How was your digital consumption this week? (Sense of control, overwhelm, improvement, or difficulty)",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "reclaim_moment",
+          "text": "Describe one moment where you felt you were reclaiming your time or attention.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "slip_moment",
+          "text": "Describe one moment where you felt pulled into doomscrolling or old habits.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "intervention_adjustments",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 6
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 20,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Reflection: Week 1",
+        "task_description_template": "Reflect on your first week and how it aligned with your values."
+      }
+    },
+    {
+      "slug": "weekly-reflection-week-2",
+      "name": "Weekly Reflection: Week 2",
+      "purpose": "WEEKLY_REFLECTION",
+      "description": "Reflect on how Week 2 went with your values, activities, and digital habits.",
+      "title_template": "Weekly Reflection: Week 2",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "values_alignment",
+          "text": "How aligned did you feel with your values this week? (1-10)",
+          "type": "integer",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "anchor_engagement",
+          "text": "Did you engage with your chosen activity this week?",
+          "type": "radio",
+          "section": "Weekly Review",
+          "choices": {
+            "consistently": "Yes, consistently",
+            "little": "Yes, a little",
+            "not_much": "Not much",
+            "not_at_all": "Not at all"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "anchor_feeling",
+          "text": "What did that feel like?",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 2
+        },
+        {
+          "key": "digital_consumption",
+          "text": "How was your digital consumption this week? (Sense of control, overwhelm, improvement, or difficulty)",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "reclaim_moment",
+          "text": "Describe one moment where you felt you were reclaiming your time or attention.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "slip_moment",
+          "text": "Describe one moment where you felt pulled into doomscrolling or old habits.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "intervention_adjustments",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 6
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 27,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Reflection: Week 2",
+        "task_description_template": "Reflect on your second week and how it aligned with your values."
+      }
+    },
+    {
+      "slug": "weekly-reflection-week-3",
+      "name": "Weekly Reflection: Week 3",
+      "purpose": "WEEKLY_REFLECTION",
+      "description": "Reflect on how Week 3 went with your values, activities, and digital habits.",
+      "title_template": "Weekly Reflection: Week 3",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "values_alignment",
+          "text": "How aligned did you feel with your values this week? (1-10)",
+          "type": "integer",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "anchor_engagement",
+          "text": "Did you engage with your chosen activity this week?",
+          "type": "radio",
+          "section": "Weekly Review",
+          "choices": {
+            "consistently": "Yes, consistently",
+            "little": "Yes, a little",
+            "not_much": "Not much",
+            "not_at_all": "Not at all"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "anchor_feeling",
+          "text": "What did that feel like?",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 2
+        },
+        {
+          "key": "digital_consumption",
+          "text": "How was your digital consumption this week? (Sense of control, overwhelm, improvement, or difficulty)",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "reclaim_moment",
+          "text": "Describe one moment where you felt you were reclaiming your time or attention.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "slip_moment",
+          "text": "Describe one moment where you felt pulled into doomscrolling or old habits.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "intervention_adjustments",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 6
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 34,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Reflection: Week 3",
+        "task_description_template": "Reflect on your third week and how it aligned with your values."
+      }
+    },
+    {
+      "slug": "weekly-reflection-week-4",
+      "name": "Weekly Reflection: Week 4",
+      "purpose": "WEEKLY_REFLECTION",
+      "description": "Reflect on how Week 4 went with your values, activities, and digital habits.",
+      "title_template": "Weekly Reflection: Week 4",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "values_alignment",
+          "text": "How aligned did you feel with your values this week? (1-10)",
+          "type": "integer",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 0
+        },
+        {
+          "key": "anchor_engagement",
+          "text": "Did you engage with your chosen activity this week?",
+          "type": "radio",
+          "section": "Weekly Review",
+          "choices": {
+            "consistently": "Yes, consistently",
+            "little": "Yes, a little",
+            "not_much": "Not much",
+            "not_at_all": "Not at all"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "anchor_feeling",
+          "text": "What did that feel like?",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 2
+        },
+        {
+          "key": "digital_consumption",
+          "text": "How was your digital consumption this week? (Sense of control, overwhelm, improvement, or difficulty)",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "reclaim_moment",
+          "text": "Describe one moment where you felt you were reclaiming your time or attention.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "slip_moment",
+          "text": "Describe one moment where you felt pulled into doomscrolling or old habits.",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "intervention_adjustments",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "type": "textarea",
+          "section": "Weekly Review",
+          "is_required": false,
+          "order": 6
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 41,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Reflection: Week 4",
+        "task_description_template": "Reflect on your final week and how it aligned with your values."
+      }
+    },
+    {
+      "slug": "weekly-planning-week-1",
+      "name": "Weekly Planning: Week 1",
+      "purpose": "GENERIC",
+      "description": "Plan your focus for Week 1: Low-Energy Solo Activity",
+      "title_template": "Weekly Planning: Week 1",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "week_focus_intro",
+          "text": "This week focuses on a low-energy solo activity — something calming, grounding, or creatively simple. These activities matter because they give your mind a quiet alternative to the feed and help rebuild your baseline attention.",
+          "type": "info",
+          "section": "This Week's Focus",
+          "order": 0
+        },
+        {
+          "key": "activity_importance",
+          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "when_where_plan",
+          "text": "When and where do you plan to do this activity next week? (Include: Day(s), Time, Location, With whom if applicable)",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "potential_obstacles",
+          "text": "What might prevent you from following through on your plan?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "small_win",
+          "text": "What is one small win you want to achieve next week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "feeling_heading_in",
+          "text": "How do you feel heading into the new week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 15,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Planning: Week 1",
+        "task_description_template": "Plan your focus on low-energy solo activities this week."
+      }
+    },
+    {
+      "slug": "weekly-planning-week-2",
+      "name": "Weekly Planning: Week 2",
+      "purpose": "GENERIC",
+      "description": "Plan your focus for Week 2: Skill-Building Solo Activity",
+      "title_template": "Weekly Planning: Week 2",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "week_focus_intro",
+          "text": "This week focuses on a higher-energy skill activity — something you want to practice or improve at. These activities matter because they rekindle competence, progress, and the satisfaction that scrolling often displaces.",
+          "type": "info",
+          "section": "This Week's Focus",
+          "order": 0
+        },
+        {
+          "key": "activity_importance",
+          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "when_where_plan",
+          "text": "When and where do you plan to do this activity next week? (Include: Day(s), Time, Location, With whom if applicable)",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "potential_obstacles",
+          "text": "What might prevent you from following through on your plan?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "small_win",
+          "text": "What is one small win you want to achieve next week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "feeling_heading_in",
+          "text": "How do you feel heading into the new week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 21,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Planning: Week 2",
+        "task_description_template": "Plan your focus on skill-building activities this week."
+      }
+    },
+    {
+      "slug": "weekly-planning-week-3",
+      "name": "Weekly Planning: Week 3",
+      "purpose": "GENERIC",
+      "description": "Plan your focus for Week 3: Social Ritual",
+      "title_template": "Weekly Planning: Week 3",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "week_focus_intro",
+          "text": "This week focuses on a social ritual — a recurring point of connection with someone who matters to you. These rituals strengthen relationships and counter the isolation that passive, solitary scrolling often reinforces.",
+          "type": "info",
+          "section": "This Week's Focus",
+          "order": 0
+        },
+        {
+          "key": "activity_importance",
+          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "when_where_plan",
+          "text": "When and where do you plan to do this activity next week? (Include: Day(s), Time, Location, With whom if applicable)",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "potential_obstacles",
+          "text": "What might prevent you from following through on your plan?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "small_win",
+          "text": "What is one small win you want to achieve next week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "feeling_heading_in",
+          "text": "How do you feel heading into the new week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 28,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Planning: Week 3",
+        "task_description_template": "Plan your focus on social rituals this week."
+      }
+    },
+    {
+      "slug": "weekly-planning-week-4",
+      "name": "Weekly Planning: Week 4",
+      "purpose": "GENERIC",
+      "description": "Plan your focus for Week 4: Social Hobby / Community Activity",
+      "title_template": "Weekly Planning: Week 4",
+      "estimated_time_minutes": 10,
+      "questions": [
+        {
+          "key": "week_focus_intro",
+          "text": "This week focuses on a social or community-based activity that brings you into shared spaces with others. These activities broaden your world beyond digital consumption and anchor you in real belonging.",
+          "type": "info",
+          "section": "This Week's Focus",
+          "order": 0
+        },
+        {
+          "key": "activity_importance",
+          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "when_where_plan",
+          "text": "When and where do you plan to do this activity next week? (Include: Day(s), Time, Location, With whom if applicable)",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "potential_obstacles",
+          "text": "What might prevent you from following through on your plan?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "small_win",
+          "text": "What is one small win you want to achieve next week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "feeling_heading_in",
+          "text": "How do you feel heading into the new week?",
+          "type": "textarea",
+          "section": "Planning",
+          "is_required": true,
+          "order": 5
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 35,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Weekly Planning: Week 4",
+        "task_description_template": "Plan your focus on community activities this week."
+      }
+    },
+    {
+      "slug": "exit-survey",
+      "name": "Exit Survey",
+      "purpose": "EXIT",
+      "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress — and helps us improve future cohorts.",
+      "title_template": "Exit Survey",
+      "estimated_time_minutes": 15,
+      "questions": [
+        {
+          "key": "exit_intro",
+          "text": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress — and helps us improve future cohorts.",
+          "type": "info",
+          "section": "Introduction",
+          "order": 0
+        },
+        {
+          "key": "sc_1_pickup_unintended",
+          "text": "I often pick up my phone even when I didn't intend to use it.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 1
+        },
+        {
+          "key": "sc_2_gets_in_way",
+          "text": "My phone gets in the way of focusing on work or school.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 2
+        },
+        {
+          "key": "sc_3_lose_track_time",
+          "text": "I often lose track of time while scrolling on my phone.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 3
+        },
+        {
+          "key": "sc_4_feel_uneasy",
+          "text": "I feel uneasy when I don't have my phone with me.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 4
+        },
+        {
+          "key": "sc_5_tried_cut_back",
+          "text": "I've tried to cut back on my phone use but found it difficult.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 5
+        },
+        {
+          "key": "sc_6_escape_feelings",
+          "text": "Using my phone helps me escape uncomfortable feelings.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 6
+        },
+        {
+          "key": "sc_7_check_habit",
+          "text": "I find myself checking my phone out of habit, even when I don't need to.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 7
+        },
+        {
+          "key": "sc_8_notifications_pull",
+          "text": "Notifications often pull me out of what I'm doing.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 8
+        },
+        {
+          "key": "sc_9_wish_done_else",
+          "text": "After a period of smartphone or digital use, I wish I had done something else with my time.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 9
+        },
+        {
+          "key": "sc_10_avoid_engaging",
+          "text": "I sometimes use my phone to avoid engaging with people or tasks around me.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Smartphone Agency",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 10
+        },
+        {
+          "key": "exit_sleep_quality",
+          "text": "Thinking about the past week, I would describe my sleep quality as good.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 11
+        },
+        {
+          "key": "exit_gad_1_tense",
+          "text": "Over the past two weeks, how often have you felt keyed-up, tense, or on edge?",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 12
+        },
+        {
+          "key": "exit_gad_2_worry",
+          "text": "Over the past two weeks, how often have you found it difficult to settle your mind when it starts worrying about things?",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 13
+        },
+        {
+          "key": "exit_phq_1_motivation",
+          "text": "Over the past two weeks, how often have you felt low motivation or found it hard to enjoy the things you usually like?",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 14
+        },
+        {
+          "key": "exit_phq_2_emotionally_low",
+          "text": "Over the past two weeks, how often have you felt weighed down, discouraged, or emotionally low?",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 15
+        },
+        {
+          "key": "exit_ucla_1_companionship",
+          "text": "Over the past two weeks: Feeling like you don't have the companionship or closeness you'd like.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 16
+        },
+        {
+          "key": "exit_ucla_2_left_out",
+          "text": "Over the past two weeks: Feeling left out or not included in things.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 17
+        },
+        {
+          "key": "exit_ucla_3_disconnected",
+          "text": "Over the past two weeks: Feeling disconnected from others, even when people are around.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "1": "Hardly ever",
+            "2": "Some of the time",
+            "3": "Often"
+          },
+          "is_required": true,
+          "order": 18
+        },
+        {
+          "key": "exit_who5_1_cheerful",
+          "text": "Over the past two weeks: I felt generally upbeat, cheerful, or in good spirits.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 19
+        },
+        {
+          "key": "exit_who5_2_calm",
+          "text": "Over the past two weeks: I felt calm, steady, or at ease.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 20
+        },
+        {
+          "key": "exit_who5_3_active_engaged",
+          "text": "Over the past two weeks: I felt active and engaged with my day.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 21
+        },
+        {
+          "key": "exit_who5_4_rested",
+          "text": "Over the past two weeks: I woke up feeling rested or refreshed.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 22
+        },
+        {
+          "key": "exit_who5_5_meaningful",
+          "text": "Over the past two weeks: My day-to-day life felt interesting or meaningful.",
+          "type": "radio",
+          "section": "Section 1: Before/After Comparison - Mood & Well-Being",
+          "choices": {
+            "0": "Not at all",
+            "1": "Several days",
+            "2": "More than half the days",
+            "3": "Nearly every day"
+          },
+          "is_required": true,
+          "order": 23
+        },
+        {
+          "key": "exit_screentime_hours",
+          "text": "On average, how many hours per day do you use your smartphone?",
+          "type": "integer",
+          "section": "Section 1: Before/After Comparison - Screen Time",
+          "is_required": true,
+          "order": 24
+        },
+        {
+          "key": "reconnected_with",
+          "text": "What is one thing (a hobby, friendship, family connection, ritual, etc.) you reconnected with over the past 30 days?",
+          "type": "textarea",
+          "section": "Section 2: Reflection & Meaning",
+          "is_required": true,
+          "order": 25
+        },
+        {
+          "key": "aligned_with_values",
+          "text": "I feel more aligned with my values.",
+          "type": "radio",
+          "section": "Section 2: Reflection & Meaning",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 26
+        },
+        {
+          "key": "digital_intentional",
+          "text": "My screen time and digital use feel more intentional.",
+          "type": "radio",
+          "section": "Section 2: Reflection & Meaning",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 27
+        },
+        {
+          "key": "digital_supports_me",
+          "text": "My digital use supports me (utility, education, meaningful connection) instead of controlling me.",
+          "type": "radio",
+          "section": "Section 2: Reflection & Meaning",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 28
+        },
+        {
+          "key": "section3_intro",
+          "text": "Over the past 30 days, you've recentered your attention, rebuilt your digital environment and habits, and created a more intentional relationship with your digital life. Many people choose to continue parts of their practice after the cohort ends — not with the same intensity, but with ongoing awareness and small, sustainable habits.",
+          "type": "info",
+          "section": "Section 3: Planning What Comes Next",
+          "order": 29
+        },
+        {
+          "key": "intervention_profile_review",
+          "text": "Take a moment to look at your Intervention Profile (Nudges, Boundaries, Integrations). Is there anything you want to keep, modify, or remove as you move forward?",
+          "type": "textarea",
+          "section": "Section 3: Planning What Comes Next",
+          "is_required": true,
+          "order": 30
+        },
+        {
+          "key": "habits_to_continue",
+          "text": "Which 1–2 habits or boundaries will you continue after the cohort?",
+          "type": "textarea",
+          "section": "Section 3: Planning What Comes Next",
+          "is_required": true,
+          "order": 31
+        },
+        {
+          "key": "new_to_try",
+          "text": "Is there anything new you want to try or experiment with next month?",
+          "type": "textarea",
+          "section": "Section 3: Planning What Comes Next",
+          "is_required": false,
+          "order": 32
+        },
+        {
+          "key": "attention_direction",
+          "text": "In one sentence: What direction do you want your attention to move toward next?",
+          "type": "textarea",
+          "section": "Section 3: Planning What Comes Next",
+          "is_required": true,
+          "order": 33
+        },
+        {
+          "key": "satisfaction_rating",
+          "text": "How satisfied are you with your experience this month? (1-5 stars)",
+          "type": "radio",
+          "section": "Section 4: Feedback",
+          "choices": {
+            "1": "⭐",
+            "2": "⭐⭐",
+            "3": "⭐⭐⭐",
+            "4": "⭐⭐⭐⭐",
+            "5": "⭐⭐⭐⭐⭐"
+          },
+          "is_required": true,
+          "order": 34
+        },
+        {
+          "key": "most_helpful_parts",
+          "text": "Which parts of the program were most helpful? (Enter your selections separated by commas: Values section, Hobby/anchor activities, Tech boundaries, Nudges, Implementation intentions, Daily reflections, Weekly reflections, Tracking screen time, Community/Discord, Other)",
+          "type": "textarea",
+          "section": "Section 4: Feedback",
+          "is_required": true,
+          "order": 35
+        },
+        {
+          "key": "improvements",
+          "text": "What would you improve or change for future cohorts?",
+          "type": "textarea",
+          "section": "Section 4: Feedback",
+          "is_required": false,
+          "order": 36
+        },
+        {
+          "key": "would_recommend",
+          "text": "I would recommend this program to at least one friend.",
+          "type": "radio",
+          "section": "Section 4: Feedback",
+          "choices": {
+            "1": "Strongly disagree",
+            "2": "Disagree",
+            "3": "Neutral",
+            "4": "Agree",
+            "5": "Strongly agree"
+          },
+          "is_required": true,
+          "order": 37
+        },
+        {
+          "key": "section5_intro",
+          "text": "If you found this helpful but want a lighter-touch way to stay intentional, we are planning an optional ongoing digital use support subscription. With this, you would be able to: Continue receiving daily reflection prompts, Redo the entry survey anytime to track your progress over time, Keep and manage your Intervention Profile, Receive new science-backed nudges & suggestions as we add them, Get ongoing reminders to maintain the attention you reclaimed. It's a softer, more flexible structure to help you stay centered long after the cohort ends.",
+          "type": "info",
+          "section": "Section 5: Optional Ongoing Support",
+          "order": 38
+        },
+        {
+          "key": "ongoing_support_interest",
+          "text": "Would a feature like this be useful to you?",
+          "type": "radio",
+          "section": "Section 5: Optional Ongoing Support",
+          "choices": {
+            "yes": "Yes",
+            "no": "No"
+          },
+          "is_required": true,
+          "order": 39
+        },
+        {
+          "key": "closing_message",
+          "text": "Thank you for completing the 30-day cohort — and for being part of this experiment in reclaiming digital agency. Your attention is one of the most meaningful things you have. We're grateful you spent some of it here. If you'd like to keep learning about attention and digital agency, consider subscribing to our e-mail newsletter: https://Nathanlaundry.substack.com",
+          "type": "info",
+          "section": "Closing",
+          "order": 40
+        }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 42,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Exit Survey - Celebrate Your Progress",
+        "task_description_template": "Reflect on your 30-day journey and see how far you've come."
+      }
+    }
+  ]
+}
+
