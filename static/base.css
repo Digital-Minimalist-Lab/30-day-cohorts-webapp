@@ -961,3 +961,21 @@ sl-alert {
   cursor: pointer;
 }
 
+
+.survey-info-text p {
+  margin: 0;
+  color: var(--pico-color);
+  line-height: 1.6;
+}
+
+.survey-info-text {
+	padding: 1.25rem 1.5rem;
+	margin: 0;
+	border: 1px solid var(--pico-border-color);
+	border-radius: 8px;
+	background: #fbfdff;
+	box-shadow: none;
+	border-left: 4px solid var(--accent-green-soft);
+  margin-bottom: 1.5rem;
+}
+

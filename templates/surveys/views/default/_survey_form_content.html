@@ -10,8 +10,8 @@
             {% for item in items %}
                 {% if item.is_info %}
                     {# Display-only info text #}
-                    <div class="info-text" style="padding: 15px; background: #e7f3ff; border-left: 4px solid #2196F3; margin-bottom: 1.5rem; border-radius: 4px;">
-                        <p style="margin: 0; color: #1565C0; line-height: 1.6;">{{ item.text }}</p>
+                    <div class="survey-info-text">
+                        <p>{{ item.text }}</p>
                     </div>
                 {% else %}
                     {# Regular form field #}
