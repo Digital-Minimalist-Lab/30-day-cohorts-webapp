@@ -6,7 +6,7 @@
     <!-- Header -->
     <nav class="container">
         <ul>
-            <li><strong><a href="{% url 'cohorts:dashboard' %}" class="brand-link">Digital Minimalist Lab</a></strong></li>
+            <li><strong><a href="{% url 'cohorts:dashboard' %}" class="brand-link">Intentional Tech</a></strong></li>
         </ul>
         <ul>
             {% if user.is_authenticated %}
@@ -38,6 +38,6 @@
             <a href="{% url 'core:privacy' %}">Privacy</a> •
             <a href="{% url 'core:feedback' %}">Feedback</a>
         </p>
-        <p><small>Digital Minimalist Lab © 2025 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
+        <p><small>Intentional Tech © 2025 • Open source under AGPL-3.0 • Self-hosting encouraged</small></p>
     </footer>
 {% endblock %}

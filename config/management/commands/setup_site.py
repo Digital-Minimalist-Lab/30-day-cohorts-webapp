@@ -11,7 +11,7 @@ class Command(BaseCommand):
         site, created = Site.objects.get_or_create(pk=1)
         if created:
             site.domain = 'localhost:8000'
-            site.name = 'Digital Minimalist Lab'
+            site.name = 'Intentional Tech'
             site.save()
             self.stdout.write(
                 self.style.SUCCESS('Created default site (localhost:8000)')
