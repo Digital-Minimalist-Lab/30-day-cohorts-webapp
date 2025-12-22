@@ -1057,7 +1057,7 @@
         },
         {
           "key": "intervention_adjustments",
-          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make (consider writing them down in a journal or on new sticky notes):",
           "type": "textarea",
           "section": "Weekly Review",
           "is_required": false,
@@ -1137,7 +1137,7 @@
         },
         {
           "key": "intervention_adjustments",
-          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make (consider writing them down in a journal or on new sticky notes):",
           "type": "textarea",
           "section": "Weekly Review",
           "is_required": false,
@@ -1217,7 +1217,7 @@
         },
         {
           "key": "intervention_adjustments",
-          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make (consider writing them down in a journal or on new sticky notes):",
           "type": "textarea",
           "section": "Weekly Review",
           "is_required": false,
@@ -1297,7 +1297,7 @@
         },
         {
           "key": "intervention_adjustments",
-          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make:",
+          "text": "Do you want to adjust any part of your Intervention Profile? (Finding things too rigid? Maybe introduce a new intentional integration. Finding that you're slipping? Maybe add a new boundary or nudge.) Describe any changes you'd like to make (consider writing them down in a journal or on new sticky notes):",
           "type": "textarea",
           "section": "Weekly Review",
           "is_required": false,
@@ -1323,14 +1323,14 @@
       "questions": [
         {
           "key": "week_focus_intro",
-          "text": "This week focuses on a low-energy solo activity — something calming, grounding, or creatively simple. These activities matter because they give your mind a quiet alternative to the feed and help rebuild your baseline attention.",
+          "text": "This week focuses on a low-energy solo activity something calming, easy to do, but satisfying. These activities matter because they give your mind a quiet alternative to the feed and help rebuild your baseline attention.",
           "type": "info",
           "section": "This Week's Focus",
           "order": 0
         },
         {
           "key": "activity_importance",
-          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "text": "What about this activity is important to you and how could this activity be a healthier alternative to scrolling or digital media consumption?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1346,7 +1346,7 @@
         },
         {
           "key": "potential_obstacles",
-          "text": "What might prevent you from following through on your plan?",
+          "text": "What might prevent you from following through on your plan? How can you overcome or avoid that?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1388,14 +1388,14 @@
       "questions": [
         {
           "key": "week_focus_intro",
-          "text": "This week focuses on a higher-energy skill activity — something you want to practice or improve at. These activities matter because they rekindle competence, progress, and the satisfaction that scrolling often displaces.",
+          "text": "This week focuses on a higher-energy skill activity - something you want to practice or improve at. These activities matter because they help you feel competence, progress, and the satisfaction that scrolling often displaces.",
           "type": "info",
           "section": "This Week's Focus",
           "order": 0
         },
         {
           "key": "activity_importance",
-          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "text": "What about this activity is important to you and how could this activity be a healthier alternative to scrolling or digital media consumption?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1411,7 +1411,7 @@
         },
         {
           "key": "potential_obstacles",
-          "text": "What might prevent you from following through on your plan?",
+          "text": "What might prevent you from following through on your plan? How can you overcome or avoid that?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1453,14 +1453,14 @@
       "questions": [
         {
           "key": "week_focus_intro",
-          "text": "This week focuses on a social ritual — a recurring point of connection with someone who matters to you. These rituals strengthen relationships and counter the isolation that passive, solitary scrolling often reinforces.",
+          "text": "This week focuses on a lowkey social 'ritual'. It's about setting a rhythm, a simple, easy activity you can share with your loved ones regularly like a scheduled phone call or in-person movie night.",
           "type": "info",
           "section": "This Week's Focus",
           "order": 0
         },
         {
           "key": "activity_importance",
-          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "text": "What about this activity is important to you? How could this activity be a healthier alternative to scrolling or digital media consumption?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1476,7 +1476,7 @@
         },
         {
           "key": "potential_obstacles",
-          "text": "What might prevent you from following through on your plan?",
+          "text": "What might prevent you from following through on your plan? How can you overcome or avoid that?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1525,7 +1525,7 @@
         },
         {
           "key": "activity_importance",
-          "text": "What about this activity is important to you? Or if you chose the default, how could this activity be a healthier alternative to scrolling or digital media consumption?",
+          "text": "What about this activity is important to you and how could this activity be a healthier alternative to scrolling or digital media consumption?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1541,7 +1541,7 @@
         },
         {
           "key": "potential_obstacles",
-          "text": "What might prevent you from following through on your plan?",
+          "text": "What might prevent you from following through on your plan? How can you overcome or avoid that?",
           "type": "textarea",
           "section": "Planning",
           "is_required": true,
@@ -1577,13 +1577,13 @@
       "slug": "exit-survey",
       "name": "Exit Survey",
       "purpose": "EXIT",
-      "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress — and helps us improve future cohorts.",
+      "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
       "title_template": "Exit Survey",
       "estimated_time_minutes": 15,
       "questions": [
         {
           "key": "exit_intro",
-          "text": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress — and helps us improve future cohorts.",
+          "text": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
           "type": "info",
           "section": "Introduction",
           "order": 0
@@ -1981,7 +1981,7 @@
         },
         {
           "key": "section3_intro",
-          "text": "Over the past 30 days, you've recentered your attention, rebuilt your digital environment and habits, and created a more intentional relationship with your digital life. Many people choose to continue parts of their practice after the cohort ends — not with the same intensity, but with ongoing awareness and small, sustainable habits.",
+          "text": "Over the past 30 days, you've recentered your attention, rebuilt your digital environment and habits, and created a more intentional relationship with your digital life. Many people choose to continue parts of their practice after the cohort ends.",
           "type": "info",
           "section": "Section 3: Planning What Comes Next",
           "order": 29
@@ -2066,7 +2066,7 @@
         },
         {
           "key": "section5_intro",
-          "text": "If you found this helpful but want a lighter-touch way to stay intentional, we are planning an optional ongoing digital use support subscription. With this, you would be able to: Continue receiving daily reflection prompts, Redo the entry survey anytime to track your progress over time, Keep and manage your Intervention Profile, Receive new science-backed nudges & suggestions as we add them, Get ongoing reminders to maintain the attention you reclaimed. It's a softer, more flexible structure to help you stay centered long after the cohort ends.",
+          "text": "If you found this helpful but want a lighter-touch way to stay intentional, we are planning an optional ongoing digital use support subscription. With this, you would be able to: Continue receiving daily reflection prompts, Redo the entry survey anytime to track your progress over time, Keep and manage your Intervention Profile, and get ongoing reminders to maintain the attention you reclaimed. It's a softer, more flexible structure to help you stay centered long after the cohort ends.",
           "type": "info",
           "section": "Section 5: Optional Ongoing Support",
           "order": 38
@@ -2085,7 +2085,7 @@
         },
         {
           "key": "closing_message",
-          "text": "Thank you for completing the 30-day cohort — and for being part of this experiment in reclaiming digital agency. Your attention is one of the most meaningful things you have. We're grateful you spent some of it here. If you'd like to keep learning about attention and digital agency, consider subscribing to our e-mail newsletter: https://nathanlaundry.substack.com",
+          "text": "Thank you for completing the 30-day cohort and for being part of this experiment in reclaiming digital agency. Attention is one of the most meaningful things we have. We're grateful you spent some of it here. If you'd like to keep learning about attention and digital agency, consider subscribing to our e-mail newsletter: https://nathanlaundry.substack.com",
           "type": "info",
           "section": "Closing",
           "order": 40
