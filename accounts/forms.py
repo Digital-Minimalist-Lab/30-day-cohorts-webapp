@@ -15,13 +15,13 @@ class FullSignupForm(SignupForm):
     )
     email_product_updates = forms.BooleanField(
         required=False,
-        initial=True,
+        initial=False,
         label="Sign up for updates to our mailing list",
         help_text=""
     )
     email_daily_reminder = forms.BooleanField(
         required=False,
-        initial=True,
+        initial=False,
         label="Send me reminders to complete my daily tasks",
         help_text="Optional daily reminders to complete my tasks"
     )
