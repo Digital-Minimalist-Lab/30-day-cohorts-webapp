@@ -695,105 +695,133 @@
       "slug": "day-1-environment-redesign",
       "name": "Day 1: Environment Redesign",
       "purpose": "GENERIC",
-      "description": "Remove engineered traps and rewire old habits to create space for what you love.",
+      "description": "Remove attention capture patterns in your digital environment (Phone, computer, smart tv, etc.) and set tech boundaries to create space for what you love.",
       "title_template": "Day 1: Environment Redesign",
       "estimated_time_minutes": 45,
       "questions": [
         {
           "key": "intro_header",
-          "text": "Pick What Fits — But More = More Effective. You get to choose which tech boundaries, nudges, and intentional integrations fit your life best. You don't need to adopt everything and if something doesn't work for your situation, feel free to adapt it. But here's the truth: The more of these changes you implement, the more likely it is that your screen time will drop — and the easier it becomes to reconnect with your values. This isn't about restricting your life. It's about removing the engineered traps and rewiring old habits to create space for what you love.",
+          "text": "Pick What Fits - But More = More Effective. </br>Today we'll be implementing 3 things to help you reshape your relationship with digital media consumption across all your devices - what we call your digital environment. </br>1. Tech Boundaries: Setting boundaries for your tech. Time and spaces that tech is not allowed to enter. For example 'no smartphones in the bedroom.' </br>2. Nudges: These are defaults, blockers, etc. you can set on your phone or computer to help you reshape your digital media consumption habits. Example: set your phone to grayscale to make it less attention grabby. </br>3. Intentional Integrations: There are plenty of ways that technology facilitates our values and things we love. Let's make room for those things intentionally. For example 'I've set a Tech Boundary around Netrlix, but I'd love to host a watch party with my friends. Let me Intentionally Integrate TV with the rule 'I can watch TV with friends and family if it is a social event.' </br>You get to choose which tech boundaries, nudges, and intentional integrations fit your life best. You don't need to adopt everything and if something doesn't work for your situation, feel free to adapt it. </br>That being said, the more of these changes you implement, the more likely it is that your screen time will drop — and the easier it becomes to reconnect with your values.",
           "type": "info",
           "section": "Introduction",
           "order": 0
         },
         {
           "key": "why_this_works_intro",
-          "text": "Most modern apps are deliberately designed to pull your attention away from your intentions: Infinite scroll, Autoplay, Notifications, Algorithmic feeds, 'Quick checks' that become 20 minutes. This isn't about willpower. It's about design.",
+          "text": "Most modern apps are deliberately designed to pull and hold your attention: Infinite scroll, Autoplay, Notifications, Algorithmic feeds. Much of what we'll do today, is disabling or blocking these features in as many places as we can in your digital environment. This makes it much easier to use apps as tools, instead of them using you for ad revenue.",
           "type": "info",
           "section": "1. Why This Works",
           "order": 1
         },
         {
           "key": "why_this_works_layers",
-          "text": "Day 1 is about reclaiming control of the design so that your environment starts working for you instead of against you. We do this in three layers: Tech Boundaries (strong defaults that collapse entire habit loops), Nudges (small friction changes that break addictive patterns), Intentional Integrations (rules for bringing tech back in aligned ways). Then we solidify the changes through Implementation Intentions.",
+          "text": "Day 1 is all about laying the groundwork of your new digital environment. Today, we'll guide you through setting your Tech Boundaries, Nudges, and Intentional Integrations. </br>We'll follow that up with a Psychological Practice called Implementation Intentions. These help you envision scenarios where you may be tempted to fall back on old habits, and how you can prevent that before you're in that situation at all. </br>You may want a notepad and paper and some sticky notes to help track your new Tech Boundaries, Intentional Integrations, and Implementation Intentions. NOTE in future versions of this app we intend to track those for you ... but this is beta software.",
+          "type": "info",
+          "section": "1. Why This Works",
+          "order": 2
+        },
+        {
+          "key": "scientific_backing",
+          "text": "Before we dive in, we'd also like to give credit to the researchers who have created, studied, and inspired these digital environment changes. For more on the scientific backing supporting the Environment Redesign, visit: https://www.healthyscreens.com/strategies and take a look at the paper by Olson et al. https://doi.org/10.1007/s11469-022-00826-w",
           "type": "info",
           "section": "1. Why This Works",
           "order": 2
         },
         {
           "key": "boundaries_intro",
-          "text": "These are three extremely effective boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.",
+          "text": "These are three boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.",
           "type": "info",
-          "section": "2. Tech Boundaries (Default SOPs)",
+          "section": "2. Tech Boundaries",
+          "order": 3
+        },
+        {
+          "key": "boundaries_intro",
+          "text": "",
+          "type": "info",
+          "section": "2. Tech Boundaries",
           "order": 3
         },
         {
           "key": "boundary_1_info",
-          "text": "Boundary 1: Do phone tasks on your computer. Why it works: Phones are frictionless; computers are less so. On a laptop you need to sit down, you need intention, browser extensions can remove addictive features, and you don't mindlessly tap into apps out of habit. Most people scroll compulsively on phones and thoughtfully on computers. This boundary creates that divide on purpose.",
+          "text": "Boundary 1: Do phone tasks on your computer. </br>Why it works: Phones are frictionless constant companions; computers, not so much. On a laptop, or better, a desktop, there are fewer attention hooks AND you must go to the device instead of it being with you at all times. Computers are also more malleable digital environments which means we can add extra browser-based blockers.",
           "type": "info",
-          "section": "2. Tech Boundaries (Default SOPs)",
+          "section": "2. Tech Boundaries ",
           "order": 4
         },
         {
           "key": "boundary_2_info",
-          "text": "Boundary 2: No phone in bed (or in the bedroom at night). Why it works: The 'phone in bed' loop is one of the strongest attention habits. Removing the phone from the bedroom eliminates morning doomscrolling, eliminates 'I'll just check one thing' at night, improves sleep, and breaks your most ingrained cue-action loop. This single boundary dramatically improves outcomes for the entire cohort.",
+          "text": "Boundary 2: No phone in the bedroom. </br>Why it works: When we're tired, we're much more likely to lean on easy dopamine. Right before bed and right after waking up are key moments. Also, sleep quality is important for your health and ability to exert self-control. Removing the phone from the bedroom eliminates morning doomscrolling, eliminates 'I'll just check one thing' at night, improves sleep, and breaks a highly ingrained cue-action loop. We bet this single boundary will dramatically improve your success for the rest of the cohort.",
           "type": "info",
-          "section": "2. Tech Boundaries (Default SOPs)",
+          "section": "2. Tech Boundaries ",
           "order": 5
         },
         {
           "key": "boundary_3_info",
-          "text": "Boundary 3: No YouTube or TV during meals. Why it works: Meals are a predictable trigger for autopilot consumption. Screens during meals strengthen distraction habits and crowd out presence and conversation. Removing screens at meals creates time for mindfulness or conversation with coworkers or loved ones.",
+          "text": "Boundary 3: No YouTube or TV during meals. </br>Why it works: The lunch-time video is a super common habit. But it crowds out time for mindfulness, gratitude, and most importantly, time with coworkers, lovedones, etc. Chances are you'll be bored at lunch time. This is good! Either embrace the boredom or use the boredom as a motivator to find somebody to spend lunch time chatting with. I (Nathan) have loved this change in my life and find myself calling friends, or chatting with my partner a lot more because of this. I hope it helps you too.",
           "type": "info",
-          "section": "2. Tech Boundaries (Default SOPs)",
+          "section": "2. Tech Boundaries ",
           "order": 6
         },
         {
           "key": "boundaries_commitment",
-          "text": "You can use these boundaries, or define your own. But these are known to be highly effective. It may be useful to keep sticky notes around your home to remind you of these boundaries.",
+          "text": "You can use these boundaries, or define your own. However, these 3 are pretty solid and I'd recommend trying them out. Also, it may be useful to keep sticky notes around your home to remind you of these boundaries.",
           "type": "textarea",
-          "section": "2. Tech Boundaries (Default SOPs)",
+          "section": "2. Tech Boundaries ",
           "is_required": true,
           "order": 7
         },
         {
           "key": "nudges_intro",
-          "text": "Nudges change behavior not by force, but by shifting defaults. These aren't restrictions — they're environmental adjustments that make your intentions effortless.",
+          "text": "Nudges are subtle changes we can make to our environments (like turning off notifications) that make desirable behaviours more probable than others, without us having to think or muster up the will. Your phone already employs nudges to suck you into attention loops, so a lot of what we'll do is just turning those off. </br> We'll introduce a few here, but if you want to read it straight from the scientists who developed these: go to https://www.healthyscreens.com/strategies",
           "type": "info",
           "section": "3. Nudges (Environment Redesign)",
           "order": 8
         },
         {
+          "key": "nudges_smartphone_intro",
+          "text": "We'll start with changes you can make to your smartphone. Many of these will feel obvious. The more of these you can stick to, the better but don't beat yourself up about it if you slip or aren't ready to make a change.",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 9
+        },
+        {
           "key": "nudges_smartphone",
-          "text": "Smartphone nudges: Move apps off the home screen, Hide addictive apps in folders, Turn off most notifications, Use grayscale or simple wallpapers, Remove short-form video apps, Use web versions instead of apps.",
+          "text": "Smartphone nudges: </br>1. Move all apps off the homescreen </br>2. Uninstall or at least hide social media apps.  </br>3.Turn off all non-essential notifications (leave on notifications for calls from your loved ones but turn off social media group chat notifications)</br>4. Use grayscale and simple wallpapers. </br>5. Use web versions instead of apps (example: access instagram group chats via safari/chrome instead of the instagram app. That experience sucks and that's the point. If it sucks you'll be less likely to do it automatically.)",
+          "type": "info",
+          "section": "3. Nudges (Environment Redesign)",
+          "order": 9
+        },
+        {
+          "key": "nudges_laptop_intro",
+          "text": "Our digital media consumption isn't just tied to our smartphones, though that is the worst of it. Our computers are just as much a part of our digital environments. Luckily, they're much flexible. Instead of removing apps entirely, we can use browser extensions and other tricks to pull out the addictive elements and retain the functionality - like removing instagram's infinite feed but keeping the messaging.",
           "type": "info",
           "section": "3. Nudges (Environment Redesign)",
           "order": 9
         },
         {
           "key": "nudges_laptop",
-          "text": "Laptop nudges: Install browser extensions that remove feeds/autoplay/recommendations, Turn off browser notifications, Use a blank or calm start page, Log out of algorithmic accounts, Pin only value-based bookmarks.",
+          "text": "Laptop or Computer nudges: </br>1. Install browser extensions that remove feeds/autoplay/recommendations (check out unhook, undistracted, and uninternet on chrome) </br>2. Use a blank or calm start page (no newsfeeds on your homepage) </br>3. Log out of social media accounts - forcing you to log back in to use them. </br>5. Remove pinned or bookmarked doomscrolly apps.",
           "type": "info",
           "section": "3. Nudges (Environment Redesign)",
           "order": 10
         },
         {
-          "key": "nudges_tv",
-          "text": "Smart TV / Console nudges: Turn off autoplay, Turn off recommendations, Move apps into a hidden folder, Log out of binge-prone platforms when not in use.",
+          "key": "nudges_tv_intro",
+          "text": "Same idea with our smart TVs. Netflix and YouTube can be binged just as much on a TV as on a phone. Unfortunately, like on our smartphones and unlike our comptuers, these apps aren't very malleable. So, we primarily resort to uninstalling, hiding, and logging out. Basically, we want to introduce friction to use so that we have a moment to stop and think 'do I really want to do this right now?'",
           "type": "info",
           "section": "3. Nudges (Environment Redesign)",
           "order": 11
         },
         {
-          "key": "nudges_closing",
-          "text": "Nudges don't rely on self-discipline. They change the architecture of your attention.",
+          "key": "nudges_tv",
+          "text": "Smart TV / Console nudges: Turn off autoplay, Turn off recommendations if possible, Move apps into a hidden folder, Log out of binge-prone platforms when not in use.",
           "type": "info",
           "section": "3. Nudges (Environment Redesign)",
-          "order": 12
+          "order": 11
         },
         {
           "key": "nudges_commitment",
-          "text": "List 3–5 specific nudges you will implement today across your devices:",
+          "text": "Try to employ as many of these nudges as possible. However, we know it's a lot. A good starting combo is undistracted on your browser(s), hiding apps on your TV, and as many nudges as possible on your smartphone.",
           "type": "textarea",
           "section": "3. Nudges (Environment Redesign)",
           "is_required": true,
@@ -801,29 +829,29 @@
         },
         {
           "key": "integrations_intro",
-          "text": "Intentional Integrations are how you reintroduce technology in ways that align with your values. These replace 'mindless default behaviors' with clear rules of engagement. They're not about deprivation — they're about making tech use purposeful instead of automatic.",
+          "text": "Intentional Integrations are how you reintroduce technology in ways that align with your values. These replace 'mindless default behaviors' with mindful engagement decided by you for you. We're not advocating a full rejection of technology, but a more meaningful way to make use of it. So let's define how you want to do that.",
           "type": "info",
           "section": "4. Intentional Integrations",
           "order": 14
         },
         {
           "key": "integrations_examples",
-          "text": "Examples: 'I can watch TV if it's with loved ones in person, or over a video call if we live far apart.' / 'If I use social media, I'll use the web version only — and only on my computer.' / 'I can check algorithmic content on Saturday mornings for one hour.'",
+          "text": "Examples: 'I can watch TV if it's with loved ones in person, or over a video call if we live far apart.' / 'If I use social media, I'll use the web version and only on Saturday afternoon's to keep up with a cherished social group.' / 'I can check my YouTube subscriptions on Fridays for an hour to watch videos from creators I really learn from or enjoy.'",
           "type": "info",
           "section": "4. Intentional Integrations",
           "order": 15
         },
         {
           "key": "integrations_commitment",
-          "text": "Choose 2–3 intentional integrations that feel sustainable for you:",
-          "type": "textarea",
+          "text": "Write out 2–3 intentional integrations that feel sustainable for you. </br> NOTE: don't be afraid to introduce more throughout the 30 days. If you cut some digital media out of your life and find out later it was actually meaningful to you in some contexts that's a huge win! You've learned more about yourself. Reorientation of attention to what you love is more important than arbitrarily reducing screen-time.",
+          "type": "info",
           "section": "4. Intentional Integrations",
           "is_required": true,
           "order": 16
         },
         {
           "key": "implementation_intro",
-          "text": "Implementation Intentions prepare you for the exact moments the attention economy usually wins. Format: IF I feel the urge to… THEN I will… Focus on urges, not ongoing behavior. The 'THEN' action should connect directly to one of your Four Anchor Activities, or another healthy alternative (walk, call someone, drink water, step outside).",
+          "text": "Implementation Intentions prepare you for the exact moments the attention economy usually wins. Format: IF I feel the urge to… THEN I will… </br>Focus on urges, not ongoing behavior. The 'THEN' action might work better if you connect it directly to one of your Four Anchor Activities, or another healthy alternative (walk, call someone, drink water, step outside).",
           "type": "info",
           "section": "5. Implementation Intentions",
           "order": 17
@@ -861,11 +889,20 @@
         },
         {
           "key": "closing_message",
-          "text": "Today you removed the design tricks that pull you away from your values — and replaced them with structures that support the life you actually want. These changes will make the rest of the 30 days (and each day after) dramatically easier.",
+          "text": "Today, we've made a lot of progress toward restructuring your digital environment to work better for you! </br>This is a lot to do all in one day, so take a moment and thank yourself for that work. Also note, these are pretty big changes. You'll probably forget, slip, get tired and give in to temptation at least a few times throughout the 30 days. That's normal and I (Nathan) slipped up during my first 30 days too. You can do two things to help yourself in those situations. </br>1. Leave real reminders around your home - I like sticky notes. </br>2. Be kind to yourself. If you slip up, don't focus on that slip up as a mistake. Focus on all the other times you DID succeed in changing your behaviour and how that helped you. Then focus on how you'll show up tomorrow. </br>If you get 20 good days out of 30, that's 20 more than if you hadn't tried at all! If that's not a win, I don't know what is.",
           "type": "info",
           "section": "Closing",
           "order": 22
         }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 14,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Day 1: Environment Redesign",
+        "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes."
+      }
       ],
       "schedule": {
         "frequency": "ONCE",
@@ -1597,7 +1634,7 @@
         },
         {
           "key": "sc_5_tried_cut_back",
-          "text": "I've tried to cut back on my phone use but found it difficult.",
+          "text": "When I've tried to cut back on my phone use, I found it difficult.",
           "type": "radio",
           "section": "Section 1: Before/After Comparison - Smartphone Agency",
           "choices": {
