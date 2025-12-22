@@ -591,7 +591,7 @@
         },
         {
           "key": "closing",
-          "text": "Wonderful. You've chosen four different ways to reconnect with what matters to you. </br>It's often that people only realize how much digital media consumption has crowded out what they love, when they take the time to reconnect with those things. Remember these things are what we're approaching - it's our approach motivation at work.",
+          "text": "Wonderful! You've chosen four different ways to reconnect with what matters to you. </br>It's often that people only realize how much digital media consumption has crowded out what they love, when they take the time to reconnect with those things. Remember these things are what we're approaching - it's our approach motivation at work.",
           "type": "info",
           "section": "Closing",
           "order": 20
@@ -610,27 +610,27 @@
       "slug": "mental-contrasting",
       "name": "Mental Contrasting",
       "purpose": "GENERIC",
-      "description": "This step helps you see clearly what's at stake by imagining two futures.",
+      "description": "Mental Contrasting is a psychological exercise that helps you see the benefits of specific behaviour changes.",
       "title_template": "Mental Contrasting Exercise",
       "estimated_time_minutes": 15,
       "questions": [
         {
           "key": "mc_intro",
-          "text": "This next step helps you see clearly what's at stake. The attention economy competes for the same inner resources that your values and meaningful activities depend on. Doomscrolling isn't just 'bad tech habits' — it crowds out the things you truly care about by soaking up your energy, your time, and your attention. So now, you're going to imagine two futures.",
+          "text": "This next step helps envision the benefits of reducing your digital media consumption by imagining two worlds: one where you reduce your smartphone use, and one where your habits stay the same. The attention economy competes for the same resources - attention, time, energy - that your values and meaningful activities depend on. I like to say the primary harm of doomscrolling isn't social media CAUSING anxiety necessarily, but how doomscrolling 'displaces' activities we love and are good for us. </br>So now, let's imagine two futures and feel the difference between them.",
           "type": "info",
           "section": "Introduction",
           "order": 0
         },
         {
           "key": "future_a_intro",
-          "text": "Imagine your life a year from now if nothing changes — if the same scrolling patterns continue or intensify a little. Be straightforward. No dramatics, no self-shaming. Just an honest projection of the direction you're already on.",
+          "text": "Imagine your life a year from now if nothing changes. Imagine your digital media consumption and smartphone use stay the same or intensify. ",
           "type": "info",
           "section": "Future A: If Your Digital Habits Stay the Same",
           "order": 1
         },
         {
           "key": "future_a_prompts",
-          "text": "Consider: How does doomscrolling shape your days? What gets pushed aside — hobbies, relationships, rest, focus, health? What does your attention feel like: scattered, foggy, constantly pulled? How do you feel physically and mentally? Which of your values fade into the background? How do your relationships feel when you're more distracted or drained? What do you miss out on?",
+          "text": "Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
           "type": "info",
           "section": "Future A: If Your Digital Habits Stay the Same",
           "order": 2
@@ -645,14 +645,14 @@
         },
         {
           "key": "future_b_intro",
-          "text": "Now picture a year from now if you consistently make small shifts toward the things you chose — your calming activity, your skill-building hobby, your social ritual, and your community activity. Nothing heroic. Just steady, reasonable effort.",
+          "text": "Now picture a year from now if you move toward the things you love - your calming activity, your skill-building hobby, your social ritual, and your community activity - and away from doomscrolling and passive media consumption.",
           "type": "info",
           "section": "Future B: If You Reclaim Your Attention",
           "order": 4
         },
         {
           "key": "future_b_prompts",
-          "text": "Consider: What do your mornings and evenings look like? How does it feel to reach for something meaningful instead of the feed? How does your energy and focus change over time? How do your relationships feel when you're more present? How do your values show up more often? What are you proud of? What becomes easier when your attention isn't constantly fractured?",
+          "text": "Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
           "type": "info",
           "section": "Future B: If You Reclaim Your Attention",
           "order": 5
@@ -667,7 +667,7 @@
         },
         {
           "key": "contrast_1_difference",
-          "text": "What's the biggest difference between these two futures? (1–2 sentences)",
+          "text": "What's the biggest difference between these two futures? Writing more is generally better (within reason).",
           "type": "textarea",
           "section": "The Contrast",
           "is_required": true,
@@ -683,7 +683,7 @@
         },
         {
           "key": "mc_closing",
-          "text": "You've now clarified the difference between staying on autopilot and showing up for the parts of life you actually care about. This month doesn't require perfection. But consistent, small effort will move you toward the future you just described — and that progress matters.",
+          "text": "This cohort is not here to prescribe behaviours to you. We want to guide you to identifying those things for yourself. This mental contrasting activity is an important step toward that; seeing for yourself the difference you can make in your life by imagining and contrasting.",
           "type": "info",
           "section": "Closing",
           "order": 9
