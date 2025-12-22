@@ -36,7 +36,7 @@ class TaskGenerationServiceTests(TestCase):
             survey=self.survey,
             frequency=TaskScheduler.Frequency.ONCE,
             offset_days=0,
-            offset_from=TaskScheduler.OffsetFrom.START,
+            offset_from=TaskScheduler.OffsetFrom.COHORT_START,
         )
 
         # Before due date
@@ -129,7 +129,7 @@ class GetUserTasksServiceTests(TestCase):
         # Create schedulers
         TaskScheduler.objects.create(
             cohort=self.cohort, survey=self.entry_survey, frequency=TaskScheduler.Frequency.ONCE,
-            offset_days=0, offset_from=TaskScheduler.OffsetFrom.START
+            offset_days=0, offset_from=TaskScheduler.OffsetFrom.COHORT_START
         )
         TaskScheduler.objects.create(
             cohort=self.cohort, survey=self.daily_survey, frequency=TaskScheduler.Frequency.DAILY

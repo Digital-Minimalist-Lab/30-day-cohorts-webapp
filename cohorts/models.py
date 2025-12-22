@@ -372,8 +372,10 @@ class TaskScheduler(models.Model):
         WEEKLY = 'WEEKLY', _('Weekly')
 
     class OffsetFrom(models.TextChoices):
-        START = 'COHORT_START', _('From Cohort Start')
-        END = 'COHORT_END', _('From Cohort End')
+        ENROLL_START = 'ENROLL_START', _('From Enrollment Start')
+        ENROLL_END = 'ENROLL_END', _('From Enrollment End')
+        COHORT_START = 'COHORT_START', _('From Cohort Start')
+        COHORT_END = 'COHORT_END', _('From Cohort End')
 
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='schedulers')
     cohort = models.ForeignKey(Cohort, on_delete=models.CASCADE, related_name='task_schedulers', help_text="The cohort this schedule applies to.")

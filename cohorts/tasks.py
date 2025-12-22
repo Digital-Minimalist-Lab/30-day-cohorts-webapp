@@ -25,11 +25,21 @@ class PendingTask:
 
 def _get_once_task_due_dates(scheduler: TaskScheduler, today: date) -> List[date]:
     """Generates due dates for a ONCE frequency scheduler."""
-    if scheduler.offset_from == TaskScheduler.OffsetFrom.START:
-        due_date = scheduler.cohort.start_date + timedelta(days=scheduler.offset_days)
-    else: # 'end'
-        due_date = scheduler.cohort.end_date + timedelta(days=scheduler.offset_days)
     
+    reference_date = None
+    if scheduler.offset_from == TaskScheduler.OffsetFrom.ENROLL_START:
+        reference_date = scheduler.cohort.enrollment_start_date
+    elif scheduler.offset_from == TaskScheduler.OffsetFrom.ENROLL_END:
+        reference_date = scheduler.cohort.enrollment_end_date
+    elif scheduler.offset_from == TaskScheduler.OffsetFrom.COHORT_START:
+        reference_date = scheduler.cohort.start_date
+    elif scheduler.offset_from == TaskScheduler.OffsetFrom.COHORT_END:
+        reference_date = scheduler.cohort.end_date
+
+    if not reference_date:
+        return []
+ 
+    due_date = reference_date + timedelta(days=scheduler.offset_days)
     if today >= due_date:
         return [due_date]
     return []
@@ -71,7 +81,7 @@ def _get_weekly_task_due_dates(scheduler: TaskScheduler, today: date) -> List[da
 TASK_FREQUENCY_HANDLERS = {
     TaskScheduler.Frequency.ONCE: {
         'handler': _get_once_task_due_dates,
-        'order': lambda s: 1 if s.offset_from == TaskScheduler.OffsetFrom.START else 4
+        'order': lambda s: 1 if s.offset_from == TaskScheduler.OffsetFrom.COHORT_START else 4
     },
     TaskScheduler.Frequency.DAILY: {
         'handler': _get_daily_task_due_dates,
