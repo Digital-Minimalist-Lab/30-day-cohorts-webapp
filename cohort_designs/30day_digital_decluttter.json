@@ -11,13 +11,13 @@
       "slug": "entry-survey",
       "name": "Entry Survey",
       "purpose": "ENTRY",
-      "description": "This survey establishes your baseline. Be honest with yourself—this is for your reflection, not judgment.",
+      "description": "In this entry survey we're checking in with your baselines. We'll take a quick look at your smatphone use and overall well-being. At the end of the 30 days, we'll ask these again and compare to see your progress.",
       "title_template": "Entry Survey",
       "estimated_time_minutes": 10,
       "questions": [
         {
           "key": "section_a_intro",
-          "text": "The following questions help us understand your relationship with your smartphone. Please rate each statement based on how true it feels for you.",
+          "text": "The following questions help you reflect on your relationship with your smartphone. Please rate each statement based on how true it feels for you.",
           "type": "info",
           "section": "A. Smartphone Compulsion",
           "order": 0
@@ -412,6 +412,14 @@
           "is_required": true,
           "order": 31
         }
+        {
+          "key": "wrap_up",
+          "text": "Thank you for taking the time to assess yourself honestly. This will help you assess your progress and us assess the efficacy of this project.",
+          "type": "info",
+          "section": "I. Entry Conclusion",
+          "is_required": true,
+          "order": 31
+        }
       ],
       "schedule": {
         "frequency": "ONCE",
@@ -426,20 +434,20 @@
       "slug": "reconnect-survey",
       "name": "Reconnect: Cherished Goals & Anchor Activities",
       "purpose": "GENERIC",
-      "description": "This month is about more than reducing screen-time - it's about reconnecting with things you love.",
+      "description": "More than reduicng screen-time, we want to reconnct with things we love. Let's figure out what those things are.",
       "title_template": "Reconnect Survey",
       "estimated_time_minutes": 15,
       "questions": [
         {
           "key": "reconnect_intro",
-          "text": "This month is about more than reducing screen-time — it's about reconnecting with things you love. This section helps you identify what things you'd like to reconnect with — and gives you simple, practical ways to act on that.",
+          "text": "These 30 days aren't about reducing screen-time just to show off low screen-time numbers to your friends. It's about decluttering our digital environments to reconnect with things we love. Let's find out what those things are and how to reconnect with them.",
           "type": "info",
           "section": "Introduction",
           "order": 0
         },
         {
           "key": "step1_intro",
-          "text": "Instead of starting with abstract values, we'll start with cherished goals. A cherished goal is something you genuinely want more of in your life — not because you 'should,' but because it matters to you. These goals don't need to be ambitious or impressive. They should feel personally meaningful and realistic.",
+          "text": "For a moment, let's talk about motivation. It requires some motivation to go through 30 days of big changes to your life - what you're doing now. So, it's important to ask how motivation works. </br>Often in psychology, we break motivation into two types: avoidance motivation, and approach motivation. </br>Avoidance motivation comes from our desire to avoid some harm, discomfort, suffering. For our purposes that would be something like 'I want to reduce my smartphone use because scrolling for 4 hours makes me feel anxious." </br>Approach motivation comes from our desire to bring about something positive in our own lives or in the lives of our loved ones, communities, or some greater good. That's what we're focusing on right now. We want to ask 'By reducing our smartphone use, what positive things might I enable or reconnect with?' What are we approaching? </br>Neither of these motivational framings is right or wrong or better. However, I've found most people take the avoidance motivation approach ONLY. Why not make use of both? Let's reduce the harm of the attention economy AND use that extra time we've freed up on things we love! We're going to call these things we're APPROACHING, Cherished Goals (drawing from the Recovery Oriented Cognitive Therapy tradition),
           "type": "info",
           "section": "Step 1: Identify Your Cherished Goals",
           "order": 1
@@ -485,37 +493,36 @@
         },
         {
           "key": "step2_intro",
-          "text": "These four activities will act as anchors throughout the cohort — simple, repeatable ways to shift your attention away from autopilot scrolling and toward the areas of life you want to cultivate. They don't need to be done perfectly. They just need to be easier to reach for than the feed. After choosing each activity, you'll write a short reflection on why it matters to you and how you expect it to feel.",
+          "text": "Now, we're going to establish 4 specific activities that we're going to reintroduce into our lives over the next 30 days. We'll call these Anchor Activities.",
+          "type": "info",
+          "section": "Step 2: Choose Your Four Anchor Activities",
+          "order": 7
+        },
+        {
+          "key": "step2_intro",
+          "text": "We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexibile. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
           "type": "info",
           "section": "Step 2: Choose Your Four Anchor Activities",
           "order": 7
         },
         {
           "key": "anchor1_intro",
-          "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. Examples: Reading, journaling, sketching, puzzles, knitting, meditation, stretching",
+          "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. We highly recommend reading. </br> Reading is easy to fit into many of the times and spaces we would often scroll which makes it highly effective at replacing doomscrolling. Want to scroll on Saturday morning? Good thing your book is on your night stand. Waiting for the subway? Good thing you brought your book. Nobody's available to hang out this evening and you can't watch Netflix? Good thing you've got your book. 
           "type": "info",
           "section": "Anchor 1: Low-Energy Solo Activity",
           "order": 8
         },
         {
           "key": "anchor1_activity",
-          "text": "What low-energy solo activity will you choose?",
+          "text": "What low-energy activities would you like to engage with? We recommend Reading as a default you can add others to.",
           "type": "text",
           "section": "Anchor 1: Low-Energy Solo Activity",
           "is_required": true,
           "order": 9
         },
         {
-          "key": "anchor1_reflection",
-          "text": "How does this activity support the areas or goals you named above, and how do you expect it to feel when you do it? (1–2 sentences)",
-          "type": "textarea",
-          "section": "Anchor 1: Low-Energy Solo Activity",
-          "is_required": true,
-          "order": 10
-        },
-        {
           "key": "anchor2_intro",
-          "text": "An effortful activity that builds competence or momentum. Choose one activity you want to practice or improve at this month. Examples: Writing a blog, learning guitar, drawing, cooking, running, lifting, photography, coding a small project, language learning",
+          "text": "A high energy solo activity (like skill-building or learning). </br>Choose one activity you want to practice or improve at this month. Examples: Writing a blog, learning guitar, drawing, cooking, running, lifting, photography, coding a small project, language learning",
           "type": "info",
           "section": "Anchor 2: High-Energy Solo / Skill-Building Activity",
           "order": 11
@@ -538,7 +545,7 @@
         },
         {
           "key": "anchor3_intro",
-          "text": "A recurring point of connection. Choose one weekly ritual — in person or virtual — with someone you care about. Examples: Board game night, weekly phone or video call with a sibling or friend, movie night, Sunday dinner, weekly walk",
+          "text": "A recurring low energy social activity. </br>Choose one weekly ritual with someone or some folks who you're comfortable relaxing with. Examples: Board game night, weekly phone or video call with a sibling or friend, movie night, Sunday dinner, weekly walk",
           "type": "info",
           "section": "Anchor 3: Social Ritual With Loved Ones",
           "order": 14
@@ -561,7 +568,7 @@
         },
         {
           "key": "anchor4_intro",
-          "text": "Something that brings you into shared space with others. Choose one weekly activity that involves a group, class, or community. Examples: Run club, art/dance class, volunteering, religious group, climbing gym, Friday Night Magic at a game store",
+          "text": "High Energy Social Activity. </br>Choose one weekly activity that involves a group, class, or community. Examples: Run club, art/dance class, volunteering, religious group, climbing gym, Friday Night Magic at a game store.",
           "type": "info",
           "section": "Anchor 4: Social Hobby / Community Activity",
           "order": 17
@@ -584,7 +591,7 @@
         },
         {
           "key": "closing",
-          "text": "Beautiful. You've chosen four small ways to reconnect with what matters to you. None of this needs to be perfect — small steps, small moments, small wins all count. Every bit of reengagement is real progress. Now we'll look at two possible futures: one where nothing changes, and one where these small actions add up to a meaningful shift. This helps your mind see what you're moving toward — and why it's worth protecting your attention.",
+          "text": "Wonderful. You've chosen four different ways to reconnect with what matters to you. </br>It's often that people only realize how much digital media consumption has crowded out what they love, when they take the time to reconnect with those things. Remember these things are what we're approaching - it's our approach motivation at work.",
           "type": "info",
           "section": "Closing",
           "order": 20
@@ -894,6 +901,15 @@
           "section": "Closing",
           "order": 22
         }
+      ],
+      "schedule": {
+        "frequency": "ONCE",
+        "offset_days": 14,
+        "offset_from": "COHORT_START",
+        "is_cumulative": true,
+        "task_title_template": "Day 1: Environment Redesign",
+        "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes."
+      }
       ],
       "schedule": {
         "frequency": "ONCE",
