@@ -25,3 +25,8 @@ def resources_view(request: HttpRequest) -> HttpResponse:
 def feedback_view(request: HttpRequest) -> HttpResponse:
     """Feedback page."""
     return redirect("https://docs.google.com/forms/d/e/1FAIpQLSdb0eSiUg6NS4Etj06TYLdbF0LAX-e1wrvHQHsM67VcABbTjQ/viewform?usp=dialog")
+
+
+def mailinglist_view(request: HttpRequest) -> HttpResponse:
+    """Mailing list page."""
+    return redirect("https://nathanlaundry.substack.com/")

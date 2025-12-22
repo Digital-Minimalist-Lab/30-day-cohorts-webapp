@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import privacy_policy, protocol_view, resources_view, landing, feedback_view
+from .views import privacy_policy, protocol_view, resources_view, landing, feedback_view, mailinglist_view
 
 app_name = 'core'
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('', landing, name='index_landing'),
     path('landing/', landing, name='landing'),
     path('feedback/', feedback_view, name='feedback'),
+    path('mailinglist/', mailinglist_view, name='mailinglist'),
 ]
