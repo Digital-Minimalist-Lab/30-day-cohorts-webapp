@@ -1,17 +1,14 @@
-from typing import Optional
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import AbstractUser
 from django.http import HttpRequest, HttpResponse
-from allauth.account.forms import LoginForm
 from django.conf import settings
 from django.urls import reverse
 
-from ..models import Cohort, Enrollment
+from ..models import Cohort, Enrollment, UserSurveyResponse
 from ..forms import PaymentAmountForm
 from ..decorators import enrollment_required
 
-from accounts.forms import FullSignupForm
+from surveys.models import Survey
 
 import logging
 logger = logging.getLogger(__name__)
@@ -63,7 +60,6 @@ def join_start(request: HttpRequest) -> HttpResponse:
 @login_required
 def join_entry_survey(request: HttpRequest) -> HttpResponse:
     """Step 2: Entry survey before checkout."""
-    from surveys.models import Survey
 
     # Find the next upcoming or recently started cohort
     cohort = next(iter(Cohort.objects.get_joinable()), None)
@@ -88,7 +84,6 @@ def join_entry_survey(request: HttpRequest) -> HttpResponse:
     )
 
     # If already completed entry survey, skip to checkout
-    from cohorts.models import UserSurveyResponse
     entry_survey = Survey.objects.filter(purpose=Survey.Purpose.ENTRY).first()
     if entry_survey:
         has_completed_entry = UserSurveyResponse.objects.filter(

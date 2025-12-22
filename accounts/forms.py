@@ -13,17 +13,17 @@ class FullSignupForm(SignupForm):
         required=True,
         help_text="Your timezone for accurate daily check-in dates"
     )
+    email_product_updates = forms.BooleanField(
+        required=False,
+        initial=False,
+        label="Sign up for updates to our mailing list",
+        help_text=""
+    )
     email_daily_reminder = forms.BooleanField(
         required=False,
         initial=False,
-        label="Send me daily check-in reminders",
-        help_text="Optional email reminders for daily reflections"
-    )
-    email_weekly_reminder = forms.BooleanField(
-        required=False,
-        initial=False,
-        label="Send me weekly reflection reminders",
-        help_text="Optional email reminders for weekly intentions"
+        label="Send me reminders to complete my daily tasks",
+        help_text="Optional daily reminders to complete my tasks"
     )
 
     field_order = [
@@ -31,15 +31,15 @@ class FullSignupForm(SignupForm):
         'password1',
         'password2',
         'timezone',
-        'email_daily_reminder',
-        'email_weekly_reminder'
+        'email_product_updates',
+        'email_daily_reminder'
     ]
 
     def get_email_preference_fields(self):
         """Returns only the email preference fields for easier rendering."""
         return [
-            self['email_daily_reminder'],
-            self['email_weekly_reminder']
+            self['email_product_updates'],
+            self['email_daily_reminder']
         ]
 
     @property
@@ -56,8 +56,8 @@ class FullSignupForm(SignupForm):
             user=user,
             defaults={
                 'timezone': self.cleaned_data['timezone'],
+                'email_product_updates': self.cleaned_data['email_product_updates'],
                 'email_daily_reminder': self.cleaned_data['email_daily_reminder'],
-                'email_weekly_reminder': self.cleaned_data['email_weekly_reminder'],
             }
         )
         
@@ -67,9 +67,9 @@ class UserProfileForm(forms.ModelForm):
     """Form for updating user profile settings."""
     class Meta:
         model = UserProfile
-        fields = ['timezone', 'email_daily_reminder', 'email_weekly_reminder']
+        fields = ['timezone', 'email_product_updates', 'email_daily_reminder']
         widgets = {
             'timezone': forms.Select(),
+            'email_product_updates': forms.CheckboxInput(),
             'email_daily_reminder': forms.CheckboxInput(),
-            'email_weekly_reminder': forms.CheckboxInput(),
         }
