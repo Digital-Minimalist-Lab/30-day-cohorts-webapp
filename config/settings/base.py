@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    
+    'django_q',  # Task queue
+    'django_q2_email_backend',  # Email backend for Django Q
+
     # Local apps
     'config',  # For management commands
     'core',
@@ -101,11 +103,11 @@ if not LANDING_ONLY:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'digital_minimalist_db'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
+            'NAME': os.getenv('PGDATABASE', 'digital_minimalist_db'),
+            'USER': os.getenv('PGUSER', 'postgres'),
+            'PASSWORD': os.getenv('PGPASSWORD', 'postgres'),
+            'HOST': os.getenv('PGHOST', 'localhost'),
+            'PORT': os.getenv('PGPORT', '5432'),
         }
     }
 
@@ -128,6 +130,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SITE_ID = 1
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -178,6 +182,7 @@ ACCOUNT_LOGIN_BY_CODE_REQUIRED = True
 
 # Email Configuration
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
@@ -245,3 +250,22 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+# Django Q Configuration
+Q_CLUSTER = {
+    'name': 'digital_minimalist',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'compress': True,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'cpu_affinity': 1,
+    'label': 'Django Q',
+    'orm': 'default',  # Use Django ORM (Database) as the broker
+}
+
+# Django Q Email Setup
+Q2_EMAIL_BACKEND = EMAIL_BACKEND  # The actual backend (SMTP/Console)
+EMAIL_BACKEND = 'django_q2_email_backend.backends.Q2EmailBackend'  # The wrapper that queues emails

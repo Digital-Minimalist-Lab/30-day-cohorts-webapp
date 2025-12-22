@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 
 from .models import Cohort, Enrollment, TaskScheduler, UserSurveyResponse
+from django.contrib import admin
+from .models import Cohort, Enrollment, EmailSendLog
+from cohorts.models import TaskScheduler, UserSurveyResponse
 
 
 class TaskSchedulerInline(admin.TabularInline):
@@ -144,3 +147,24 @@ class UserSurveyResponseAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+@admin.register(EmailSendLog)
+class EmailSendLogAdmin(admin.ModelAdmin):
+    list_display = ['created_at', 'email_type', 'recipient_email', 'idempotency_key']
+    list_filter = ['email_type', 'created_at']
+    search_fields = ['recipient_email', 'idempotency_key']
+    readonly_fields = [
+        'idempotency_key',
+        'recipient_email',
+        'recipient_user',
+        'email_type',
+        'created_at',
+    ]
+    date_hierarchy = 'created_at'
+
+    def has_add_permission(self, request):
+        return False  # Logs are created programmatically only
+
+    def has_change_permission(self, request, obj=None):
+        return False  # Logs are immutable

@@ -186,6 +186,8 @@ class Cohort(models.Model):
                             errors.append(f"{prefix}.schedule: ONCE frequency requires 'offset_days'")
                         if "offset_from" not in schedule:
                             errors.append(f"{prefix}.schedule: ONCE frequency requires 'offset_from'")
+                        elif schedule["offset_from"] not in TaskScheduler.OffsetFrom.values:
+                            errors.append(f"{prefix}.schedule: invalid offset_from '{schedule['offset_from']}'")
         
         return errors
 
@@ -370,8 +372,8 @@ class TaskScheduler(models.Model):
         WEEKLY = 'WEEKLY', _('Weekly')
 
     class OffsetFrom(models.TextChoices):
-        START = 'start', _('From Cohort Start')
-        END = 'end', _('From Cohort End')
+        START = 'COHORT_START', _('From Cohort Start')
+        END = 'COHORT_END', _('From Cohort End')
 
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='schedulers')
     cohort = models.ForeignKey(Cohort, on_delete=models.CASCADE, related_name='task_schedulers', help_text="The cohort this schedule applies to.")
@@ -387,7 +389,7 @@ class TaskScheduler(models.Model):
 
     # Fields for ONCE frequency
     offset_days = models.IntegerField(blank=True, null=True, help_text="For ONCE frequency. The number of days to offset from the start/end date.")
-    offset_from = models.CharField(max_length=10, choices=OffsetFrom.choices, blank=True, null=True, help_text="For ONCE frequency. The reference point for the offset.")
+    offset_from = models.CharField(max_length=50, choices=OffsetFrom.choices, blank=True, null=True, help_text="For ONCE frequency. The reference point for the offset.")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -444,9 +446,9 @@ class UserSurveyResponse(models.Model):
     def __str__(self) -> str:
         return f"Submission for {self.submission.survey.name} by {self.user.email} on {self.submission.completed_at.strftime('%Y-%m-%d')}"
 
-    def to_dict(self):        
+    def to_dict(self):
         answers = {ans.question.key: ans.value for ans in self.submission.answers.all()}
-        
+
         data = {
             'cohort': self.cohort.name,
             'survey_name': self.submission.survey.name,
@@ -457,3 +459,52 @@ class UserSurveyResponse(models.Model):
         if self.due_date:
             data['due_date'] = self.due_date.isoformat()
         return data
+
+
+class EmailSendLogManager(models.Manager):
+    """Manager with helper methods for email deduplication."""
+
+    def was_sent(self, idempotency_key: str) -> bool:
+        """Check if an email with this key was successfully sent."""
+        return self.filter(idempotency_key=idempotency_key).exists()
+
+    def record_sent(
+        self,
+        idempotency_key: str,
+        recipient_email: str,
+        email_type: str,
+        recipient_user=None,
+    ):
+        """Record a successfully sent email."""
+        return self.create(
+            idempotency_key=idempotency_key,
+            recipient_email=recipient_email,
+            recipient_user=recipient_user,
+            email_type=email_type,
+        )
+
+
+class EmailSendLog(models.Model):
+    """Tracks successfully sent emails for deduplication."""
+
+    idempotency_key = models.CharField(max_length=255, unique=True)
+    recipient_email = models.EmailField()
+    recipient_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='email_logs',
+    )
+    email_type = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = EmailSendLogManager()
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Email Send Log'
+        verbose_name_plural = 'Email Send Logs'
+
+    def __str__(self):
+        return f"{self.email_type} to {self.recipient_email} at {self.created_at}"

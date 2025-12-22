@@ -104,7 +104,7 @@ class Question(models.Model):
 
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='questions')
     key = models.CharField(max_length=100, help_text="A unique key for this question within the survey. May be used in templates.")
-    text = models.CharField(max_length=500, help_text="The question text presented to the user.")
+    text = models.CharField(max_length=1000, help_text="The question text presented to the user.")
     question_type = models.CharField(max_length=20, choices=QuestionType.choices, default=QuestionType.TEXT)
     section = models.CharField(
         max_length=200, 

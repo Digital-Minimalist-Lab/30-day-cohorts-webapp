@@ -3,9 +3,9 @@
 
 {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}You have requested a login code for your account on {{ site_name }}.{% endblocktrans %}
 
-{% trans "Enter the code {{ code }} or click the link below to log in:" %}
+Enter the code {{ code }} or click the link below to log in:
 
 {% url 'accounts:account_login_by_code_url' as login_url %}
-{{ request.scheme }}://{{ request.get_host }}{{ login_url }}?code={{ code }}&email={{ email|urlencode }}
+{{ request.scheme }}://{{ request.get_host }}{{ login_url }}?code={{ code }}
 
 {% blocktrans %}If you did not request this, you can safely ignore this email.{% endblocktrans %}
