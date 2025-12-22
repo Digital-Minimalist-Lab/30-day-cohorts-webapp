@@ -29,6 +29,21 @@ services:
     depends_on:
       - web
 
+  qcluster:
+    build: .
+    container_name: digital_minimalist_qcluster
+    command: python manage.py qcluster
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/digital_minimalist_db
+
+
   web:
     build: .
     container_name: digital_minimalist_web
