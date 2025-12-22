@@ -18,10 +18,12 @@ else:
     from allauth import urls as allauth_urls
     from payments import urls as payments_urls
     from cohorts import urls as cohorts_urls
+    from accounts import api_urls as accounts_api_urls
 
     urlpatterns = [
         path('health/', include(health_check_urls)),
         path('admin/', admin.site.urls),
+        path('api/accounts/', include(accounts_api_urls)),
         path('accounts/', include(accounts_urls)),
         path('accounts/', include(allauth_urls)),
         path('payments/', include(payments_urls)),
