@@ -267,7 +267,7 @@
         },
         {
           "key": "section_f_intro",
-          "text": "Over the past two weeks, how have you felt the following? (1 = Hardly ever, 2 = Some of the time, 3 = Often)",
+          "text": "Over the past two weeks, how have you felt the following?",
           "type": "info",
           "section": "F. Social Connectedness",
           "order": 19
@@ -492,14 +492,14 @@
           "order": 6
         },
         {
-          "key": "step2_intro",
+          "key": "step2_intro1",
           "text": "Now, we're going to establish 4 specific activities that we're going to reintroduce into our lives over the next 30 days. We'll call these Anchor Activities.",
           "type": "info",
           "section": "Step 2: Choose Your Four Anchor Activities",
           "order": 7
         },
         {
-          "key": "step2_intro",
+          "key": "step2_intro2",
           "text": "We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexibile. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
           "type": "info",
           "section": "Step 2: Choose Your Four Anchor Activities",
@@ -737,13 +737,6 @@
         {
           "key": "boundaries_intro",
           "text": "These are three boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.",
-          "type": "info",
-          "section": "2. Tech Boundaries",
-          "order": 3
-        },
-        {
-          "key": "boundaries_intro",
-          "text": "",
           "type": "info",
           "section": "2. Tech Boundaries",
           "order": 3
