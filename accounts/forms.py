@@ -70,6 +70,10 @@ class UserProfileForm(forms.ModelForm):
         fields = ['timezone', 'email_product_updates', 'email_daily_reminder']
         widgets = {
             'timezone': forms.Select(),
-            'email_product_updates': forms.CheckboxInput(),
-            'email_daily_reminder': forms.CheckboxInput(),
+            'email_product_updates': forms.CheckboxInput(
+                attrs={'role': 'switch'},
+            ),
+            'email_daily_reminder': forms.CheckboxInput(
+                attrs={'role': 'switch'},
+            ),
         }

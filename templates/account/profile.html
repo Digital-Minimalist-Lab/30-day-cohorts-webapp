@@ -17,8 +17,13 @@
 
         {% for field in form %}
         <label for="{{ field.id_for_label }}">
-            {{ field.label }}
-            {{ field }}
+            {% if field.field.widget.input_type == 'checkbox' %}
+                {{ field }}
+                {{ field.label }}
+            {% else %}
+                {{ field.label }}
+                {{ field }}
+            {% endif %}
             {% if field.help_text %}
             <small>{{ field.help_text }}</small>
             {% endif %}
