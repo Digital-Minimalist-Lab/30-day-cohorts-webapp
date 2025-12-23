@@ -12,11 +12,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email_product_updates = models.BooleanField(
         default=False,
-        help_text="Opt-in for daily check-in reminders"
+        help_text="Opt-in for product updates"
     )
     email_daily_reminder = models.BooleanField(
         default=False,
-        help_text="Opt-in for weekly reflection reminders"
+        help_text="Opt-in for daily reminders"
     )
     timezone = models.CharField(
         max_length=50,
