@@ -35,7 +35,7 @@
                     <input type="checkbox" 
                            role="switch" 
                            id="email-reminder-toggle" 
-                           {% if user.profile.email_reminders %}checked{% endif %}
+                           {% if user.profile.email_daily_reminder %}checked{% endif %}
                            hx-post="{% url 'accounts_api:toggle_email_reminders' %}"
                            hx-trigger="change"
                            hx-swap="none"
