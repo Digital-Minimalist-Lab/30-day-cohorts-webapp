@@ -178,7 +178,7 @@ class Cohort(models.Model):
                             errors.append(f"{q_prefix}: missing 'text'")
                         if "type" not in q:
                             errors.append(f"{q_prefix}: missing 'type'")
-                        elif q["type"] not in ["text", "textarea", "integer", "radio", "info"]:
+                        elif q["type"] not in ["text", "textarea", "integer", "decimal", "radio", "info"]:
                             errors.append(f"{q_prefix}: invalid type '{q['type']}'")
                 
                 if "schedule" not in survey:

@@ -175,7 +175,7 @@
         {
           "key": "usage_hours_daily",
           "text": "On average, how many hours per day do you use your smartphone?",
-          "type": "integer",
+          "type": "decimal",
           "section": "B. Digital Usage Behavior",
           "is_required": true,
           "order": 11
@@ -947,7 +947,7 @@
         {
           "key": "screentime_min",
           "text": "Screen time in minutes (estimated or actual)",
-          "type": "integer",
+          "type": "decimal",
           "section": "Quick Ratings",
           "is_required": true,
           "order": 2
@@ -1912,7 +1912,7 @@
         {
           "key": "exit_screentime_hours",
           "text": "On average, how many hours per day do you use your smartphone?",
-          "type": "integer",
+          "type": "decimal",
           "section": "Section 1: Before/After Comparison - Screen Time",
           "is_required": true,
           "order": 24

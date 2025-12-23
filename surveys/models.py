@@ -99,6 +99,7 @@ class Question(models.Model):
         TEXT = 'text', _('Text (single line)')
         TEXTAREA = 'textarea', _('Text Area (multi-line)')
         INTEGER = 'integer', _('Integer')
+        DECIMAL = 'decimal', _('Decimal')
         RADIO = 'radio', _('Radio Select')
         INFO = 'info', _('Information (display only)')
 

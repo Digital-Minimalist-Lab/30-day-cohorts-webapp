@@ -87,6 +87,8 @@ class DynamicSurveyForm(forms.Form):
     def get_field_class(self, question_type):
         if question_type == Question.QuestionType.INTEGER:
             return forms.IntegerField
+        if question_type == Question.QuestionType.DECIMAL:
+            return forms.DecimalField
         if question_type == Question.QuestionType.RADIO:
             return forms.ChoiceField
         return forms.CharField # Default for TEXT and TEXTAREA
@@ -104,5 +106,7 @@ class DynamicSurveyForm(forms.Form):
             radio_attrs = {'class': 'h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500'}
             return RadioSelect(attrs=radio_attrs)
         if question.question_type == Question.QuestionType.INTEGER:
+            return NumberInput(attrs=base_attrs)
+        if question.question_type == Question.QuestionType.DECIMAL:
             return NumberInput(attrs=base_attrs)
         return TextInput(attrs=base_attrs) # Default for TEXT
