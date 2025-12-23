@@ -101,7 +101,7 @@ def join_entry_survey(request: HttpRequest) -> HttpResponse:
         return redirect('cohorts:join_checkout')
 
     # Calculate due date (start of cohort)
-    due_date = cohort.start_date
+    due_date = cohort.enrollment_start_date
 
     # Redirect to the entry survey with special onboarding handling
     return redirect('cohorts:onboarding_entry_survey',
