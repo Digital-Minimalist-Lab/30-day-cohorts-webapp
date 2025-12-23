@@ -16,21 +16,6 @@ class Survey(models.Model):
     description = models.TextField(blank=True)
     title_template = models.CharField(max_length=255, blank=True, default="{survey_name}", help_text="A template for the page title. Available placeholders: {survey_name}, {due_date}, {week_number}.")
     
-    
-    """
-    Purposes are used to edit behaviour and UI for certain pages.
-    - DAILY_CHECKIN is used to collect summaries and show it in the accounts profile view.
-    - EXIT is used to collect the ENTRY data, and show it when presenting the EXIT survey.
-    - WEEKLY_REFLECTION and DAILY_CHECKIN used to special-case which summary view is presented in their "list" form.
-    """
-    class Purpose(models.TextChoices):
-        GENERIC = 'GENERIC', _('Generic')
-        ENTRY = 'ENTRY', _('Entry Survey')
-        EXIT = 'EXIT', _('Exit Survey')
-        DAILY_CHECKIN = 'DAILY_CHECKIN', _('Daily Check-in')
-        WEEKLY_REFLECTION = 'WEEKLY_REFLECTION', _('Weekly Reflection')
-
-    purpose = models.CharField(max_length=20, choices=Purpose.choices, default=Purpose.GENERIC, help_text="The role of this survey in the cohort lifecycle.")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -44,7 +29,6 @@ class Survey(models.Model):
         data = {
             "slug": self.slug,
             "name": self.name,
-            "purpose": self.purpose,
             "description": self.description,
             "title_template": self.title_template,
         }
@@ -67,7 +51,6 @@ class Survey(models.Model):
         survey = cls(
             slug=data.get("slug") or slugify(data["name"]),
             name=data["name"],
-            purpose=data.get("purpose", cls.Purpose.GENERIC),
             description=data.get("description", ""),
             title_template=data.get("title_template", "{survey_name}"),
         )

@@ -84,7 +84,7 @@ def join_entry_survey(request: HttpRequest) -> HttpResponse:
     )
 
     # If already completed entry survey, skip to checkout
-    entry_survey = Survey.objects.filter(purpose=Survey.Purpose.ENTRY).first()
+    entry_survey = cohort.onboarding_survey
     if entry_survey:
         has_completed_entry = UserSurveyResponse.objects.filter(
             user=request.user,

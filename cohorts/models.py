@@ -81,6 +81,15 @@ class Cohort(models.Model):
 
     objects = CohortManager() # Add the custom manager
 
+    onboarding_survey = models.ForeignKey(
+        Survey,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='onboarding_cohorts',
+        help_text="The survey presented during onboarding (e.g. Entry Survey)."
+    )
+
     class Meta:
         ordering = ['-start_date']
 
@@ -314,7 +323,6 @@ class Cohort(models.Model):
             # Update existing survey
             existing.name = survey_data.get("name", slug)
             existing.description = survey_data.get("description", "")
-            existing.purpose = survey_data.get("purpose", Survey.Purpose.GENERIC)
             existing.title_template = survey_data.get("title_template", "{survey_name}")
             existing.save()
             # Delete and recreate questions
@@ -464,7 +472,6 @@ class UserSurveyResponse(models.Model):
         data = {
             'cohort': self.cohort.name,
             'survey_name': self.submission.survey.name,
-            'survey_purpose': self.submission.survey.purpose,
             'completed_at': self.submission.completed_at.isoformat(),
             'answers': answers,
         }

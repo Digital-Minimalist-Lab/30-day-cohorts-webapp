@@ -47,4 +47,3 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     }
     
     return render(request, 'cohorts/dashboard.html', context)
-

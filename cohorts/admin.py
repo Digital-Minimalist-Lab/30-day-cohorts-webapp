@@ -27,7 +27,7 @@ class CohortAdmin(admin.ModelAdmin):
     
     fieldsets = [
         ('Basic Information', {
-            'fields': ['name', 'enrollment_start_date', 'enrollment_end_date', 'is_active', 'start_date', 'end_date']
+            'fields': ['name', 'enrollment_start_date', 'enrollment_end_date', 'is_active', 'start_date', 'end_date', 'onboarding_survey']
         }),
         ('Pricing', {
             'fields': ['is_paid', 'minimum_price_cents']

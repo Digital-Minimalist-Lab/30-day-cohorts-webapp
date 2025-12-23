@@ -10,7 +10,6 @@
     {
       "slug": "entry-survey",
       "name": "Entry Survey",
-      "purpose": "ENTRY",
       "description": "In this entry survey we're checking in with your baselines. We'll take a quick look at your smartphone use and overall well-being. At the end of the 30 days, we'll ask these again and compare to see your progress.",
       "title_template": "Entry Survey",
       "estimated_time_minutes": 10,
@@ -433,7 +432,6 @@
     {
       "slug": "reconnect-survey",
       "name": "Reconnect: Cherished Goals & Anchor Activities",
-      "purpose": "GENERIC",
       "description": "More than reduicng screen-time, we want to reconnct with things we love. Let's figure out what those things are.",
       "title_template": "Reconnect Survey",
       "estimated_time_minutes": 15,
@@ -609,7 +607,6 @@
     {
       "slug": "mental-contrasting",
       "name": "Mental Contrasting",
-      "purpose": "GENERIC",
       "description": "Mental Contrasting is a psychological exercise that helps you see the benefits of specific behaviour changes.",
       "title_template": "Mental Contrasting Exercise",
       "estimated_time_minutes": 15,
@@ -701,7 +698,6 @@
     {
       "slug": "day-1-environment-redesign",
       "name": "Day 1: Environment Redesign",
-      "purpose": "GENERIC",
       "description": "Remove attention capture patterns in your digital environment (Phone, computer, smart tv, etc.) and set tech boundaries to create space for what you love.",
       "title_template": "Day 1: Environment Redesign",
       "estimated_time_minutes": 45,
@@ -923,7 +919,6 @@
     {
       "slug": "daily-check-in",
       "name": "Daily Check-in",
-      "purpose": "DAILY_CHECKIN",
       "description": "<b>5-step daily reflection</b>: Rate your mood and digital satisfaction, note your screen time, celebrate a proud moment, acknowledge any slips, and reflect on your day.",
       "title_template": "Daily Check-in",
       "estimated_time_minutes": 5,
@@ -987,7 +982,6 @@
     {
       "slug": "weekly-reflection-week-1",
       "name": "Weekly Reflection: Week 1",
-      "purpose": "WEEKLY_REFLECTION",
       "description": "Reflect on how Week 1 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 1",
       "estimated_time_minutes": 10,
@@ -1067,7 +1061,6 @@
     {
       "slug": "weekly-reflection-week-2",
       "name": "Weekly Reflection: Week 2",
-      "purpose": "WEEKLY_REFLECTION",
       "description": "Reflect on how Week 2 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 2",
       "estimated_time_minutes": 10,
@@ -1147,7 +1140,6 @@
     {
       "slug": "weekly-reflection-week-3",
       "name": "Weekly Reflection: Week 3",
-      "purpose": "WEEKLY_REFLECTION",
       "description": "Reflect on how Week 3 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 3",
       "estimated_time_minutes": 10,
@@ -1227,7 +1219,6 @@
     {
       "slug": "weekly-reflection-week-4",
       "name": "Weekly Reflection: Week 4",
-      "purpose": "WEEKLY_REFLECTION",
       "description": "Reflect on how Week 4 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 4",
       "estimated_time_minutes": 10,
@@ -1307,7 +1298,6 @@
     {
       "slug": "weekly-planning-week-1",
       "name": "Weekly Planning: Week 1",
-      "purpose": "GENERIC",
       "description": "Plan your focus for Week 1: Low-Energy Solo Activity",
       "title_template": "Weekly Planning: Week 1",
       "estimated_time_minutes": 10,
@@ -1372,7 +1362,6 @@
     {
       "slug": "weekly-planning-week-2",
       "name": "Weekly Planning: Week 2",
-      "purpose": "GENERIC",
       "description": "Plan your focus for Week 2: Skill-Building Solo Activity",
       "title_template": "Weekly Planning: Week 2",
       "estimated_time_minutes": 10,
@@ -1437,7 +1426,6 @@
     {
       "slug": "weekly-planning-week-3",
       "name": "Weekly Planning: Week 3",
-      "purpose": "GENERIC",
       "description": "Plan your focus for Week 3: Social Ritual",
       "title_template": "Weekly Planning: Week 3",
       "estimated_time_minutes": 10,
@@ -1502,7 +1490,6 @@
     {
       "slug": "weekly-planning-week-4",
       "name": "Weekly Planning: Week 4",
-      "purpose": "GENERIC",
       "description": "Plan your focus for Week 4: Social Hobby / Community Activity",
       "title_template": "Weekly Planning: Week 4",
       "estimated_time_minutes": 10,
@@ -1567,7 +1554,6 @@
     {
       "slug": "exit-survey",
       "name": "Exit Survey",
-      "purpose": "EXIT",
       "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
       "title_template": "Exit Survey",
       "estimated_time_minutes": 15,
@@ -2093,4 +2079,3 @@
     }
   ]
 }
-

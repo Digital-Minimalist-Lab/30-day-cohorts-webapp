@@ -21,9 +21,8 @@ class SurveyAdmin(admin.ModelAdmin):
     """
     Admin view for Surveys, with inline Questions.
     """
-    list_display = ('name', 'slug', 'purpose', 'created_at')
-    list_filter = ('purpose',)
-    search_fields = ('name', 'slug', 'purpose')
+    list_display = ('name', 'slug', 'created_at')
+    search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [QuestionInline]
 

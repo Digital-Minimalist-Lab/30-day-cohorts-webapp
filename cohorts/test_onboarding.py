@@ -42,7 +42,6 @@ class OnboardingFlowTests(TestCase):
             slug='entry-survey',
             defaults={
                 'name': 'Entry Survey',
-                'purpose': Survey.Purpose.ENTRY,
                 'description': 'Baseline survey'
             }
         )
