@@ -42,7 +42,8 @@ class CohortManager(models.Manager):
         )
 
         # Exclude full cohorts in Python, as this is simpler than a complex subquery.
-        return [c for c in joinable_cohorts if not c.is_full()]
+        cohorts_with_seats = [c for c in joinable_cohorts if not c.is_full()]
+        return cohorts_with_seats
 
 
 class Cohort(models.Model):
@@ -86,18 +87,27 @@ class Cohort(models.Model):
     def __str__(self) -> str:
         return f"{self.name} ({self.start_date} to {self.end_date})"
 
+    def pending_enrollments(self) -> int:
+        """Count of pending enrollments."""
+        return self.enrollments.filter(status='pending').count()
+    
+    def active_enrollments(self) -> int:
+        """Count of active enrollments."""
+        return self.enrollments.filter(status__in=['paid', 'free']).count()
+
     def seats_available(self) -> Optional[int]:
         """Return remaining seats or None if unlimited."""
         if self.max_seats is None:
             return None
-        enrolled_count = self.enrollments.count()
+        enrolled_count = self.active_enrollments()
         return max(0, self.max_seats - enrolled_count)
 
     def is_full(self) -> bool:
         """Check if cohort has reached seat capacity."""
-        if self.max_seats is None:
+        seats_available = self.seats_available()
+        if seats_available is None:
             return False
-        return self.enrollments.count() >= self.max_seats
+        return seats_available <= 0
 
     def to_design_dict(self) -> dict:
         """
