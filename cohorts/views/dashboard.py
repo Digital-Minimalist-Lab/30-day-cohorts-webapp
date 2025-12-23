@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
-from django.db.models import Count
+from django.db.models import Count, Q
 from cohorts.tasks import get_user_tasks
 
 from ..models import Cohort, Enrollment
@@ -22,7 +22,7 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         enrollment = Enrollment.objects.filter(
             user=request.user
         ).select_related('cohort').annotate(
-            enrollment_count=Count('cohort__enrollments')
+            enrollment_count=Count('cohort__enrollments', filter=~Q(cohort__enrollments__status='pending'))
         ).order_by('-enrolled_at').first()
         
 
