@@ -1,0 +1,59 @@
+
+To set up railway we need 3 services:
+- The cohorts app itself
+- a qcluster
+- a postgres db. 
+
+The postgres DB is a "standard" database. Make sure it exports variables to both qcluster and teh cohorts app.
+
+The qcluster app cohorts apps should share the same variables:
+
+```
+DEFAULT_FROM_EMAIL
+DJANGO_SETTINGS_MODULE
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST
+EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER
+EMAIL_PORT
+PGDATABASE
+PGHOST
+PGPASSWORD
+PGPORT
+PGUSER
+```
+
+The dockerfile paths should be /Dockerfile.production
+
+The qcluster 'start command' should be `python manage.py qcluster`
+The cohorts 'pre-deploy command' should be `python manage.py migrate`
+
+
+### add a production super user
+
+```
+DB_URL=<db url>
+DB_PORT=<db port>
+railway run bash -c "PGHOST=\"$DB_URL\" PGPORT=\"$DB_PORT\" python3  manage.py createsuperuser"
+```
+
+
+### Setting up Cohorts
+
+Commit the cohort design
+
+```
+DB_URL=<db url>
+DB_PORT=<db port>
+START_DATE=2025-12-01
+railway run bash -c "PGHOST=\"$DB_URL\" PGPORT=\"$DB_PORT\" python3 manage.py import_cohort_design cohort_designs/30day_digital_decluttter.json --start-date \"$START_DATE\""
+```
+
+### Email crons
+
+railway run bash -c "PGHOST=\"$DB_URL\" PGPORT=\"$DB_PORT\" python3 manage.py send_task_reminders --dry-run"
+
+### Site Setup
+
+Email use the django 'sites' framework. To set that up, add your to the Sites database tables, and set SITE_ID in the base.py.
+
