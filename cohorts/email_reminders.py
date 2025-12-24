@@ -195,9 +195,9 @@ def _send_email_with_template(user: AbstractUser, pending_tasks: List[PendingTas
 
     # Generate subject line
     if len(pending_tasks) == 1:
-        subject = f"Reminder: {pending_tasks[0].title}"
+        subject = f"Digital Declutter: You have a pending task!"
     else:
-        subject = f"You have {len(pending_tasks)} pending task{'s' if len(pending_tasks) > 1 else ''}"
+        subject = f"Digital Declutter: You have {len(pending_tasks)} pending task{'s' if len(pending_tasks) > 1 else ''}"
 
     # With the django-q-email backend configured, this call is automatically
     # and transparently queued as a background task.
