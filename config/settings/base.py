@@ -282,7 +282,7 @@ if SENTRY_DSN != "":
         ],
         # Add data like request headers and IP for users,
         # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-        send_default_pii=os.getenv("SENTRY_SEND_DEFAULT_PII", "True") == "True"
+        send_default_pii=os.getenv("SENTRY_SEND_DEFAULT_PII", "True") == "True",
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for tracing.
         traces_sample_rate=os.getenv("SENTRY_TRACES_SAMPLE_RATE", 0.0),
