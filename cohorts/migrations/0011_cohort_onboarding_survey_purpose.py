@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('cohorts', '0010_alter_taskscheduler_offset_from'),
-        ('surveys', '0001_initial'),
+        ('surveys', '0009_alter_question_question_type'),
     ]
 
     operations = [
