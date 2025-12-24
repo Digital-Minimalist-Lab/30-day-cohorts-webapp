@@ -7,6 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('surveys', '0009_alter_question_question_type'),
+        ('cohorts', '0011_cohort_onboarding_survey_purpose'),
     ]
 
     operations = [
