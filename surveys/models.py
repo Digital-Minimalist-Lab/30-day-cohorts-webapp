@@ -161,8 +161,6 @@ class SurveySubmission(models.Model):
         """
         return {answer.question.key: answer.value for answer in self.answers.all()}
 
-
-
 class Answer(models.Model):
     """A user's answer to a specific question in a submission."""
     submission = models.ForeignKey(SurveySubmission, on_delete=models.CASCADE, related_name='answers')

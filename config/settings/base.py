@@ -269,3 +269,28 @@ Q_CLUSTER = {
 # Django Q Email Setup
 Q2_EMAIL_BACKEND = EMAIL_BACKEND  # The actual backend (SMTP/Console)
 EMAIL_BACKEND = 'django_q2_email_backend.backends.Q2EmailBackend'  # The wrapper that queues emails
+
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+if SENTRY_DSN != "":
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+        # Add data like request headers and IP for users,
+        # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+        send_default_pii=os.getenv("SENTRY_SEND_DEFAULT_PII", "True") == "True"
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for tracing.
+        traces_sample_rate=os.getenv("SENTRY_TRACES_SAMPLE_RATE", 0.0),
+        # Set profile_session_sample_rate to 1.0 to profile 100%
+        # of profile sessions.
+        profile_session_sample_rate=os.getenv("SENTRY_PROFILE_SESSION_SAMPLE_RATE", 0.0),
+        # Set profile_lifecycle to "trace" to automatically
+        # run the profiler on when there is an active transaction
+        profile_lifecycle="trace",
+    )
+
