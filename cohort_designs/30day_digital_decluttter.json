@@ -432,7 +432,7 @@
     {
       "slug": "reconnect-survey",
       "name": "Reconnect: Cherished Goals & Anchor Activities",
-      "description": "More than reduicng screen-time, we want to reconnct with things we love. Let's figure out what those things are.",
+      "description": "More than reducing screen-time, we want to reconnect with things we love. Let's figure out what those things are.",
       "title_template": "Reconnect Survey",
       "estimated_time_minutes": 15,
       "questions": [
@@ -498,7 +498,7 @@
         },
         {
           "key": "step2_intro2",
-          "text": "We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexibile. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
+          "text": "We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexible. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
           "type": "info",
           "section": "Step 2: Choose Your Four Anchor Activities",
           "order": 7
