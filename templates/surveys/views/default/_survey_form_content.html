@@ -11,7 +11,7 @@
                 {% if item.is_info %}
                     {# Display-only info text #}
                     <div class="survey-info-text">
-                        <p>{{ item.text }}</p>
+                        <p>{{ item.text | safe }}</p>
                     </div>
                 {% else %}
                     {# Regular form field #}
