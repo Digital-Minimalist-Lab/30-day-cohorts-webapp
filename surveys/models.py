@@ -33,8 +33,14 @@ class Survey(models.Model):
             "title_template": self.title_template,
         }
         if include_questions:
-            data["questions"] = [
-                q.to_design_dict() for q in self.questions.all().order_by('order')
+            data["sections"] = [
+                {
+                    "title": section,
+                    "questions": [
+                        q.to_design_dict() for q in self.questions.filter(section=section).order_by('order')
+                    ]
+                }
+                for section in self.questions.values_list('section', flat=True).distinct()
             ]
         return data
 
@@ -57,23 +63,16 @@ class Survey(models.Model):
         
         if save:
             survey.save()
-            # Import here to avoid circular import at module level
-            from surveys.models import Question
-            for i, q_data in enumerate(data.get("questions", [])):
-                Question.from_design_dict(survey, q_data, order=i).save()
-        else:
-            # Store for later creation
-            survey._pending_questions = data.get("questions", [])
+            idx = 0
+            for i, s_data in enumerate(data.get("sections", [])):
+                for j, q_data in enumerate(s_data.get("questions", [])):
+                    question = Question.from_design_dict(survey, q_data)
+                    question.order = idx
+                    question.section = s_data.get("title", "")
+                    question.save()
+                    idx += 1
         
         return survey
-
-    def create_pending_questions(self):
-        """Create questions from _pending_questions if they exist."""
-        pending = getattr(self, '_pending_questions', None)
-        if pending:
-            for i, q_data in enumerate(pending):
-                Question.from_design_dict(self, q_data, order=i).save()
-            self._pending_questions = None
 
 
 class Question(models.Model):
@@ -115,7 +114,6 @@ class Question(models.Model):
             "text": self.text,
             "type": self.question_type,
             "is_required": self.is_required,
-            "order": self.order,
         }
         # Only include optional fields if they have values
         if self.section:
@@ -123,24 +121,6 @@ class Question(models.Model):
         if self.choices:
             data["choices"] = self.choices
         return data
-
-    @classmethod
-    def from_design_dict(cls, survey: Survey, data: dict, order: int = 0) -> Self:
-        """
-        Create a Question instance from a design dict.
-        Note: Does NOT save to database - caller must save after survey is saved.
-        """
-        return cls(
-            survey=survey,
-            key=data["key"],
-            text=data["text"],
-            question_type=data.get("type", cls.QuestionType.TEXT),
-            section=data.get("section", ""),
-            order=data.get("order", order),
-            is_required=data.get("is_required", True),
-            choices=data.get("choices"),
-        )
-
 
 class SurveySubmission(models.Model):
     """A user's submission for a specific survey."""

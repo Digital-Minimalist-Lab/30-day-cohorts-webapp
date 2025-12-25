@@ -33,11 +33,6 @@ class Command(BaseCommand):
             help='Path to the JSON file containing the cohort design'
         )
         parser.add_argument(
-            '--start-date',
-            type=str,
-            help='Start date for the cohort (YYYY-MM-DD format)'
-        )
-        parser.add_argument(
             '--name',
             type=str,
             help='Override the cohort name from the JSON'
@@ -55,7 +50,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         json_file = options['json_file']
-        start_date_str = options.get('start_date')
         name_override = options.get('name')
         update_surveys = options.get('update_surveys', False)
         validate_only = options.get('validate_only', False)
@@ -82,20 +76,10 @@ class Command(BaseCommand):
             self._print_summary(data)
             return
         
-        # Parse start date
-        if not start_date_str:
-            raise CommandError("--start-date is required (format: YYYY-MM-DD)")
-        
-        try:
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-        except ValueError:
-            raise CommandError(f"Invalid date format: {start_date_str}. Use YYYY-MM-DD.")
-        
         # Import the cohort (validation already done, skip it)
         try:
             cohort = Cohort.from_design_dict(
                 data,
-                start_date=start_date,
                 name_override=name_override,
                 update_existing_surveys=update_surveys,
                 validate=False,  # Already validated above
