@@ -6,11 +6,15 @@ TaskScheduler objects from a cohort design dictionary (typically loaded from JSO
 """
 from __future__ import annotations
 
+import logging
+
 import jsonschema
 from django.db import transaction
 
 from cohorts.models import Cohort, TaskScheduler, UserSurveyResponse
-from surveys.models import Survey, Question
+from surveys.models import Survey, Question, SurveySubmission
+
+logger = logging.getLogger(__name__)
 
 
 # JSON Schema for validating cohort design structure
@@ -269,6 +273,65 @@ def _generate_survey_slug(cohort: Cohort, internal_id: str) -> str:
     return f"{cohort.pk}_{internal_id}"
 
 
+def _survey_metadata_changed(survey: Survey, survey_data: dict) -> bool:
+    """Check if survey metadata (name, description, title_template) has changed."""
+    return (
+        survey.name != survey_data["name"] or
+        survey.description != survey_data.get("description", "") or
+        survey.title_template != survey_data.get("title_template", "{survey_name}")
+    )
+
+
+def _questions_changed(survey: Survey, survey_data: dict) -> bool:
+    """
+    Check if questions have changed between existing survey and new design.
+
+    Compares:
+    - Set of question keys (additions/removals)
+    - For matching keys: text, type, section, order, is_required, choices
+    """
+    # Build dict of new questions from design data
+    new_questions = {}
+    order = 0
+    for section_data in survey_data.get("sections", []):
+        section_title = section_data.get("title", "")
+        for q in section_data.get("questions", []):
+            new_questions[q["key"]] = {
+                "text": q["text"],
+                "question_type": q["type"],
+                "section": section_title,
+                "order": order,
+                "is_required": q.get("is_required", True),
+                "choices": q.get("choices"),
+            }
+            order += 1
+
+    # Build dict of existing questions
+    existing_questions = {
+        q.key: {
+            "text": q.text,
+            "question_type": q.question_type,
+            "section": q.section,
+            "order": q.order,
+            "is_required": q.is_required,
+            "choices": q.choices,
+        }
+        for q in survey.questions.all()
+    }
+
+    # Compare keys first (additions/removals)
+    if set(new_questions.keys()) != set(existing_questions.keys()):
+        return True
+
+    # Compare each question's fields
+    for key, new_q in new_questions.items():
+        existing_q = existing_questions[key]
+        if new_q != existing_q:
+            return True
+
+    return False
+
+
 def _create_survey_for_cohort(cohort: Cohort, survey_data: dict) -> Survey:
     """
     Create a new Survey for this cohort.
@@ -294,22 +357,34 @@ def _update_or_create_survey_for_cohort(cohort: Cohort, survey_data: dict) -> Su
     Update an existing survey or create a new one for this cohort.
 
     Surveys are matched by their generated slug: {cohort_id}_{internal_id}
-    Used in update mode - recreates questions from scratch.
+
+    Update behavior:
+    - Survey metadata (name, description, title_template) is always updated
+    - Questions are recreated if they have changed AND survey has no submissions
+    - If questions changed but survey has submissions, logs an error and skips question update
     """
     internal_id = survey_data["id"]
     slug = _generate_survey_slug(cohort, internal_id)
     existing = Survey.objects.filter(slug=slug).first()
 
     if existing:
-        # Update survey fields
-        existing.name = survey_data["name"]
-        existing.description = survey_data.get("description", "")
-        existing.title_template = survey_data.get("title_template", "{survey_name}")
-        existing.save()
+        # Update survey metadata if changed
+        if _survey_metadata_changed(existing, survey_data):
+            existing.name = survey_data["name"]
+            existing.description = survey_data.get("description", "")
+            existing.title_template = survey_data.get("title_template", "{survey_name}")
+            existing.save()
 
-        # Delete all existing questions and recreate
-        existing.questions.all().delete()
-        _create_questions_for_survey(existing, survey_data)
+        # Recreate questions if they changed
+        if _questions_changed(existing, survey_data):
+            if SurveySubmission.objects.filter(survey=existing).exists():
+                logger.error(
+                    f"Cannot modify questions for survey '{existing.name}' (id: {internal_id}) "
+                    f"because it has existing submissions. Questions left unchanged."
+                )
+            else:
+                existing.questions.all().delete()
+                _create_questions_for_survey(existing, survey_data)
 
         return existing
 

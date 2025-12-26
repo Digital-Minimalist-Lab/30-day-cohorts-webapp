@@ -6,6 +6,8 @@ from cohorts.models import Cohort, TaskScheduler, UserSurveyResponse
 from cohorts.services.cohort_import import (
     validate_cohort_design,
     import_cohort_from_dict,
+    _questions_changed,
+    _survey_metadata_changed,
 )
 from surveys.models import Survey, Question, SurveySubmission
 
@@ -80,6 +82,104 @@ class ValidateCohortDesignTests(TestCase):
         del data["surveys"]
         errors = validate_cohort_design(data)
         self.assertEqual(len(errors), 1)
+
+
+class ChangeDetectionTests(TestCase):
+    """Tests for _survey_metadata_changed and _questions_changed helpers."""
+
+    def setUp(self):
+        self.survey = Survey.objects.create(
+            slug="test-survey",
+            name="Test Survey",
+            description="Test description",
+            title_template="{survey_name}",
+        )
+        Question.objects.create(
+            survey=self.survey, key="q1", text="Question 1",
+            question_type="text", section="Section 1", order=0,
+            is_required=True, choices=None
+        )
+
+    def test_survey_metadata_unchanged(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "description": "Test description",
+            "title_template": "{survey_name}",
+            "sections": []
+        }
+        self.assertFalse(_survey_metadata_changed(self.survey, survey_data))
+
+    def test_survey_metadata_changed_name(self):
+        survey_data = {
+            "id": "test",
+            "name": "Different Name",
+            "description": "Test description",
+            "title_template": "{survey_name}",
+            "sections": []
+        }
+        self.assertTrue(_survey_metadata_changed(self.survey, survey_data))
+
+    def test_questions_unchanged(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "sections": [{
+                "title": "Section 1",
+                "questions": [
+                    {"key": "q1", "text": "Question 1", "type": "text", "is_required": True}
+                ]
+            }]
+        }
+        self.assertFalse(_questions_changed(self.survey, survey_data))
+
+    def test_questions_changed_new_question(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "sections": [{
+                "title": "Section 1",
+                "questions": [
+                    {"key": "q1", "text": "Question 1", "type": "text"},
+                    {"key": "q2", "text": "Question 2", "type": "text"},  # New question
+                ]
+            }]
+        }
+        self.assertTrue(_questions_changed(self.survey, survey_data))
+
+    def test_questions_changed_removed_question(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "sections": []  # No questions
+        }
+        self.assertTrue(_questions_changed(self.survey, survey_data))
+
+    def test_questions_changed_text_modified(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "sections": [{
+                "title": "Section 1",
+                "questions": [
+                    {"key": "q1", "text": "Different text", "type": "text", "is_required": True}
+                ]
+            }]
+        }
+        self.assertTrue(_questions_changed(self.survey, survey_data))
+
+    def test_questions_changed_type_modified(self):
+        survey_data = {
+            "id": "test",
+            "name": "Test Survey",
+            "sections": [{
+                "title": "Section 1",
+                "questions": [
+                    {"key": "q1", "text": "Question 1", "type": "textarea", "is_required": True}  # Changed type
+                ]
+            }]
+        }
+        self.assertTrue(_questions_changed(self.survey, survey_data))
 
 
 class CreateCohortTests(TestCase):
@@ -164,7 +264,7 @@ class UpdateCohortTests(TestCase):
         )
         Question.objects.create(
             survey=self.survey, key="orig_q1", text="Original Q1",
-            question_type="text", order=0
+            question_type="text", section="Section 1", order=0, is_required=True
         )
         self.scheduler = TaskScheduler.objects.create(
             cohort=self.cohort,
@@ -224,6 +324,68 @@ class UpdateCohortTests(TestCase):
         self.assertTrue(survey.questions.filter(key="new_q1").exists())
         self.assertTrue(survey.questions.filter(key="new_q2").exists())
         self.assertFalse(survey.questions.filter(key="orig_q1").exists())
+
+    def test_logs_error_and_skips_questions_if_changed_with_submissions(self):
+        """Should log error and skip question update if questions changed but survey has submissions."""
+        # Create a submission for the survey
+        SurveySubmission.objects.create(survey=self.survey)
+
+        data = make_cohort_design(
+            surveys=[{
+                "id": "original",
+                "name": "Updated Survey Name",
+                "description": "Updated description",
+                "sections": [
+                    {"title": "New Section", "questions": [
+                        {"key": "new_q1", "text": "New Question 1", "type": "textarea"},
+                    ]}
+                ]
+            }],
+            schedules=[{"slug": "original-scheduler", "survey_id": "original", "frequency": "ONCE", "offset_days": 0, "offset_from": "COHORT_START"}]
+        )
+
+        with self.assertLogs('cohorts.services.cohort_import', level='ERROR') as log:
+            cohort = import_cohort_from_dict(data, cohort_id=self.cohort.pk)
+
+        # Should log an error about submissions
+        self.assertTrue(any('existing submissions' in msg for msg in log.output))
+
+        # Metadata should still be updated
+        survey = Survey.objects.get(slug=f"{cohort.pk}_original")
+        self.assertEqual(survey.name, "Updated Survey Name")
+
+        # But questions should be unchanged (original preserved)
+        self.assertEqual(survey.questions.count(), 1)
+        self.assertTrue(survey.questions.filter(key="orig_q1").exists())
+        self.assertFalse(survey.questions.filter(key="new_q1").exists())
+
+    def test_allows_metadata_update_with_submissions_if_questions_unchanged(self):
+        """Should allow updating survey metadata even with submissions, if questions are unchanged."""
+        # Create a submission for the survey
+        SurveySubmission.objects.create(survey=self.survey)
+
+        # Same questions, just different metadata
+        data = make_cohort_design(
+            surveys=[{
+                "id": "original",
+                "name": "Updated Survey Name",  # Changed
+                "description": "Updated description",  # Changed
+                "sections": [
+                    {"title": "Section 1", "questions": [
+                        {"key": "orig_q1", "text": "Original Q1", "type": "text", "is_required": True},  # Same
+                    ]}
+                ]
+            }],
+            schedules=[{"slug": "original-scheduler", "survey_id": "original", "frequency": "ONCE", "offset_days": 0, "offset_from": "COHORT_START"}]
+        )
+
+        # Should NOT raise - questions are unchanged
+        cohort = import_cohort_from_dict(data, cohort_id=self.cohort.pk)
+
+        # Metadata should be updated
+        survey = Survey.objects.get(slug=f"{cohort.pk}_original")
+        self.assertEqual(survey.name, "Updated Survey Name")
+        self.assertEqual(survey.description, "Updated description")
 
     def test_creates_new_survey_in_update_mode(self):
         """New surveys in the design should be created."""
@@ -290,11 +452,14 @@ class UpdateCohortTests(TestCase):
         )
 
         # New design has no schedules (would normally delete all)
+        # Questions must match exactly to avoid SurveyHasSubmissionsError
         data = make_cohort_design(
             surveys=[{
                 "id": "original",
                 "name": "Original Survey",
-                "sections": [{"title": "S1", "questions": [{"key": "q1", "text": "Q1", "type": "text"}]}]
+                "sections": [{"title": "Section 1", "questions": [
+                    {"key": "orig_q1", "text": "Original Q1", "type": "text", "is_required": True}
+                ]}]
             }],
             schedules=[]  # Empty - would delete scheduler
         )
