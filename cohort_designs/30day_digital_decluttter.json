@@ -12,133 +12,146 @@
   "onboarding_survey": "entry-survey",
   "schedules": [
     {
-      "survey": "entry-survey",
       "frequency": "ONCE",
       "offset_days": 0,
       "offset_from": "COHORT_START",
       "is_cumulative": false,
       "task_title_template": "Complete Your Entry Survey",
-      "task_description_template": "Welcome to the cohort! Please complete your entry survey to establish your baseline."
+      "task_description_template": "Welcome to the cohort! Please complete your entry survey to establish your baseline.",
+      "slug": "entry-survey",
+      "survey_id": "entry-survey"
     },
     {
-      "survey": "reconnect-survey",
       "frequency": "ONCE",
       "offset_days": 0,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Reconnect: Choose Your Anchor Activities",
-      "task_description_template": "Define the meaningful activities you'll reconnect with this month."
+      "task_description_template": "Define the meaningful activities you'll reconnect with this month.",
+      "slug": "reconnect-survey",
+      "survey_id": "reconnect-survey"
     },
     {
-      "survey": "day-1-environment-redesign",
       "frequency": "ONCE",
       "offset_days": 14,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Day 1: Environment Redesign",
-      "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes."
+      "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes.",
+      "slug": "day-1-environment-redesign",
+      "survey_id": "day-1-environment-redesign"
     },
     {
-      "survey": "mental-contrasting",
       "frequency": "ONCE",
       "offset_days": 0,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Mental Contrasting: Envision Your Future",
-      "task_description_template": "Imagine two futures and clarify what you're moving toward."
+      "task_description_template": "Imagine two futures and clarify what you're moving toward.",
+      "slug": "mental-contrasting",
+      "survey_id": "mental-contrasting"
     },
     {
-      "survey": "daily-check-in",
       "frequency": "DAILY",
       "is_cumulative": false,
       "task_title_template": "Daily Check-in",
-      "task_description_template": "Quick daily reflection on your digital habits and wins."
+      "task_description_template": "Quick daily reflection on your digital habits and wins.",
+      "slug": "daily-check-in",
+      "survey_id": "daily-check-in"
     },
     {
-      "survey": "weekly-reflection-week-1",
       "frequency": "ONCE",
       "offset_days": 20,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 1",
-      "task_description_template": "Reflect on your first week and how it aligned with your values."
+      "task_description_template": "Reflect on your first week and how it aligned with your values.",
+      "slug": "weekly-reflection-week-1",
+      "survey_id": "weekly-reflection-week-1"
     },
     {
-      "survey": "weekly-reflection-week-2",
       "frequency": "ONCE",
       "offset_days": 27,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 2",
-      "task_description_template": "Reflect on your second week and how it aligned with your values."
+      "task_description_template": "Reflect on your second week and how it aligned with your values.",
+      "slug": "weekly-reflection-week-2",
+      "survey_id": "weekly-reflection-week-2"
     },
     {
-      "survey": "weekly-reflection-week-3",
       "frequency": "ONCE",
       "offset_days": 34,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 3",
-      "task_description_template": "Reflect on your third week and how it aligned with your values."
+      "task_description_template": "Reflect on your third week and how it aligned with your values.",
+      "slug": "weekly-reflection-week-3",
+      "survey_id": "weekly-reflection-week-3"
     },
     {
-      "survey": "weekly-reflection-week-4",
       "frequency": "ONCE",
       "offset_days": 41,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 4",
-      "task_description_template": "Reflect on your final week and how it aligned with your values."
+      "task_description_template": "Reflect on your final week and how it aligned with your values.",
+      "slug": "weekly-reflection-week-4",
+      "survey_id": "weekly-reflection-week-4"
     },
     {
-      "survey": "weekly-planning-week-1",
       "frequency": "ONCE",
       "offset_days": 15,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 1",
-      "task_description_template": "Plan your focus on low-energy solo activities this week."
+      "task_description_template": "Plan your focus on low-energy solo activities this week.",
+      "slug": "weekly-planning-week-1",
+      "survey_id": "weekly-planning-week-1"
     },
     {
-      "survey": "weekly-planning-week-2",
       "frequency": "ONCE",
       "offset_days": 21,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 2",
-      "task_description_template": "Plan your focus on skill-building activities this week."
+      "task_description_template": "Plan your focus on skill-building activities this week.",
+      "slug": "weekly-planning-week-2",
+      "survey_id": "weekly-planning-week-2"
     },
     {
-      "survey": "weekly-planning-week-3",
       "frequency": "ONCE",
       "offset_days": 28,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 3",
-      "task_description_template": "Plan your focus on social rituals this week."
+      "task_description_template": "Plan your focus on social rituals this week.",
+      "slug": "weekly-planning-week-3",
+      "survey_id": "weekly-planning-week-3"
     },
     {
-      "survey": "weekly-planning-week-4",
       "frequency": "ONCE",
       "offset_days": 35,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 4",
-      "task_description_template": "Plan your focus on community activities this week."
+      "task_description_template": "Plan your focus on community activities this week.",
+      "slug": "weekly-planning-week-4",
+      "survey_id": "weekly-planning-week-4"
     },
     {
-      "survey": "exit-survey",
       "frequency": "ONCE",
       "offset_days": 42,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Exit Survey - Celebrate Your Progress",
-      "task_description_template": "Reflect on your 30-day journey and see how far you've come."
+      "task_description_template": "Reflect on your 30-day journey and see how far you've come.",
+      "slug": "exit-survey",
+      "survey_id": "exit-survey"
     }
   ],
   "surveys": [
     {
-      "slug": "entry-survey",
       "name": "Entry Survey",
       "description": "In this entry survey we're checking in with your baselines. We'll take a quick look at your smartphone use and overall well-being. At the end of the 30 days, we'll ask these again and compare to see your progress.",
       "title_template": "Entry Survey",
@@ -180,7 +193,7 @@
             },
             {
               "key": "sc_3_lose_track_time",
-              "text": "I often lose track of time while scrolling on my phone.",
+              "text": "I often lose track of time whie scrolling on my phone.",
               "type": "radio",
               "choices": {
                 "1": "Strongly disagree",
@@ -528,10 +541,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "entry-survey"
     },
     {
-      "slug": "reconnect-survey",
       "name": "Reconnect: Cherished Goals & Anchor Activities",
       "description": "More than reducing screen-time, we want to reconnect with things we love. Let's figure out what those things are.",
       "title_template": "Reconnect Survey",
@@ -693,10 +706,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "reconnect-survey"
     },
     {
-      "slug": "mental-contrasting",
       "name": "Mental Contrasting",
       "description": "Mental Contrasting is a psychological exercise that helps you see the benefits of specific behaviour changes.",
       "title_template": "Mental Contrasting Exercise",
@@ -781,10 +794,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "mental-contrasting"
     },
     {
-      "slug": "day-1-environment-redesign",
       "name": "Day 1: Environment Redesign",
       "description": "Remove attention capture patterns in your digital environment (Phone, computer, smart tv, etc.) and set tech boundaries to create space for what you love.",
       "title_template": "Day 1: Environment Redesign",
@@ -961,10 +974,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "day-1-environment-redesign"
     },
     {
-      "slug": "daily-check-in",
       "name": "Daily Check-in",
       "description": "<b>5-step daily reflection</b>: Rate your mood and digital satisfaction, note your screen time, celebrate a proud moment, acknowledge any slips, and reflect on your day.",
       "title_template": "Daily Check-in",
@@ -1016,10 +1029,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "daily-check-in"
     },
     {
-      "slug": "weekly-reflection-week-1",
       "name": "Weekly Reflection: Week 1",
       "description": "Reflect on how Week 1 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 1",
@@ -1078,10 +1091,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-reflection-week-1"
     },
     {
-      "slug": "weekly-reflection-week-2",
       "name": "Weekly Reflection: Week 2",
       "description": "Reflect on how Week 2 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 2",
@@ -1140,10 +1153,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-reflection-week-2"
     },
     {
-      "slug": "weekly-reflection-week-3",
       "name": "Weekly Reflection: Week 3",
       "description": "Reflect on how Week 3 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 3",
@@ -1202,10 +1215,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-reflection-week-3"
     },
     {
-      "slug": "weekly-reflection-week-4",
       "name": "Weekly Reflection: Week 4",
       "description": "Reflect on how Week 4 went with your values, activities, and digital habits.",
       "title_template": "Weekly Reflection: Week 4",
@@ -1264,10 +1277,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-reflection-week-4"
     },
     {
-      "slug": "weekly-planning-week-1",
       "name": "Weekly Planning: Week 1",
       "description": "Plan your focus for Week 1: Low-Energy Solo Activity",
       "title_template": "Weekly Planning: Week 1",
@@ -1318,10 +1331,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-planning-week-1"
     },
     {
-      "slug": "weekly-planning-week-2",
       "name": "Weekly Planning: Week 2",
       "description": "Plan your focus for Week 2: Skill-Building Solo Activity",
       "title_template": "Weekly Planning: Week 2",
@@ -1372,10 +1385,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-planning-week-2"
     },
     {
-      "slug": "weekly-planning-week-3",
       "name": "Weekly Planning: Week 3",
       "description": "Plan your focus for Week 3: Social Ritual",
       "title_template": "Weekly Planning: Week 3",
@@ -1426,10 +1439,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-planning-week-3"
     },
     {
-      "slug": "weekly-planning-week-4",
       "name": "Weekly Planning: Week 4",
       "description": "Plan your focus for Week 4: Social Hobby / Community Activity",
       "title_template": "Weekly Planning: Week 4",
@@ -1480,10 +1493,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "weekly-planning-week-4"
     },
     {
-      "slug": "exit-survey",
       "name": "Exit Survey",
       "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
       "title_template": "Exit Survey",
@@ -1961,7 +1974,8 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "exit-survey"
     }
   ]
 }

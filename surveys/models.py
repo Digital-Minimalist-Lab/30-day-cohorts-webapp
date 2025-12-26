@@ -1,13 +1,9 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.functional import cached_property
-from django.utils.text import slugify
 
-if TYPE_CHECKING:
-    from typing import Self
 
 class Survey(models.Model):
     """A collection of questions, like 'Entry Survey' or 'Daily Check-in'."""
@@ -43,37 +39,6 @@ class Survey(models.Model):
                 for section in self.questions.values_list('section', flat=True).distinct()
             ]
         return data
-
-    @classmethod
-    def from_design_dict(cls, data: dict, save: bool = False) -> Self:
-        """
-        Create a Survey instance from a design dict.
-        
-        Args:
-            data: The survey design dict
-            save: If True, saves the survey and creates questions immediately.
-                  If False, stores questions in _pending_questions for later creation.
-        """
-        survey = cls(
-            slug=data.get("slug") or slugify(data["name"]),
-            name=data["name"],
-            description=data.get("description", ""),
-            title_template=data.get("title_template", "{survey_name}"),
-        )
-        
-        if save:
-            survey.save()
-            idx = 0
-            for i, s_data in enumerate(data.get("sections", [])):
-                for j, q_data in enumerate(s_data.get("questions", [])):
-                    question = Question.from_design_dict(survey, q_data)
-                    question.order = idx
-                    question.section = s_data.get("title", "")
-                    question.save()
-                    idx += 1
-        
-        return survey
-
 
 class Question(models.Model):
     """A single question within a survey."""

@@ -1,13 +1,10 @@
 import json
-from datetime import datetime
 from django.contrib import admin, messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
-from .models import Cohort, Enrollment, TaskScheduler, UserSurveyResponse
-from django.contrib import admin
-from .models import Cohort, Enrollment, EmailSendLog
-from cohorts.models import TaskScheduler, UserSurveyResponse
+from .models import Cohort, Enrollment, TaskScheduler, UserSurveyResponse, EmailSendLog
+from cohorts.services.cohort_import import import_cohort_from_dict
 
 
 class TaskSchedulerInline(admin.TabularInline):
@@ -75,46 +72,74 @@ class CohortAdmin(admin.ModelAdmin):
 
     def add_view(self, request, form_url='', extra_context=None):
         """Override add view to handle JSON upload for quick import."""
-        
+
         # Check if JSON file was uploaded
         if request.method == 'POST' and 'json_file' in request.FILES:
             try:
                 json_file = request.FILES['json_file']
-                start_date_str = request.POST.get('import_start_date')
                 name_override = request.POST.get('import_name', '').strip() or None
-                update_surveys = request.POST.get('import_update_surveys') == 'on'
-                
-                if not start_date_str:
-                    raise ValueError("Start date is required")
-                
-                # Parse and create
+
                 data = json.load(json_file)
-                start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-                
-                cohort = Cohort.from_design_dict(
+
+                cohort = import_cohort_from_dict(
                     data,
-                    start_date=start_date,
                     name_override=name_override,
-                    update_existing_surveys=update_surveys
                 )
-                
+
                 self.message_user(
                     request,
-                    f"✅ Successfully imported cohort '{cohort.name}' (ID: {cohort.pk})",
+                    f"✅ Successfully created cohort '{cohort.name}' (ID: {cohort.pk})",
                     messages.SUCCESS
                 )
                 # Redirect to change page for the new cohort
                 return redirect('admin:cohorts_cohort_change', cohort.pk)
-                
+
             except Exception as e:
                 self.message_user(
                     request,
                     f"❌ Import failed: {str(e)}",
                     messages.ERROR
                 )
-        
+
         # Continue with normal add view
         return super().add_view(request, form_url, extra_context)
+
+    change_form_template = 'admin/cohorts/cohort_change_form.html'
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        """Override change view to handle JSON upload for updating existing cohort."""
+
+        # Check if JSON file was uploaded for update
+        if request.method == 'POST' and 'json_file' in request.FILES:
+            try:
+                json_file = request.FILES['json_file']
+                name_override = request.POST.get('import_name', '').strip() or None
+
+                data = json.load(json_file)
+
+                cohort = import_cohort_from_dict(
+                    data,
+                    name_override=name_override,
+                    cohort_id=int(object_id),
+                )
+
+                self.message_user(
+                    request,
+                    f"✅ Successfully updated cohort '{cohort.name}' (ID: {cohort.pk})",
+                    messages.SUCCESS
+                )
+                # Redirect to same change page
+                return redirect('admin:cohorts_cohort_change', cohort.pk)
+
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"❌ Update failed: {str(e)}",
+                    messages.ERROR
+                )
+
+        # Continue with normal change view
+        return super().change_view(request, object_id, form_url, extra_context)
 
 
 @admin.register(Enrollment)

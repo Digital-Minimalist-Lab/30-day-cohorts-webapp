@@ -1,21 +1,15 @@
 from __future__ import annotations
 import json
-from datetime import date, timedelta
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
-import jsonschema
-from django.db import models, transaction
+from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from surveys.models import SurveySubmission, Survey, Question
-from django.utils.text import slugify
-
-if TYPE_CHECKING:
-    from typing import Self
+from surveys.models import SurveySubmission, Survey
 
 User = get_user_model()
 
@@ -92,95 +86,6 @@ class Cohort(models.Model):
         help_text="The survey presented during onboarding (e.g. Entry Survey)."
     )
 
-    COHORT_DESIGN_SCHEMA = {
-        "type": "object",
-        "properties": {
-            "name": {"type": "string"},
-            "is_paid": {"type": "boolean"},
-            "minimum_price_cents": {"type": "integer"},
-            "max_seats": {"type": ["integer", "null"]},
-            "dates": {
-                "type": "object",
-                "properties": {
-                    "enroll_start": {"type": "string"},
-                    "enroll_end": {"type": "string"},
-                    "cohort_start": {"type": "string"},
-                    "cohort_end": {"type": "string"},
-                },
-                "required": ["cohort_start", "cohort_end"]
-            },
-            "schedules": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "survey": {"type": "string"},
-                        "frequency": {"enum": ["ONCE", "DAILY", "WEEKLY"]},
-                        "is_cumulative": {"type": "boolean"},
-                        "task_title_template": {"type": "string"},
-                        "task_description_template": {"type": "string"},
-                        "day_of_week": {"type": "integer", "minimum": 0, "maximum": 6},
-                        "offset_days": {"type": "integer"},
-                        "offset_from": {"enum": ["ENROLL_START", "ENROLL_END", "COHORT_START", "COHORT_END"]}
-                    },
-                    "required": ["survey", "frequency"],
-                    "allOf": [
-                        {
-                            "if": {"properties": {"frequency": {"const": "WEEKLY"}}},
-                            "then": {"required": ["day_of_week"]}
-                        },
-                        {
-                            "if": {"properties": {"frequency": {"const": "ONCE"}}},
-                            "then": {"required": ["offset_days", "offset_from"]}
-                        }
-                    ]
-                }
-            },
-            "surveys": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "slug": {"type": "string"},
-                        "name": {"type": "string"},
-                        "description": {"type": "string"},
-                        "title_template": {"type": "string"},
-                        "sections": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "title": {"type": "string"},
-                                    "questions": {
-                                        "type": "array", 
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "key": {"type": "string"},
-                                                "text": {"type": "string"},
-                                                "type": {"enum": ["text", "textarea", "integer", "decimal", "radio", "info"]},
-                                                "is_required": {"type": "boolean"},
-                                                "choices": {"type": ["object", "null"]},
-                                            },
-                                            "required": ["key", "text", "type"]
-                                        }
-                                    }
-                                },
-                                "required": ["title", "questions"]
-                            }
-                        },
-                    },
-                    "required": ["slug", "name", "description", "title_template", "sections"],
-                    "anyOf": [
-                        {"required": ["slug"]},
-                        {"required": ["name"]}
-                    ]
-                }
-            }
-        },
-        "required": [ "name", "dates", "surveys"]
-    }
-
     class Meta:
         ordering = ['-start_date']
 
@@ -235,119 +140,6 @@ class Cohort(models.Model):
     def to_json(self, indent: int = 2) -> str:
         """Export cohort design to a formatted JSON string."""
         return json.dumps(self.to_design_dict(), indent=indent)
-
-    @classmethod
-    def validate_design_dict(cls, data: dict) -> list[str]:
-        """
-        Validate a cohort design dict structure using JSON Schema.
-        Returns a list of error messages (empty list if valid).
-        """
-        try:
-            jsonschema.validate(instance=data, schema=cls.COHORT_DESIGN_SCHEMA)
-            return []
-        except jsonschema.ValidationError as e:
-            # Return a friendly error message
-            return [f"{e.message} (at path: {'/'.join(str(p) for p in e.path)})"]
-
-    @classmethod
-    @transaction.atomic
-    def from_design_dict(
-        cls,
-        data: dict,
-        name_override: Optional[str] = None,
-        update_existing_surveys: bool = False,
-        validate: bool = True,
-    ) -> Self:
-        """
-        Create a new cohort from a design dict.
-        
-        Args:
-            data: The cohort design dict (with cohort_template and surveys)
-            start_date: The start date for this cohort instance
-            name_override: Optional name to use instead of the template name
-            update_existing_surveys: If True, update existing surveys with same slug.
-                                     If False (default), reuse existing surveys as-is.
-            validate: If True (default), validate the dict structure before importing.
-        
-        Returns:
-            The created Cohort instance with all surveys and schedules configured.
-        
-        Raises:
-            ValueError: If validate=True and the dict structure is invalid.
-        """
-        if validate:
-            errors = cls.validate_design_dict(data)
-            if errors:
-                raise ValueError(f"Invalid cohort design: {'; '.join(errors)}")
-        
-        dates = data["dates"]
-        enroll_start = dates.get("enroll_start")
-        enroll_end = dates.get("enroll_end")
-        cohort_start = dates.get("cohort_start")
-        cohort_end = dates.get("cohort_end")
-        
-        # Create the cohort
-        cohort = cls.objects.create(
-            name=name_override or data.get("name", f"Cohort starting {cohort_start}"),
-            enrollment_start_date=enroll_start,
-            enrollment_end_date=enroll_end,
-            start_date=cohort_start,
-            end_date=cohort_end,
-            is_paid=data.get("is_paid", False),
-            minimum_price_cents=data.get("minimum_price_cents", 0),
-            max_seats=data.get("max_seats"),
-            is_active=True,
-        )
-
-        surveys = {}
-        for survey_data in data.get("surveys", []):
-            survey = cls._get_or_create_survey(survey_data, update_existing=update_existing_surveys)
-            surveys[survey.slug] = survey
-            
-        for schedule_data in data.get("schedules", []):
-            # Get existing scheduler (possibly created by signal) or create new one
-            TaskScheduler.objects.update_or_create(
-                cohort=cohort,
-                survey=surveys[schedule_data.get("survey")],
-                defaults={
-                    "frequency": schedule_data["frequency"],
-                    "is_cumulative": schedule_data.get("is_cumulative", False),
-                    "task_title_template": schedule_data.get("task_title_template", ""),
-                    "task_description_template": schedule_data.get("task_description_template", ""),
-                    "day_of_week": schedule_data.get("day_of_week"),
-                    "offset_days": schedule_data.get("offset_days"),
-                    "offset_from": schedule_data.get("offset_from"),
-                }
-            )
-        
-        cohort.onboarding_survey = surveys.get(data.get("onboarding_survey"))
-        cohort.save()
-
-        return cohort
-
-    @staticmethod
-    def _get_or_create_survey(survey_data: dict, update_existing: bool = False) -> Survey:
-        """Helper to get or create a survey from design data."""
-        
-        slug = survey_data.get("slug") or slugify(survey_data["name"])
-        
-        # Check if survey already exists
-        existing = Survey.objects.filter(slug=slug).first()
-        if existing and not update_existing:
-            return existing
-        
-        if existing and update_existing:
-            # Update existing survey
-            existing.name = survey_data.get("name", slug)
-            existing.description = survey_data.get("description", "")
-            existing.title_template = survey_data.get("title_template", "{survey_name}")
-            existing.save()
-            # Delete and recreate questions
-            existing.questions.all().delete()
-            existing.delete()
-        
-        # Create new survey with questions
-        return Survey.from_design_dict(survey_data, save=True)
 
 
 class Enrollment(models.Model):

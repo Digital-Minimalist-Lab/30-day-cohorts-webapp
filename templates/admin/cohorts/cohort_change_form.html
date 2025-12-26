@@ -1,0 +1,80 @@
+{% extends "admin/change_form.html" %}
+
+{% block field_sets %}
+  {# Update from JSON Section - Django Admin Style #}
+  <fieldset class="module aligned collapsed">
+    <h2 style="cursor: pointer;" onclick="this.parentElement.classList.toggle('collapsed')">
+      📤 Update from JSON (click to expand)
+    </h2>
+
+    <div class="form-row">
+      <div style="padding: 10px 12px; background: #fef3cd; border: 1px solid #ffc107; border-radius: 4px; margin-bottom: 15px;">
+        <p style="margin: 0;">
+          <strong>⚠️ Warning:</strong> Updating from JSON will:
+        </p>
+        <ul style="margin: 8px 0 0 20px; padding: 0;">
+          <li>Update cohort fields (name, dates, pricing)</li>
+          <li>Update or create surveys defined in the JSON</li>
+          <li>Delete surveys no longer in the JSON (if not used by other cohorts)</li>
+          <li>Recreate all questions for updated surveys</li>
+          <li>Update or create task schedulers</li>
+          <li>Delete schedulers no longer in the JSON (if they have no responses)</li>
+        </ul>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <div>
+          <label class="required" for="id_json_file">JSON File:</label>
+          <input
+            type="file"
+            name="json_file"
+            id="id_json_file"
+            accept=".json"
+            required
+          >
+          <p class="help">Upload a cohort design JSON file to update this cohort</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="id_import_name">Name Override:</label>
+          <input
+            type="text"
+            name="import_name"
+            id="id_import_name"
+            placeholder="Leave blank to use name from JSON"
+            style="width: 300px;"
+          >
+          <p class="help">Optional: Specify a custom name for the cohort</p>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <input type="submit" value="Update Cohort from JSON" class="default" name="_import" style="background: #ffc107; color: #000;">
+      </div>
+    </form>
+  </fieldset>
+
+  <style>
+    fieldset.collapsed > *:not(h2) {
+      display: none;
+    }
+    fieldset.collapsed h2::after {
+      content: ' ▶';
+      font-size: 0.8em;
+    }
+    fieldset:not(.collapsed) h2::after {
+      content: ' ▼';
+      font-size: 0.8em;
+    }
+  </style>
+
+  {# Normal Django Admin Form Fields Below #}
+  {{ block.super }}
+{% endblock %}
+
