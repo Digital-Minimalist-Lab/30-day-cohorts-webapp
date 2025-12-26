@@ -285,10 +285,10 @@ if SENTRY_DSN != "":
         send_default_pii=os.getenv("SENTRY_SEND_DEFAULT_PII", "True") == "True",
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for tracing.
-        traces_sample_rate=os.getenv("SENTRY_TRACES_SAMPLE_RATE", 0.0),
+        traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.0")),
         # Set profile_session_sample_rate to 1.0 to profile 100%
         # of profile sessions.
-        profile_session_sample_rate=os.getenv("SENTRY_PROFILE_SESSION_SAMPLE_RATE", 0.0),
+        profile_session_sample_rate=float(os.getenv("SENTRY_PROFILE_SESSION_SAMPLE_RATE", "0.0")),
         # Set profile_lifecycle to "trace" to automatically
         # run the profiler on when there is an active transaction
         profile_lifecycle="trace",
