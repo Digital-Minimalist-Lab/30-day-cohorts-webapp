@@ -412,6 +412,7 @@ class TaskScheduler(models.Model):
 
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='schedulers')
     cohort = models.ForeignKey(Cohort, on_delete=models.CASCADE, related_name='task_schedulers', help_text="The cohort this schedule applies to.")
+    slug = models.SlugField(max_length=200, help_text="URL-friendly identifier for this task (e.g., 'daily-checkin', 'week-1-reflection'). Unique within cohort.")
 
     task_title_template = models.CharField(max_length=200, blank=True, help_text="Template for the task title. Placeholders: {survey_name}, {week_number}, {due_date}. If blank, survey name is used.")
     task_description_template = models.TextField(blank=True, help_text="Template for the task description. Placeholders: {survey_name}, {week_number}, {due_date}. If blank, survey description is used.")
@@ -430,11 +431,11 @@ class TaskScheduler(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ['cohort', 'survey']
+        unique_together = [['cohort', 'survey'], ['cohort', 'slug']]
         ordering = ['cohort', 'frequency']
 
     def __str__(self):
-        return f"{self.survey.name} schedule for {self.cohort.name} ({self.get_frequency_display()})"
+        return f"{self.slug} ({self.survey.name} - {self.get_frequency_display()}) for {self.cohort.name}"
 
     def to_design_dict(self) -> dict:
         """Export this schedule to a JSON-serializable dict for cohort design."""
@@ -454,14 +455,16 @@ class TaskScheduler(models.Model):
 
 
 class UserSurveyResponse(models.Model):
-    """A user's submission for a specific survey."""
-    submission = models.ForeignKey(SurveySubmission, on_delete=models.CASCADE, related_name='user_responses')
+    """A user's submission for a specific survey task instance."""
+    submission = models.OneToOneField(SurveySubmission, on_delete=models.CASCADE, related_name='user_response')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='survey_submissions')
     cohort = models.ForeignKey(Cohort, on_delete=models.CASCADE, related_name='survey_submissions')
-    due_date = models.DateField(null=True, blank=True, help_text="The specific due date of the task this submission fulfills.")
+    scheduler = models.ForeignKey(TaskScheduler, on_delete=models.CASCADE, related_name='responses')
+    task_instance_id = models.IntegerField(help_text="Sequential instance number for this scheduler's tasks (0-indexed).")
 
     class Meta:
         ordering = ['-submission__completed_at']
+        unique_together = [['user', 'cohort', 'scheduler', 'task_instance_id']]
 
     def __str__(self) -> str:
         return f"Submission for {self.submission.survey.name} by {self.user.email} on {self.submission.completed_at.strftime('%Y-%m-%d')}"
@@ -473,10 +476,9 @@ class UserSurveyResponse(models.Model):
             'cohort': self.cohort.name,
             'survey_name': self.submission.survey.name,
             'completed_at': self.submission.completed_at.isoformat(),
+            'task_instance_id': self.task_instance_id,
             'answers': answers,
         }
-        if self.due_date:
-            data['due_date'] = self.due_date.isoformat()
         return data
 
 

@@ -13,7 +13,7 @@ from cohorts.models import TaskScheduler, UserSurveyResponse
 class TaskSchedulerInline(admin.TabularInline):
     model = TaskScheduler
     extra = 1
-    fields = ('survey', 'frequency', 'is_cumulative', 'day_of_week', 'offset_days', 'offset_from', 'task_title_template', 'task_description_template')
+    fields = ('survey', 'slug', 'frequency', 'is_cumulative', 'day_of_week', 'offset_days', 'offset_from', 'task_title_template', 'task_description_template')
 
 
 @admin.register(Cohort)
@@ -128,10 +128,10 @@ class EnrollmentAdmin(admin.ModelAdmin):
 
 @admin.register(UserSurveyResponse)
 class UserSurveyResponseAdmin(admin.ModelAdmin):
-    list_display = ('user', 'cohort', 'get_survey_name', 'due_date', 'get_completed_at', 'get_submission_id')
-    list_filter = ('cohort', 'due_date')
+    list_display = ('user', 'cohort', 'get_survey_name', 'scheduler', 'task_instance_id', 'get_completed_at', 'get_submission_id')
+    list_filter = ('cohort', 'scheduler')
     search_fields = ('user__email', 'cohort__name', 'submission__survey__name')
-    readonly_fields = ('user', 'cohort', 'submission', 'due_date', 'get_completed_at', 'get_submission_id')
+    readonly_fields = ('user', 'cohort', 'scheduler', 'submission', 'task_instance_id', 'get_completed_at', 'get_submission_id')
 
     def get_survey_name(self, obj):
         return obj.submission.survey.name if obj.submission else 'N/A'

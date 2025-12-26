@@ -17,7 +17,7 @@ import json
 
 from .models import UserProfile
 from .forms import FullSignupForm, UserProfileForm
-from cohorts.models import Cohort, Enrollment, UserSurveyResponse
+from cohorts.models import Cohort, Enrollment, UserSurveyResponse, TaskScheduler
 from surveys.models import Survey, SurveySubmission, Question, Answer
 
 User = get_user_model()
@@ -259,7 +259,14 @@ class ExportUserDataTests(TestCase):
         survey = Survey.objects.create(
             name='Test Survey',
             slug='test-survey',
-            purpose=Survey.Purpose.DAILY_CHECKIN,
+        )
+        scheduler = TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=survey,
+            slug=survey.slug,
+            frequency=TaskScheduler.Frequency.ONCE,
+            offset_days=0,
+            offset_from=TaskScheduler.OffsetFrom.COHORT_START,
         )
         question = Question.objects.create(
             survey=survey,
@@ -278,7 +285,9 @@ class ExportUserDataTests(TestCase):
         UserSurveyResponse.objects.create(
             user=self.user,
             cohort=self.cohort,
+            scheduler=scheduler,
             submission=submission,
+            task_instance_id=0,
         )
 
         self.client.login(email='test@example.com', password='testpass123')

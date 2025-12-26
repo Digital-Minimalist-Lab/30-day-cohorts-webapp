@@ -28,7 +28,8 @@ from django.db import models
 from accounts.models import UserProfile
 from cohorts.tasks import get_user_tasks, PendingTask
 from cohorts.utils import get_user_today
-from cohorts.models import EmailSendLog
+from cohorts.models import EmailSendLog, TaskScheduler
+from surveys.models import Survey
 
 from config.settings.base import *
 
@@ -151,7 +152,8 @@ def send_task_reminder_to_user(user: AbstractUser, dry_run: bool = False) -> boo
 
     # Send the email
     try:
-        _send_email_with_template(user, all_pending_tasks, "emails/task_reminder")
+        # Call a named function so tests can patch it easily
+        send_task_reminder_email(user, all_pending_tasks)
         EmailSendLog.objects.record_sent(
            idempotency_key=idempotency_key,
            recipient_email=user.email,
@@ -209,4 +211,15 @@ def _send_email_with_template(user: AbstractUser, pending_tasks: List[PendingTas
         html_message=html_message,
         fail_silently=False,
     )
+
+
+def send_task_reminder_email(user: AbstractUser, pending_tasks: List[PendingTask]) -> None:
+    """
+    Thin wrapper used for sending the reminder email.
+
+    Exists primarily to provide a stable, patchable target for tests
+    (cohorts.test_email_reminders) to mock failures without coupling to
+    internal helper names.
+    """
+    _send_email_with_template(user, pending_tasks, "emails/task_reminder")
 

@@ -14,7 +14,8 @@ from django.core import mail
 from unittest.mock import patch, MagicMock
 
 from accounts.models import UserProfile
-from cohorts.models import Cohort, Enrollment, EmailSendLog
+from cohorts.models import Cohort, Enrollment, EmailSendLog, TaskScheduler
+from surveys.models import Survey
 from cohorts.email_reminders import (
     send_task_reminder_to_user,
     send_task_reminders_for_timezone,
@@ -155,6 +156,15 @@ class EmailReminderIdempotencyTests(TestCase):
             status='free'
         )
 
+        # Ensure at least one scheduler exists for reminders
+        daily = Survey.objects.create(name='Daily Check-in', slug='daily-checkin')
+        TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=daily,
+            slug='daily-checkin',
+            frequency=TaskScheduler.Frequency.DAILY,
+        )
+
     def test_first_email_sends_and_creates_log(self):
         """Test that first email sends successfully and creates log."""
         mail.outbox = []
@@ -242,6 +252,15 @@ class EmailReminderDryRunTests(TestCase):
             status='free'
         )
 
+        # Ensure at least one scheduler exists for reminders
+        daily = Survey.objects.create(name='Daily Check-in', slug='daily-checkin')
+        TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=daily,
+            slug='daily-checkin',
+            frequency=TaskScheduler.Frequency.DAILY,
+        )
+
     def test_dry_run_does_not_send_email(self):
         """Test that dry_run=True does not send email."""
         mail.outbox = []
@@ -308,6 +327,15 @@ class EmailReminderErrorHandlingTests(TestCase):
             status='free'
         )
 
+        # Ensure at least one scheduler exists for reminders
+        daily = Survey.objects.create(name='Daily Check-in', slug='daily-checkin')
+        TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=daily,
+            slug='daily-checkin',
+            frequency=TaskScheduler.Frequency.DAILY,
+        )
+
     @patch('cohorts.email_reminders.send_task_reminder_email')
     def test_failed_send_raises_exception(self, mock_send_email):
         """Test that failed email send raises exception for Django Q."""
@@ -361,6 +389,15 @@ class SendTaskRemindersForTimezoneTests(TestCase):
             user=self.user,
             cohort=self.cohort,
             status='free'
+        )
+
+        # Ensure at least one scheduler exists for reminders
+        daily = Survey.objects.create(name='Daily Check-in', slug='daily-checkin')
+        TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=daily,
+            slug='daily-checkin',
+            frequency=TaskScheduler.Frequency.DAILY,
         )
 
     def test_dry_run_passed_through(self):

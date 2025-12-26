@@ -17,10 +17,12 @@ urlpatterns = [
     path('cohort/join/success/', onboarding.join_success, name='join_success'),
     path('cohorts/<int:cohort_id>/join/', onboarding.cohort_join, name='cohort_join'),
 
-    # surveys
-    path('cohorts/<int:cohort_id>/surveys/<slug:survey_slug>/submissions/new/<str:due_date>/', surveys.survey_view, name='new_submission'),
+    # tasks
+    path('cohorts/<int:cohort_id>/tasks/<slug:scheduler_slug>/<int:task_instance_id>/', surveys.survey_view, name='new_submission'),
 
-    # special case for onboarding survey
-    path('cohorts/<int:cohort_id>/surveys/<slug:survey_slug>/onboarding/<str:due_date>/', surveys.onboarding_survey_view, name='onboarding_entry_survey'),
+    # special case for onboarding survey (entry survey)
+    path('cohorts/<int:cohort_id>/entry-survey/', surveys.onboarding_survey_view, name='onboarding_entry_survey'),
+
+    # past submissions
     path('cohorts/<int:cohort_id>/surveys/<slug:survey_slug>/submissions/', surveys.PastSubmissionsListView.as_view(), name='submission_list'),
 ]

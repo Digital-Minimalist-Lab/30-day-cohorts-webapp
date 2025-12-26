@@ -14,7 +14,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from cohorts.models import Cohort, Enrollment, UserSurveyResponse
+from cohorts.models import Cohort, Enrollment, UserSurveyResponse, TaskScheduler
 from surveys.models import Survey, SurveySubmission, Question
 
 User = get_user_model()
@@ -75,6 +75,20 @@ class OnboardingFlowTests(TestCase):
             }
         )
 
+        # Set the entry survey as the cohort's onboarding survey
+        self.cohort.onboarding_survey = self.entry_survey
+        self.cohort.save()
+
+        # Create a scheduler for the entry survey
+        self.entry_scheduler = TaskScheduler.objects.create(
+            cohort=self.cohort,
+            survey=self.entry_survey,
+            slug=self.entry_survey.slug,
+            frequency=TaskScheduler.Frequency.ONCE,
+            offset_days=0,
+            offset_from=TaskScheduler.OffsetFrom.COHORT_START,
+        )
+
     def test_join_start_redirects_to_entry_survey_for_authenticated_user(self):
         """Test that authenticated users are redirected to entry survey."""
         user = User.objects.create_user(
@@ -115,21 +129,19 @@ class OnboardingFlowTests(TestCase):
             email='test@example.com',
         )
         self.client.force_login(user)
-        
+
         # Create enrollment
         Enrollment.objects.create(
             user=user,
             cohort=self.cohort,
             status='pending'
         )
-        
+
         # Submit entry survey
         survey_url = reverse('cohorts:onboarding_entry_survey', kwargs={
             'cohort_id': self.cohort.id,
-            'survey_slug': self.entry_survey.slug,
-            'due_date': self.cohort.start_date.isoformat()
         })
-        
+
         response = self.client.post(survey_url, {
             'mood_1to5': '4',
             'baseline_screentime_min': '180',
@@ -156,21 +168,22 @@ class OnboardingFlowTests(TestCase):
             email='test@example.com',
         )
         self.client.force_login(user)
-        
+
         # Create enrollment
-        enrollment = Enrollment.objects.create(
+        Enrollment.objects.create(
             user=user,
             cohort=self.cohort,
             status='pending'
         )
-        
-        # Create a completed entry survey
+
+        # Create a completed entry survey (task_instance_id=0 for first instance)
         submission = SurveySubmission.objects.create(survey=self.entry_survey)
         UserSurveyResponse.objects.create(
             user=user,
             cohort=self.cohort,
+            scheduler=self.entry_scheduler,
             submission=submission,
-            due_date=self.cohort.start_date
+            task_instance_id=0,
         )
         
         # Try to access entry survey
@@ -194,8 +207,6 @@ class OnboardingFlowTests(TestCase):
         # Complete entry survey
         survey_url = reverse('cohorts:onboarding_entry_survey', kwargs={
             'cohort_id': self.cohort.id,
-            'survey_slug': self.entry_survey.slug,
-            'due_date': self.cohort.start_date.isoformat()
         })
         self.client.post(survey_url, {
             'mood_1to5': '4',

@@ -100,14 +100,9 @@ def join_entry_survey(request: HttpRequest) -> HttpResponse:
         # No entry survey configured, skip to checkout
         return redirect('cohorts:join_checkout')
 
-    # Calculate due date (start of cohort)
-    due_date = cohort.enrollment_start_date
-
     # Redirect to the entry survey with special onboarding handling
-    return redirect('cohorts:onboarding_entry_survey',
-                   cohort_id=cohort.id,
-                   survey_slug=entry_survey.slug,
-                   due_date=due_date.isoformat())
+    # The view will look up the scheduler from cohort.onboarding_survey
+    return redirect('cohorts:onboarding_entry_survey', cohort_id=cohort.id)
 
 
 @login_required

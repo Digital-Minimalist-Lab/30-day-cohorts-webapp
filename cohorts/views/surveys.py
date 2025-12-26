@@ -11,8 +11,9 @@ from django.views.generic.list import ListView
 from surveys.forms import DynamicSurveyForm
 from surveys.models import Survey
 
-from cohorts.models import Cohort, Enrollment, UserSurveyResponse
+from cohorts.models import Cohort, Enrollment, UserSurveyResponse, TaskScheduler
 from cohorts.surveys import create_survey_submission
+from cohorts.tasks import find_due_date
 
 import logging
 logger = logging.getLogger(__name__)
@@ -29,13 +30,13 @@ class SurveyFormView(FormView):
         """Initialize attributes for the view."""
         super().setup(request, *args, **kwargs)
         cohort_id = self.kwargs['cohort_id']
-        survey_slug = self.kwargs['survey_slug']
+        scheduler_slug = self.kwargs['scheduler_slug']
+        self.task_instance_id = self.kwargs['task_instance_id']
+
         self.cohort = get_object_or_404(Cohort, id=cohort_id)
-        self.survey = get_object_or_404(Survey, slug=survey_slug)
-        try:
-            self.due_date = date.fromisoformat(self.kwargs['due_date'])
-        except (ValueError, TypeError, KeyError):
-            self.due_date = None
+        self.scheduler = get_object_or_404(TaskScheduler, cohort=self.cohort, slug=scheduler_slug)
+        self.survey = self.scheduler.survey
+        self.due_date = find_due_date(self.scheduler, self.task_instance_id)
 
     def get_template_names(self):
         """
@@ -57,13 +58,13 @@ class SurveyFormView(FormView):
             messages.error(request, "You are not enrolled in this cohort.")
             return redirect('cohorts:dashboard')
 
-        # Validate due_date
-        if not self.due_date:
-            messages.error(request, "A valid due date is required to perform this survey.")
-            return redirect('cohorts:dashboard')
-
         # Check if already completed
-        if UserSurveyResponse.objects.filter(user=request.user, cohort=self.cohort, submission__survey=self.survey, due_date=self.due_date).exists():
+        if UserSurveyResponse.objects.filter(
+            user=request.user,
+            cohort=self.cohort,
+            scheduler=self.scheduler,
+            task_instance_id=self.task_instance_id
+        ).exists():
             messages.info(request, "You have already completed this survey.")
             return redirect('cohorts:dashboard')
 
@@ -80,14 +81,13 @@ class SurveyFormView(FormView):
         context = super().get_context_data(**kwargs)
         survey_context: dict[str, Any] = {
             'survey_name': self.survey.name,
-            'cohort_name': self.cohort.name,        
+            'cohort_name': self.cohort.name,
         }
-        if self.due_date:
-            week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
-            survey_context.update({
-                'due_date': self.due_date.isoformat(),
-                'week_number': week_number,
-            })
+        # add week_number and due_date to all contexts
+        week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
+        survey_context['week_number'] = week_number
+        survey_context['due_date'] = self.due_date
+
         context.update({
             'page_title': self.survey.title_template.format(**survey_context),
             'description': self.survey.description.format(**survey_context),
@@ -100,15 +100,16 @@ class SurveyFormView(FormView):
         create_survey_submission(
             user=self.request.user,
             cohort=self.cohort,
+            scheduler=self.scheduler,
             survey=self.survey,
             form=form,
-            due_date=self.due_date,
+            task_instance_id=self.task_instance_id,
         )
         messages.success(self.request, f"'{self.survey.name}' completed successfully!")
         return redirect('cohorts:dashboard')
 
 
-# Required for redirection to the checkout page. 
+# Required for redirection to the checkout page.
 class EntrySurveyOnboardingFormView(SurveyFormView):
     """A specialized view for the entry survey during onboarding that redirects to checkout."""
 
@@ -117,9 +118,10 @@ class EntrySurveyOnboardingFormView(SurveyFormView):
         create_survey_submission(
             user=self.request.user,
             cohort=self.cohort,
+            scheduler=self.scheduler,
             survey=self.survey,
             form=form,
-            due_date=self.due_date,
+            task_instance_id=self.task_instance_id,
         )
         messages.success(self.request, f"'{self.survey.name}' completed successfully!")
         # Redirect to checkout instead of dashboard
@@ -127,26 +129,35 @@ class EntrySurveyOnboardingFormView(SurveyFormView):
 
 
 @login_required
-def survey_view(request: HttpRequest, cohort_id: int, survey_slug: str, due_date: str) -> HttpResponse:
+def survey_view(request: HttpRequest, cohort_id: int, scheduler_slug: str, task_instance_id: int) -> HttpResponse:
     """
     View to display and process a survey.
     This acts as a dispatcher to select the correct view class.
     """
-    survey = get_object_or_404(Survey, slug=survey_slug)
-    logger.info(f"survey: {survey}")
-    return SurveyFormView.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug, due_date=due_date)
+    cohort = get_object_or_404(Cohort, id=cohort_id)
+    scheduler = get_object_or_404(TaskScheduler, cohort=cohort, slug=scheduler_slug)
+    logger.info(f"survey: {scheduler.survey}")
+    return SurveyFormView.as_view()(request, cohort_id=cohort_id, scheduler_slug=scheduler_slug, task_instance_id=task_instance_id)
 
 
 @login_required
-def onboarding_survey_view(request: HttpRequest, cohort_id: int, survey_slug: str, due_date: str) -> HttpResponse:
+def onboarding_survey_view(request: HttpRequest, cohort_id: int) -> HttpResponse:
     """
-    View to display and process a survey during onboarding.
-    This uses the EntrySurveyOnboardingFormView which redirects to checkout after completion.
+    View to display and process the onboarding survey.
+    Uses cohort.onboarding_survey to find the survey and scheduler.
+    Always uses task_instance_id=0 (first instance).
     """
-    survey = get_object_or_404(Survey, slug=survey_slug)
-    logger.info(f"Onboarding survey: {survey}")
-    # Use the onboarding view that redirects to checkout
-    return EntrySurveyOnboardingFormView.as_view()(request, cohort_id=cohort_id, survey_slug=survey_slug, due_date=due_date)
+    cohort = get_object_or_404(Cohort, id=cohort_id)
+
+    if not cohort.onboarding_survey:
+        messages.error(request, "No onboarding survey configured for this cohort.")
+        return redirect('cohorts:join_checkout')
+
+    scheduler = get_object_or_404(TaskScheduler, cohort=cohort, survey=cohort.onboarding_survey)
+    logger.info(f"Onboarding survey: {scheduler.survey}")
+
+    # Onboarding survey is always task_instance_id=0
+    return EntrySurveyOnboardingFormView.as_view()(request, cohort_id=cohort_id, scheduler_slug=scheduler.slug, task_instance_id=0)
 
 
 @method_decorator(login_required, name='dispatch')
