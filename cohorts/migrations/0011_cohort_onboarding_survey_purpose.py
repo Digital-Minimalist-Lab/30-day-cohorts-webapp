@@ -4,17 +4,6 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
-def populate_onboarding_survey(apps, schema_editor):
-    Survey = apps.get_model('surveys', 'Survey')
-    Cohort = apps.get_model('cohorts', 'Cohort')
-
-    # We assume 'ENTRY' is the value for Survey.Purpose.ENTRY.
-    # This requires the 'purpose' field to still exist on the Survey model.
-    entry_survey = Survey.objects.filter(purpose='ENTRY').first()
-    if entry_survey:
-        Cohort.objects.update(onboarding_survey=entry_survey)
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -28,5 +17,4 @@ class Migration(migrations.Migration):
             name='onboarding_survey',
             field=models.ForeignKey(blank=True, help_text='The survey presented during onboarding (e.g. Entry Survey).', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='onboarding_cohorts', to='surveys.survey'),
         ),
-        migrations.RunPython(populate_onboarding_survey, migrations.RunPython.noop),
     ]
