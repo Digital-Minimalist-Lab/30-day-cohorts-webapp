@@ -72,6 +72,7 @@ COHORT_DESIGN_SCHEMA = {
                     "name": {"type": "string"},
                     "description": {"type": "string"},
                     "title_template": {"type": "string"},
+                    'estimated_time_minutes': {"type": "integer"},
                     "sections": {
                         "type": "array",
                         "items": {
@@ -278,7 +279,8 @@ def _survey_metadata_changed(survey: Survey, survey_data: dict) -> bool:
     return (
         survey.name != survey_data["name"] or
         survey.description != survey_data.get("description", "") or
-        survey.title_template != survey_data.get("title_template", "{survey_name}")
+        survey.title_template != survey_data.get("title_template", "{survey_name}") or
+        survey.estimated_time_minutes != survey_data.get("estimated_time_minutes")
     )
 
 
@@ -346,6 +348,7 @@ def _create_survey_for_cohort(cohort: Cohort, survey_data: dict) -> Survey:
         name=survey_data["name"],
         description=survey_data.get("description", ""),
         title_template=survey_data.get("title_template", "{survey_name}"),
+        estimated_time_minutes=survey_data.get("estimated_time_minutes"),
     )
 
     _create_questions_for_survey(survey, survey_data)
@@ -373,6 +376,7 @@ def _update_or_create_survey_for_cohort(cohort: Cohort, survey_data: dict) -> Su
             existing.name = survey_data["name"]
             existing.description = survey_data.get("description", "")
             existing.title_template = survey_data.get("title_template", "{survey_name}")
+            existing.estimated_time_minutes = survey_data.get("estimated_time_minutes")
             existing.save()
 
         # Recreate questions if they changed

@@ -3,7 +3,7 @@ Hi{% if user.first_name %} {{ user.first_name }}{% endif %}!
 You have {{ pending_tasks|length }} pending task{{ pending_tasks|length|pluralize }} for your digital declutter journey:
 
 {% for task in pending_tasks %}
-{{ forloop.counter }}. {{ task.title }}
+{{ forloop.counter }}. {{ task.title }}{% if task.estimated_time_minutes %} (~{{ task.estimated_time_minutes }} min){% endif %}
    Due: {{ task.due_date|date:"F j, Y" }}
    Complete: {{ site_url }}{{ task.url }}
 

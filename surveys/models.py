@@ -11,7 +11,8 @@ class Survey(models.Model):
     slug = models.SlugField(max_length=200, unique=True, help_text="A unique slug for identifying the survey type (e.g., 'entry', 'daily-checkin').")
     description = models.TextField(blank=True)
     title_template = models.CharField(max_length=255, blank=True, default="{survey_name}", help_text="A template for the page title. Available placeholders: {survey_name}, {due_date}, {week_number}.")
-    
+    estimated_time_minutes = models.PositiveIntegerField(null=True, blank=True, help_text="Estimated time to complete the survey in minutes.")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -22,12 +23,14 @@ class Survey(models.Model):
 
     def to_design_dict(self, include_questions: bool = True) -> dict:
         """Export this survey to a JSON-serializable dict for cohort design."""
-        data = {
+        data: dict[str, any] = {
             "slug": self.slug,
             "name": self.name,
             "description": self.description,
             "title_template": self.title_template,
         }
+        if self.estimated_time_minutes:
+            data["estimated_time_minutes"] = self.estimated_time_minutes
         if include_questions:
             data["sections"] = [
                 {

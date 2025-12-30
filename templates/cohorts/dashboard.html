@@ -24,6 +24,7 @@
         {% for task in tasks %}
         <article style="margin-bottom: 1rem;">
             <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
+            {% if task.estimated_time_minutes %}<p><small>~{{ task.estimated_time_minutes }} min</small></p>{% endif %}
             <p>{{ task.description|safe }}</p>
         </article>
         {% endfor %}

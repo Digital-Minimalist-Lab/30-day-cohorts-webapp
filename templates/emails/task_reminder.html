@@ -104,7 +104,7 @@
         <div class="tasks-container">
             {% for task in pending_tasks %}
             <div class="task">
-                <div class="task-title">{{ task.title }}</div>
+                <div class="task-title">{{ task.title }}{% if task.estimated_time_minutes %} <small>(~{{ task.estimated_time_minutes }} min)</small>{% endif %}</div>
                 <div class="task-due">Due: {{ task.due_date|date:"F j, Y" }}</div>
                 <a href="{{ site_url }}{{ task.url }}" class="task-link">Complete this task →</a>
             </div>

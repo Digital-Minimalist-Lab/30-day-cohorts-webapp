@@ -27,6 +27,7 @@ class PendingTask:
     description: str
     url: str
     order: int = 0
+    estimated_time_minutes: int | None = None
 
 
 def find_due_date(scheduler: TaskScheduler, task_instance_id: int) -> date:
@@ -170,7 +171,12 @@ def get_user_tasks(user: AbstractUser, cohort: Cohort, today: date) -> List[Pend
                 continue
 
             week_number = ((due_date - scheduler.cohort.start_date).days // 7) + 1
-            context = {'survey_name': scheduler.survey.name, 'due_date': due_date, 'week_number': week_number}
+            context = {
+                'survey_name': scheduler.survey.name,
+                'due_date': due_date,
+                'week_number': week_number,
+                'estimated_time_minutes': scheduler.survey.estimated_time_minutes,
+            }
             title = (scheduler.task_title_template or scheduler.survey.title()).format(**context)
             description = (scheduler.task_description_template or scheduler.survey.description).format(**context)
 
@@ -186,7 +192,8 @@ def get_user_tasks(user: AbstractUser, cohort: Cohort, today: date) -> List[Pend
                     'scheduler_slug': scheduler.slug,
                     'task_instance_id': task_instance_id
                 }),
-                order=order_func(scheduler)
+                order=order_func(scheduler),
+                estimated_time_minutes=scheduler.survey.estimated_time_minutes,
             ))
 
     pending_tasks.sort(key=lambda x: (x.due_date, x.order))

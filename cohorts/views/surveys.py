@@ -87,6 +87,8 @@ class SurveyFormView(FormView):
         week_number = ((self.due_date - self.cohort.start_date).days // 7) + 1
         survey_context['week_number'] = week_number
         survey_context['due_date'] = self.due_date
+        if self.survey.estimated_time_minutes:
+          survey_context['estimated_time_minutes'] = self.survey.estimated_time_minutes
 
         context.update({
             'page_title': self.survey.title_template.format(**survey_context),
