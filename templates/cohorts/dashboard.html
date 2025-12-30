@@ -42,7 +42,7 @@
     <h2>Upcoming Tasks</h2>
     <ul>
         {% for task in upcoming_tasks %}
-        <li>{{ task.title }} — <strong>{{ task.frequency }}{% if task.day_of_week %} ({{ task.day_of_week }}){% endif %}</strong></li>
+        <li>{{ task.title }} — <strong>{{ task.frequency }}{% if task.day_of_week %}, {{ task.day_of_week }}{% endif %}</strong>{% if task.estimated_time_minutes %} (~{{ task.estimated_time_minutes }} min){% endif %}</li>
         {% endfor %}
     </ul>
 </section>

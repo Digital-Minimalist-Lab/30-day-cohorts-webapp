@@ -37,6 +37,7 @@ class UpcomingTask:
     frequency: str  # 'Daily', 'Weekly', or a specific date for ONCE
     next_date: date
     day_of_week: str | None = None  # For weekly tasks, e.g., 'Mondays'
+    estimated_time_minutes: int | None = None
 
 
 def find_due_date(scheduler: TaskScheduler, task_instance_id: int) -> date:
@@ -228,6 +229,8 @@ def get_upcoming_tasks(cohort: Cohort, today: date) -> List[UpcomingTask]:
         title = title.replace('{due_date}', '')
         title = title.strip()
 
+        estimated_time = scheduler.survey.estimated_time_minutes
+
         if scheduler.frequency == TaskScheduler.Frequency.ONCE:
             try:
                 due_date = find_due_date(scheduler, 0)
@@ -239,6 +242,7 @@ def get_upcoming_tasks(cohort: Cohort, today: date) -> List[UpcomingTask]:
                     title=title,
                     frequency=due_date.strftime('%b %d'),
                     next_date=due_date,
+                    estimated_time_minutes=estimated_time,
                 ))
 
         elif scheduler.frequency == TaskScheduler.Frequency.DAILY:
@@ -248,6 +252,7 @@ def get_upcoming_tasks(cohort: Cohort, today: date) -> List[UpcomingTask]:
                     title=title,
                     frequency=f"Daily, starting {cohort.start_date.strftime('%b %d')}",
                     next_date=cohort.start_date,
+                    estimated_time_minutes=estimated_time,
                 ))
 
         elif scheduler.frequency == TaskScheduler.Frequency.WEEKLY:
@@ -260,6 +265,7 @@ def get_upcoming_tasks(cohort: Cohort, today: date) -> List[UpcomingTask]:
                     frequency='Weekly',
                     next_date=first_due,
                     day_of_week=day_name,
+                    estimated_time_minutes=estimated_time,
                 ))
 
     upcoming_tasks.sort(key=lambda x: x.next_date)
