@@ -18,7 +18,7 @@
 <!-- Tasks Section -->
 <section>
     <h2>Today's Tasks</h2>
-    
+
     {% if tasks %}
         <!-- Vertical list of tasks -->
         {% for task in tasks %}
@@ -35,5 +35,17 @@
         </article>
     {% endif %}
 </section>
+
+{% if upcoming_tasks %}
+<!-- Upcoming Tasks Section -->
+<section>
+    <h2>Upcoming Tasks</h2>
+    <ul>
+        {% for task in upcoming_tasks %}
+        <li>{{ task.title }} — <strong>{{ task.frequency }}{% if task.day_of_week %} ({{ task.day_of_week }}){% endif %}</strong></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
 
 {% endblock %}

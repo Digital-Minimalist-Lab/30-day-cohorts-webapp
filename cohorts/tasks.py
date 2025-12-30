@@ -30,6 +30,15 @@ class PendingTask:
     estimated_time_minutes: int | None = None
 
 
+@dataclass
+class UpcomingTask:
+    """Represents an upcoming task type that will occur in the future."""
+    title: str
+    frequency: str  # 'Daily', 'Weekly', or a specific date for ONCE
+    next_date: date
+    day_of_week: str | None = None  # For weekly tasks, e.g., 'Mondays'
+
+
 def find_due_date(scheduler: TaskScheduler, task_instance_id: int) -> date:
     """
     Calculates the due date for a given task instance.
@@ -198,3 +207,60 @@ def get_user_tasks(user: AbstractUser, cohort: Cohort, today: date) -> List[Pend
 
     pending_tasks.sort(key=lambda x: (x.due_date, x.order))
     return pending_tasks
+
+
+DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+
+def get_upcoming_tasks(cohort: Cohort, today: date) -> List[UpcomingTask]:
+    """
+    Returns a list of upcoming task types that haven't started yet.
+    For recurring tasks, shows the task once with its frequency.
+    """
+    upcoming_tasks = []
+    schedulers = TaskScheduler.objects.filter(cohort=cohort).select_related('survey').all()
+
+    for scheduler in schedulers:
+        title = scheduler.task_title_template or scheduler.survey.title()
+        # Remove template placeholders for the preview
+        title = title.replace('{survey_name}', scheduler.survey.name)
+        title = title.replace('{week_number}', '')
+        title = title.replace('{due_date}', '')
+        title = title.strip()
+
+        if scheduler.frequency == TaskScheduler.Frequency.ONCE:
+            try:
+                due_date = find_due_date(scheduler, 0)
+            except ValueError:
+                continue
+            # Only show if it's in the future
+            if due_date > today:
+                upcoming_tasks.append(UpcomingTask(
+                    title=title,
+                    frequency=due_date.strftime('%b %d'),
+                    next_date=due_date,
+                ))
+
+        elif scheduler.frequency == TaskScheduler.Frequency.DAILY:
+            # Daily tasks start when the cohort starts
+            if cohort.start_date > today:
+                upcoming_tasks.append(UpcomingTask(
+                    title=title,
+                    frequency=f"Daily, starting {cohort.start_date.strftime('%b %d')}",
+                    next_date=cohort.start_date,
+                ))
+
+        elif scheduler.frequency == TaskScheduler.Frequency.WEEKLY:
+            # Find the first occurrence
+            first_due = find_due_date(scheduler, 0)
+            if first_due > today:
+                day_name = DAY_NAMES[scheduler.day_of_week] + 's' if scheduler.day_of_week is not None else None
+                upcoming_tasks.append(UpcomingTask(
+                    title=title,
+                    frequency='Weekly',
+                    next_date=first_due,
+                    day_of_week=day_name,
+                ))
+
+    upcoming_tasks.sort(key=lambda x: x.next_date)
+    return upcoming_tasks

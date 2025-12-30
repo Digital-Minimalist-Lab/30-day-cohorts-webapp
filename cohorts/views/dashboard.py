@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.db.models import Count, Q
-from cohorts.tasks import get_user_tasks
+from cohorts.tasks import get_user_tasks, get_upcoming_tasks
 
 from ..models import Cohort, Enrollment
 from ..utils import get_user_today
@@ -37,13 +37,15 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     cohort = enrollment.cohort
     today = get_user_today(request.user)
     tasks = get_user_tasks(request.user, cohort, today)
-    
+    upcoming_tasks = get_upcoming_tasks(cohort, today)
+
     context = {
         'enrollment': enrollment,
         'cohort': cohort,
         'enrollment_count': enrollment.enrollment_count, # Use the annotated value
         'tasks': tasks,
+        'upcoming_tasks': upcoming_tasks,
         'today': today,
     }
-    
+
     return render(request, 'cohorts/dashboard.html', context)
