@@ -7,6 +7,7 @@ app_name = 'cohorts'
 urlpatterns = [
     path('', dashboard.dashboard, name='dashboard'),
     path('dashboard/', dashboard.dashboard, name='dashboard'),
+    path('homepage/', dashboard.homepage, name='homepage'),
 
     path('cohort/', dashboard.dashboard, name='enrollment_landing'),  # Alias for dashboard
 

@@ -9,6 +9,18 @@ from ..utils import get_user_today
 import logging
 logger = logging.getLogger(__name__)
 
+
+def homepage(request: HttpRequest, next_cohort: Cohort | None = None) -> HttpResponse:
+    """Redirect to dashboard if logged in, otherwise show homepage."""
+    if next_cohort is None:
+        next_cohort = next(iter(Cohort.objects.get_joinable()), None)
+    context = {
+        'cohort': next_cohort,
+    }
+    if next_cohort:
+        context['seats_available'] = next_cohort.seats_available()
+    return render(request, 'cohorts/homepage.html')
+
 def dashboard(request: HttpRequest) -> HttpResponse:
     """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
     # Get next active cohort for enrollment landing
@@ -27,12 +39,7 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         
 
     if not request.user.is_authenticated or not enrollment or enrollment.status == 'pending':
-        context = {
-            'cohort': next_cohort,
-        }
-        if next_cohort:
-            context['seats_available'] = next_cohort.seats_available()
-        return render(request, 'cohorts/homepage.html', context)
+        return homepage(request, next_cohort)
     
     cohort = enrollment.cohort
     today = get_user_today(request.user)
