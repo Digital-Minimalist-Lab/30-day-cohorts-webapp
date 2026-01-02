@@ -4,47 +4,56 @@
 
 {% block content %}
 
-<!-- Enrolled state -->
-<header>
+<!-- Dashboard Header -->
+<header class="dashboard-header">
     <h1>{{ cohort.name }}</h1>
+    <p class="text-muted">
+        {{ cohort.start_date|date:"F d, Y" }} – {{ cohort.end_date|date:"F d, Y" }}
+        <span class="dashboard-header__separator">•</span>
+        {{ enrollment_count }} people rethinking their digital habits with you
+    </p>
 </header>
 
-<!-- Cohort Information -->
-<section>
-    <p><small>{{ cohort.start_date|date:"F d, Y" }} – {{ cohort.end_date|date:"F d, Y" }}</small></p>
-    <p><small>There are {{ enrollment_count }} people rethinking their digital habits with you!</small></p>
-</section>
-
-<!-- Tasks Section -->
+<!-- Today's Tasks -->
 <section>
     <h2>Today's Tasks</h2>
 
     {% if tasks %}
-        <!-- Vertical list of tasks -->
+    <div class="card__stack">
         {% for task in tasks %}
-        <article style="margin-bottom: 1rem;">
-            <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
-            {% if task.estimated_time_minutes %}<p><small>~{{ task.estimated_time_minutes }} min</small></p>{% endif %}
+        <article class="card card--medium">
+            <hgroup>
+                <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
+                {% if task.estimated_time_minutes %}<small>~{{ task.estimated_time_minutes }} min</small>{% endif %}
+            </hgroup>
             <p>{{ task.description|safe }}</p>
         </article>
         {% endfor %}
+    </div>
     {% else %}
-        <!-- No tasks state -->
-        <article>
-            <p>There's nothing to do but seize the day!</p>
-        </article>
+    <div class="card card--info card--medium">
+        <p>✨ There's nothing to do but seize the day!</p>
+    </div>
     {% endif %}
 </section>
 
 {% if upcoming_tasks %}
-<!-- Upcoming Tasks Section -->
+<!-- Upcoming Tasks -->
 <section>
-    <h2>Upcoming Tasks</h2>
-    <ul>
-        {% for task in upcoming_tasks %}
-        <li>{{ task.title }} — <strong>{{ task.frequency }}{% if task.day_of_week %}, {{ task.day_of_week }}{% endif %}</strong>{% if task.estimated_time_minutes %} (~{{ task.estimated_time_minutes }} min){% endif %}</li>
-        {% endfor %}
-    </ul>
+    <h2>Upcoming</h2>
+    <div class="card card--info card--medium">
+        <ul>
+            {% for task in upcoming_tasks %}
+            <li>
+                {{ task.title }}
+                <span class="list__meta">
+                    {{ task.frequency }}{% if task.day_of_week %}, {{ task.day_of_week }}{% endif %}
+                    {% if task.estimated_time_minutes %}(~{{ task.estimated_time_minutes }} min){% endif %}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </section>
 {% endif %}
 

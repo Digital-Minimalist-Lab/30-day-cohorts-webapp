@@ -1,0 +1,11 @@
+<fieldset {% include "django/forms/widgets/attrs.html" %}>
+  <legend>{{ widget.label }}</legend>
+  {% for group, options, index in widget.optgroups %}
+    {% for option in options %}
+      <label>
+        <input type="radio" name="{{ option.name }}" value="{{ option.value }}" {% include "django/forms/widgets/attrs.html" with widget=option %}>
+        {{ option.label }}
+      </label>
+    {% endfor %}
+  {% endfor %}
+</fieldset>

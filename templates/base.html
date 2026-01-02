@@ -13,14 +13,18 @@
                 <li><a href="{% url 'cohorts:dashboard' %}">Home</a></li>
                 <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
                 <li>
-                    <form method="post" action="{% url 'account_logout' %}" style="display: inline;">
+                    <form method="post" action="{% url 'account_logout' %}">
                         {% csrf_token %}
-                        <button type="submit" class="secondary">Logout</button>
+                        <button type="submit" class="secondary" role="button">Logout</button>
                     </form>
                 </li>
             {% else %}
                 <li><a href="{% url 'account_login' %}">Login</a></li>
-                <li><a href="{% url 'account_signup' %}" role="button">Sign Up</a></li>
+                <li>
+                    <form action="{% url 'account_signup' %}" method="get" style="display: contents;">
+                        <button type="submit" role="button">Sign Up</button>
+                    </form>
+                </li>
             {% endif %}
         </ul>
     </nav>

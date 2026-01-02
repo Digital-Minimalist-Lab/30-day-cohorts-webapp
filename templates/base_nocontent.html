@@ -9,11 +9,7 @@
     
     <!-- Pico CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    
-    <!-- Shoelace -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/themes/light.css" />
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/shoelace.js"></script>
-    
+
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     
@@ -44,90 +40,92 @@
 
     {% block page_content %}{% endblock %}
     
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <!-- Toast notification script -->
     <script>
-        // Map Django message levels to Shoelace alert variants
+        // Map Django message levels to alert variants
         function getAlertVariant(djangoLevel) {
             const levelMap = {
                 'success': 'success',
                 'error': 'danger',
                 'warning': 'warning',
-                'info': 'primary',
-                'debug': 'neutral'
+                'info': 'info',
+                'debug': 'info'
             };
             // Handle combined tags like 'error message' or 'success message'
             const baseLevel = djangoLevel.split(' ')[0];
-            return levelMap[baseLevel] || 'primary';
+            return levelMap[baseLevel] || 'info';
         }
-        
-        // Get icon name for alert variant
-        function getIconName(variant) {
+
+        // Get icon for alert variant (using unicode symbols)
+        function getIcon(variant) {
             const iconMap = {
-                'success': 'check-circle',
-                'danger': 'exclamation-triangle',
-                'warning': 'exclamation-triangle',
-                'primary': 'info-circle',
-                'neutral': 'info-circle'
+                'success': '✓',
+                'danger': '⚠',
+                'warning': '⚠',
+                'info': 'ℹ'
             };
-            return iconMap[variant] || 'info-circle';
+            return iconMap[variant] || 'ℹ';
         }
-        
-        // Show toast notification using Shoelace alert
+
+        // Show toast notification
         function showToast(message, level) {
             const variant = getAlertVariant(level);
-            const iconName = getIconName(variant);
-            
+            const icon = getIcon(variant);
+            const container = document.getElementById('toast-container');
+
             // Create alert element
-            const alert = document.createElement('sl-alert');
-            alert.variant = variant;
-            alert.closable = true;
-            alert.duration = 5000;
-            
-            // Create icon element
-            const icon = document.createElement('sl-icon');
-            icon.name = iconName;
-            icon.slot = 'icon';
-            alert.appendChild(icon);
-            
-            // Add message text
-            alert.appendChild(document.createTextNode(message));
-            
-            // Append to body
-            document.body.appendChild(alert);
-            
-            // Show as toast
-            alert.toast();
+            const alert = document.createElement('div');
+            alert.className = 'alert alert--' + variant;
+            alert.innerHTML =
+                '<span class="alert__icon">' + icon + '</span>' +
+                '<span class="alert__message">' + message + '</span>' +
+                '<button class="alert__close" aria-label="Close">×</button>';
+
+            // Add close functionality
+            alert.querySelector('.alert__close').addEventListener('click', function() {
+                alert.style.animation = 'fadeOut 0.2s ease-out forwards';
+                setTimeout(function() { alert.remove(); }, 200);
+            });
+
+            // Append to container
+            container.appendChild(alert);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(function() {
+                if (alert.parentNode) {
+                    alert.style.animation = 'fadeOut 0.2s ease-out forwards';
+                    setTimeout(function() { alert.remove(); }, 200);
+                }
+            }, 5000);
         }
-        
+
         // Show toast notifications from Django messages
         function showDjangoMessages() {
             if (window.djangoMessages && window.djangoMessages.length > 0) {
-                // Small delay to ensure Shoelace is loaded
-                setTimeout(function() {
-                    window.djangoMessages.forEach(function(msg) {
-                        showToast(msg.message, msg.level);
-                    });
-                }, 100);
+                window.djangoMessages.forEach(function(msg) {
+                    showToast(msg.message, msg.level);
+                });
             }
         }
-        
+
         // Show messages on page load
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', showDjangoMessages);
         } else {
-            // DOM already loaded
             showDjangoMessages();
         }
-        
-        // Also handle HTMX responses that might include messages
+
+        // Handle HTMX responses that might include messages
         document.body.addEventListener('htmx:afterSwap', function(event) {
-            // Check if the swapped content contains Django messages
             const messageElements = event.detail.target.querySelectorAll('[data-message]');
             messageElements.forEach(function(el) {
                 const level = el.getAttribute('data-message-level') || 'info';
                 const message = el.textContent.trim();
                 showToast(message, level);
-                el.remove(); // Remove the message element from DOM
+                el.remove();
             });
         });
     </script>
