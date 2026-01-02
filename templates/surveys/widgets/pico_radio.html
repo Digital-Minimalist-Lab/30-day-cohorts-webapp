@@ -1,0 +1,8 @@
+<fieldset >
+  <legend>{{ widget }}</legend>
+  {% for group, options, index in widget.optgroups %}
+    {% for option in options %}
+     <p>{{ option }}</p>
+    {% endfor %}
+  {% endfor %}
+</fieldset>

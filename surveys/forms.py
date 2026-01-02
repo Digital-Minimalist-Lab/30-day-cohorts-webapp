@@ -6,6 +6,28 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+class PicoRadioSelect(RadioSelect):
+    template_name = 'widgets/pico_radio.html'
+
+    def __init__(self, text, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.text = text
+        self.label = text
+        self.hide_label = True
+
+    # remove aria-invalid from the internal elements
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super().create_option(name, value, label, selected, index, subindex, attrs)
+        option['attrs'].pop('aria-invalid', None)
+        return option
+    
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['label'] = self.text
+        context['widget']['hide_label'] = self.hide_label
+        return context
+
 class DynamicSurveyForm(forms.Form):
     """
     A form that is dynamically built from a Survey's Questions.
@@ -87,16 +109,14 @@ class DynamicSurveyForm(forms.Form):
 
     def get_field_widget(self, question):
         """Get the widget instance for a given question."""
-        base_attrs = {'class': 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500'}
+        base_attrs = {}
 
         if question.question_type == Question.QuestionType.TEXTAREA:
             attrs = base_attrs.copy()
             attrs['rows'] = 4
             return Textarea(attrs=attrs)
         if question.question_type == Question.QuestionType.RADIO:
-            # These classes are applied to each <input type="radio"> tag.
-            radio_attrs = {'class': 'h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500'}
-            return RadioSelect(attrs=radio_attrs)
+            return PicoRadioSelect(text=question.text, attrs=base_attrs)
         if question.question_type == Question.QuestionType.INTEGER:
             return NumberInput(attrs=base_attrs)
         if question.question_type == Question.QuestionType.DECIMAL:

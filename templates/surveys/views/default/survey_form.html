@@ -3,22 +3,16 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 min-h-screen">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white shadow-md rounded-lg p-6 md:p-8">
-            
-            {% block survey_header %}
-                <div class="mb-8 text-center">
-                    <h1 class="text-3xl font-bold text-gray-800">{{ page_title }}</h1>
-                    {% if description %}
-                        <p class="mt-2 text-lg text-gray-600">{{ description|safe }}</p>
-                    {% endif %}
-                </div>
-            {% endblock survey_header %}
-
-            {% include 'surveys/views/default/_survey_form_content.html' %}
-
+<div>
+    {% block survey_header %}
+        <div>
+            <h1 >{{ page_title }}</h1>
+            {% if description %}
+                <p>{{ description|safe }}</p>
+            {% endif %}
         </div>
-    </div>
+    {% endblock survey_header %}
+
+    {% include 'surveys/views/default/_survey_form_content.html' %}
 </div>
 {% endblock %}

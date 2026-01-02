@@ -1,6 +1,6 @@
 <form method="post" novalidate>
     {% csrf_token %}
-    <div class="space-y-8">
+    <div>
         {% for section_name, items in form.get_fields_by_section %}
             {% if section_name %}
             <div class="survey-section">
@@ -13,41 +13,47 @@
             {% for item in items %}
                 {% if item.is_info %}
                     {# Display-only info text #}
-                    <div class="survey-info-text">
-                        <p>{{ item.text | safe }}</p>
-                    </div>
+                    <p class="card card--info card--small card--accent-left-blue">
+                        {{ item.text | safe }}
+                    </p>
                 {% else %}
                     {# Regular form field #}
-                    <div class="form-field {% if section_name %}ml-0{% endif %}" style="margin-bottom: 1.5rem;">
-                        <label for="{{ item.field.id_for_label }}" class="block text-md font-medium text-gray-700 mb-2">{{ item.field.label }}</label>
-                        
-                        {% if item.field.field.widget.input_type == 'radio' %}
-                            <div class="space-y-2">
-                                {% for radio in item.field %}
-                                <div class="flex items-center">
-                                    {{ radio.tag }}
-                                    <label for="{{ radio.id_for_label }}" class="ml-3 block text-sm font-medium text-gray-700">{{ radio.choice_label }}</label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}  
-                            {{ item.field }}
+                    {% with field=item.field %}
+
+                        {% if field.field.widget.hide_label != True %}
+                            <label for="{{ item.field.id_for_label }}">{{ field.label }}</label>
                         {% endif %}
-                        {% for error in item.field.errors %}
-                            <p class="mt-2 text-sm text-red-600">{{ error }}</p>
-                        {% endfor %}
-                    </div>
+
+                        {{ field }}
+
+                        <!-- Errors -->
+                        {% if field.errors %}
+                            <small >
+                            {{ field.errors|join:", " }}
+                            </small>
+                        {% endif %}
+
+
+                        <!-- Help text -->
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+
+
+                    {% endwith %}
+
+
                 {% endif %}
             {% endfor %}
             
             {% if section_name %}
-            </div>
+            </section>
             {% endif %}
         {% endfor %}
     </div>
 
-    <div class="mt-10">
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+    <div>
+        <button type="submit">
             Submit Survey
         </button>
     </div>

@@ -1,45 +1,59 @@
 /* ──────────────────────────────────────────────
    LIGHT THEME BASELINE
 ────────────────────────────────────────────── */
-:root,
+:root:not([data-theme="dark"]),
 [data-theme="light"] {
 	color-scheme: light;
 
+	/* Brand colors */
+	--brand: #3182ce;
+	--brand-hover: #2563b5;
+
+	/* Accent colors */
+	--accent-green: #2f9e7d;
+	--accent-green-soft: #d6ede3;
+	--accent-blue-soft: #d8e6f9;
+	--accent-red: #dc2626;
+	--accent-amber: #f59e0b;
+
 	/* Neutral palette */
-	--pico-background-color: #fafbfc;
+	--pico-background-color: #fff;
 	--pico-card-background-color: #ffffff;
 	--pico-form-element-background-color: #ffffff;
-	--pico-color: #1e1e20;
+	--pico-color: #373c44;
+	--pico-h4-color: #4d535e;
 	--pico-muted-color: #6b7280;
 	--pico-border-color: #e5e7eb;
 
-	/* Brand / accent color — choose ONE */
-	--brand: #4b9cd3; /* calm blue for links/buttons */
-	--accent-green: #2f9e7d;
-	--accent-green-muted: #5fb497;
-	--accent-green-soft: #d6ede3;
-	--accent-blue-soft: #d8e6f9;
-
-	/* Pico light mode overrides */
+	/* Pico primary button (uses brand) */
 	--pico-primary: var(--brand);
 	--pico-primary-background: var(--brand);
-	--pico-primary-foreground: #ffffff;
-	--pico-primary-hover-background: var(--brand);
-	--pico-primary-hover-foreground: #ffffff;
-	--pico-secondary-background: #f3f4f6;
-	--pico-secondary-foreground: #1e1e20;
-	--pico-secondary-hover-background: #e5e7eb;
-	--pico-secondary-hover-foreground: #1e1e20;
+	--pico-primary-border: var(--brand);
+	--pico-primary-hover: var(--brand-hover);
+	--pico-primary-hover-background: var(--brand-hover);
+	--pico-primary-hover-border: var(--brand-hover);
+	--pico-primary-inverse: #ffffff;
 
-	/* Shoelace harmonization */
-	--sl-color-primary-600: var(--brand);
-	--sl-color-primary-700: var(--brand);
-	--sl-color-neutral-0: #ffffff;
-	--sl-color-neutral-50: #fafbfc;
-	--sl-color-neutral-100: #f3f4f6;
-	--sl-color-neutral-200: #e5e7eb;
-	--sl-color-neutral-900: #1e1e20;
-	--sl-color-neutral-950: #111827;
+	/* Pico secondary button (medium blue) */
+	--pico-secondary: #5b9bd5;
+	--pico-secondary-background: #5b9bd5;
+	--pico-secondary-border: #5b9bd5;
+	--pico-secondary-hover: #4a8bc7;
+	--pico-secondary-hover-background: #4a8bc7;
+	--pico-secondary-hover-border: #4a8bc7;
+	--pico-secondary-inverse: #ffffff;
+
+	/* Pico contrast button (danger red) */
+	--pico-contrast: var(--accent-red);
+	--pico-contrast-background: var(--accent-red);
+	--pico-contrast-border: var(--accent-red);
+	--pico-contrast-hover: #b91c1c;
+	--pico-contrast-hover-background: #b91c1c;
+	--pico-contrast-hover-border: #b91c1c;
+	--pico-contrast-inverse: #ffffff;
+
+	--pico-block-spacing-vertical: 2rem;
+	/* --pico-typography-spacing-vertical: 2rem; */
 
 	/* Typography */
 	font-family: system-ui, sans-serif;
@@ -48,7 +62,7 @@
 	/* Layout tokens */
 	--content-width: 64rem;
 	--section-gap: 3rem;
-	--radius: 16px;
+	--radius: 8px;
 }
 
 /* Force light mode universally */
@@ -58,6 +72,7 @@ body {
 	background-color: var(--pico-background-color);
 	color: var(--pico-color);
 }
+
 
 /* Block dark mode preference override */
 @media (prefers-color-scheme: dark) {
@@ -93,33 +108,8 @@ body {
 }
 
 /* ──────────────────────────────────────────────
-   LAYOUT STRUCTURE
-────────────────────────────────────────────── */
-main.container {
-	max-width: var(--content-width);
-	margin-inline: auto;
-	padding: 2rem 1rem;
-}
-
-section,
-article {
-	max-width: var(--content-width);
-	margin-inline: auto;
-	margin-block-end: var(--section-gap);
-}
-
-section:not(:last-child) {
-	margin-bottom: 1.5rem;
-}
-
-/* ──────────────────────────────────────────────
    NAVIGATION & FOOTER
 ────────────────────────────────────────────── */
-nav {
-	background-color: var(--pico-background-color);
-	color: var(--pico-color);
-}
-
 nav .brand-link {
 	text-decoration: none;
 	color: inherit;
@@ -130,22 +120,18 @@ nav .brand-link:hover {
 }
 
 footer {
-	color: var(--pico-muted-color);
 	font-size: 0.875rem;
-	margin-top: 4rem;
 	text-align: center;
 }
 
-/* ──────────────────────────────────────────────
-   CARD SYSTEM
-────────────────────────────────────────────── */
-/* Generic card container pattern - no hover effects */
-.card,
-sl-card::part(base) {
-	border-radius: var(--radius);
-	background: var(--pico-card-background-color);
-	border: 1px solid var(--pico-border-color);
-	box-shadow: none;
+/* tweak spacing between top-level sections containing cards */
+:not(section) > section.card + section,
+:not(section) > section:has(.card:last-child) + section {
+	margin-top: 5rem;
+}
+
+section:last-child {
+	margin-bottom: 0;
 }
 
 /* ──────────────────────────────────────────────
@@ -153,224 +139,99 @@ sl-card::part(base) {
 ────────────────────────────────────────────── */
 .hero {
 	text-align: center;
-	padding: 4rem 2rem;
-	margin-block: 5rem var(--section-gap);
+	padding: 5rem 2rem 3rem;
+	margin-bottom: 4rem;
+	background: linear-gradient(135deg, #e8f2fc 0%, #f5f9fd 100%);
 	border-radius: var(--radius);
-	background: var(--pico-card-background-color);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-.hero h1 {
-	font-size: clamp(2.2rem, 4vw, 3rem);
-	margin-bottom: 1rem;
-}
-.hero p {
-	max-width: 36rem;
-	margin-inline: auto;
-	margin-bottom: 1.5rem;
-}
-.hero .muted {
-	color: var(--pico-muted-color);
-}
-
-/* ──────────────────────────────────────────────
-   TYPOGRAPHY & RHYTHM
-────────────────────────────────────────────── */
-h1,
-h2,
-h3 {
-	margin-bottom: 1rem;
-}
-p,
-ul {
-	line-height: 1.7;
-}
-ul {
-	padding-left: 1.5rem;
-}
-
-/* ──────────────────────────────────────────────
-   FORM ELEMENTS
-────────────────────────────────────────────── */
-form {
-	background-color: transparent;
-	color: var(--pico-color);
-}
-
-label {
-	color: var(--pico-color);
-}
-
-input[type="email"],
-input[type="password"],
-input[type="text"],
-input[type="number"],
-textarea,
-select {
-	background-color: var(--pico-form-element-background-color);
-	color: var(--pico-color);
-	border-color: var(--pico-border-color);
-}
-
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="text"]:focus,
-input[type="number"]:focus,
-textarea:focus,
-select:focus {
-	background-color: var(--pico-form-element-background-color);
-	color: var(--pico-color);
-	border-color: var(--brand);
-}
-
-button {
-	background-color: var(--pico-primary-background);
-	color: var(--pico-primary-foreground);
-}
-
-button:hover {
-	background-color: var(--pico-primary-hover-background);
-	color: var(--pico-primary-hover-foreground);
-}
-
-button.secondary {
-	background-color: var(--pico-secondary-background);
-	color: var(--pico-secondary-foreground);
-}
-
-button.secondary:hover {
-	background-color: var(--pico-secondary-hover-background);
-	color: var(--pico-secondary-hover-foreground);
-}
-
-/* Ensure form articles inherit light mode */
-form article {
-	background-color: var(--pico-card-background-color);
-	color: var(--pico-color);
-}
-
-/* Form help text and errors */
-small {
-	color: var(--pico-muted-color);
-	display: block;
-	margin-top: 0.25rem;
-}
-
-label small {
-	color: var(--pico-muted-color);
-}
-
-/* Error states */
-input:invalid,
-textarea:invalid {
-	border-color: #ef4444;
-}
-
-input:invalid:focus,
-textarea:invalid:focus {
-	border-color: #ef4444;
-	box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
-}
-
-/* ──────────────────────────────────────────────
-   BUTTON GROUP UTIL
-────────────────────────────────────────────── */
-.btn-group {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 1rem;
-	margin-top: 2rem;
-}
-
-/* ──────────────────────────────────────────────
-   TOAST NOTIFICATIONS
-────────────────────────────────────────────── */
-sl-alert {
-	position: fixed;
-	top: 1rem;
-	right: 1rem;
-	z-index: 10000;
-	max-width: 400px;
-	min-width: 300px;
-}
-
-.hero {
-	text-align: center;
-	padding: 6rem 2rem 5rem;
-	border-radius: var(--radius);
-	background: var(--pico-card-background-color);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .hero h1 {
 	font-weight: 800;
 	letter-spacing: -0.02em;
-	line-height: 1;
+	line-height: 1.1;
 	margin-bottom: 1.5rem;
 }
 
-.hero .hero-line-small {
+.hero-line-small {
 	display: block;
-	font-size: clamp(2.1rem, 6vw, 4rem);
-	font-weight: 700;
-	letter-spacing: 0.02em;
+	font-size: clamp(1.5rem, 3.5vw, 2rem);
+	font-weight: 600;
+	letter-spacing: 0.05em;
 	text-transform: uppercase;
-	color: var(--pico-muted-color);
-	margin-bottom: 0.25rem;
+	color: var(--brand);
+	margin-bottom: 0.5rem;
 }
 
-.hero .hero-line-large {
+.hero-line-large {
 	display: block;
-	font-size: clamp(2.5rem, 7vw, 4.5rem);
+	font-size: clamp(2.25rem, 6vw, 3.75rem);
 	font-weight: 800;
 	letter-spacing: -0.02em;
 	color: var(--pico-color);
+	line-height: 1.1;
 }
 
-.hero .subheading {
-	font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-	font-weight: 400;
-	color: var(--pico-muted-color);
-	line-height: 1.6;
-	margin-bottom: 2rem;
-	max-width: 32rem;
+.hero h2 {
+	font-size: clamp(1.0rem, 2.1vw, 1.35rem);	
+	font-weight: 500;
+	color: var(--pico-color);
+	line-height: 1.5;
+	margin-bottom: 2.5rem;
+	max-width: 42rem;
 	margin-inline: auto;
 }
 
-.hero .lede {
+.hero-cta {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+}
+
+.hero-meta {
 	color: var(--pico-muted-color);
-	font-size: clamp(1rem, 2.2vw, 1.25rem);
-	max-width: 60ch;
-	margin: 0 auto 2.5rem;
+	font-size: 0.9rem;
+	margin: 0;
+	line-height: 1.4;
 }
 
-/* ──────────────────────────────────────────────
-   PROBLEM → STORY → PROMISE SECTION
-────────────────────────────────────────────── */
-.problem-promise {
-	padding: 2.5rem 1rem;
-}
-
-.problem-promise-card {
-	max-width: 64rem;
-	margin-inline: auto;
-	padding: 2.75rem 3rem 2.25rem;
-	background: var(--pico-card-background-color);
-	border: 1px solid var(--pico-border-color);
-	border-radius: 18px;
-	box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
-}
-
+/* responsive hero and CTA size for mobile */
 @media (max-width: 640px) {
-	.problem-promise {
-		padding: 2rem 1rem;
+	.hero {
+		padding: 3.5rem 1.5rem;
 	}
-	.problem-promise-card {
-		padding: 2rem 1.5rem 1.5rem;
+
+	.btn-primary-large {
+		font-size: 1rem;
+		padding: 0.75rem 2rem;
+		width: 100%;
+		max-width: 320px;
 	}
 }
 
-.problem-promise-divider {
+/**
+  UI ELEMENTS
+**/
+
+/* Avatar / profile image */
+.avatar {
+	width: 160px;
+	height: 160px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 4px solid var(--pico-border-color);
+	background: var(--pico-background-color);
+}
+
+@media (max-width: 600px) {
+	.avatar {
+		width: 140px;
+		height: 140px;
+	}
+}
+
+/* Divider */
+.divider {
 	max-width: 5rem;
 	margin: 1.5rem auto;
 	border: none;
@@ -378,104 +239,16 @@ sl-alert {
 	opacity: 1;
 }
 
-/* PROBLEM BLOCK */
-.problem-block {
-	margin-bottom: 0;
-}
-
-.problem-block--center {
-	text-align: center;
-}
-
-.problem-title {
-	font-size: 1.85rem;
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 0.2rem 0;
-	line-height: 1.3;
-}
-
-.problem-subtitle {
-	font-size: 1.15rem;
-	font-weight: 700;
-	color: var(--pico-muted-color);
-	margin: 0 0 0.35rem 0;
-}
-
-.problem-body {
-	font-size: 1.05rem;
-	line-height: 1.7;
-	color: var(--pico-color);
-	margin: 0;
-	max-width: 38rem;
-	margin-inline: auto;
-}
-
-/* STORY BLOCK */
-.story-block {
-	margin-bottom: 0;
-}
-
-.story-columns {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 1.75rem;
-}
-
-@media (max-width: 700px) {
-	.story-columns {
-		grid-template-columns: 1fr;
-		gap: 2rem;
-	}
-}
-
-.story-col {
-	display: flex;
-	flex-direction: column;
-	padding: 1.5rem;
-	border-radius: 14px;
-	border: 1px solid rgba(76, 156, 211, 0.15);
-	background-image: linear-gradient(180deg, rgba(216, 230, 249, 0.25), rgba(255, 255, 255, 0.95));
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-}
-
-.story-title {
-	font-size: 1.4rem;
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 0.3rem 0;
-	line-height: 1.3;
-}
-
-.story-subtitle {
-	font-size: 1.05rem;
-	font-weight: 700;
-	color: var(--pico-muted-color);
-	margin: 0 0 0.6rem 0;
-}
-
-.story-body {
-	font-size: 1.02rem;
-	line-height: 1.65;
-	color: var(--pico-color);
-	margin: 0 0 0.9rem 0;
-	flex-grow: 1;
-}
-
-/* Story video card */
-.story-video-card {
-	margin-top: auto;
-}
-
-.story-thumb-link {
+/* Video thumbnail */
+.video-thumb {
 	display: block;
 	position: relative;
 	border-radius: 8px;
 	overflow: hidden;
-	box-shadow: 0 12px 28px rgba(76, 156, 211, 0.18);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.story-thumb {
+.video-thumb img {
 	display: block;
 	width: 100%;
 	height: auto;
@@ -484,11 +257,11 @@ sl-alert {
 	transition: transform 0.2s ease;
 }
 
-.story-thumb-link:hover .story-thumb {
+.video-thumb:hover img {
 	transform: scale(1.02);
 }
 
-.story-play-badge {
+.video-thumb .badge {
 	position: absolute;
 	bottom: 0.6rem;
 	left: 0.6rem;
@@ -500,466 +273,179 @@ sl-alert {
 	border-radius: 4px;
 }
 
-/* PROMISE BLOCK */
-.promise-block {
-	text-align: center;
-}
+/* ──────────────────────────────────────────────
+   FORM ELEMENTS
+────────────────────────────────────────────── */
 
-.promise-title {
-	font-size: 1.85rem;
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 0.4rem 0;
-	line-height: 1.3;
-}
 
-.promise-subtitle {
-	font-size: 1.15rem;
-	font-weight: 700;
-	color: var(--pico-muted-color);
-	margin: 0 0 0.75rem 0;
-}
-
-.promise-body {
-	font-size: 1.05rem;
-	line-height: 1.7;
-	color: var(--pico-color);
-	margin: 0 0 0.75rem 0;
-}
-
-.promise-list {
-	display: inline-block;
-	text-align: left;
-	margin: 0;
-	padding-left: 1.5rem;
-	font-size: 1.05rem;
-	line-height: 1.7;
-	color: var(--pico-color);
-}
-
-.promise-list li {
-	margin-bottom: 0.35rem;
-}
-
-.promise-list li:last-child {
-	margin-bottom: 0;
-}
-
-.problem-promise-body em {
-	font-style: italic;
+ 
+/* Error states */
+input:invalid,
+textarea:invalid {
+	border-color: var(--pico-form-element-invalid-border-color);
 }
 
 /* ──────────────────────────────────────────────
-   JOURNEY SECTION (3-Phase Layout)
+   ALERTS / TOAST NOTIFICATIONS
 ────────────────────────────────────────────── */
-.journey-section {
-	padding: 4rem 1rem;
-}
-
-.journey-header {
-	text-align: center;
-	margin-bottom: 3rem;
-}
-
-.journey-title {
-	font-size: clamp(1.6rem, 4vw, 2rem);
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 0.75rem 0;
-	position: relative;
-}
-
-.journey-title::after {
-	content: "";
-	display: block;
-	width: 70px;
-	height: 3px;
-	border-radius: 999px;
-	background: var(--accent-blue-soft);
-	margin: 0.9rem auto 0;
-}
-
-.journey-intro {
-	font-size: clamp(1rem, 2vw, 1.15rem);
-	color: var(--pico-muted-color);
-	max-width: 36rem;
-	margin-inline: auto;
-	line-height: 1.6;
-}
-
-/* Vertical stack layout for all screen sizes */
-.journey-phases {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	max-width: 40rem;
-	margin-inline: auto;
-}
-
-/* Individual phase column */
-.phase-column {
-	background: var(--pico-card-background-color);
-	border: 1px solid var(--pico-border-color);
-	border-radius: 12px;
-	padding: 2rem 1.75rem 2.25rem;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-	display: flex;
-	flex-direction: column;
-	border-top: 3px solid var(--accent-blue-soft);
-	background-image: linear-gradient(180deg, rgba(216, 230, 249, 0.35), rgba(216, 230, 249, 0));
-	background-blend-mode: lighten;
-}
-
-/* Featured column (During) */
-.phase-column--featured {
-	border-top: 3px solid var(--brand);
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-}
-
-/* Phase label (small, uppercase, muted) */
-.phase-label {
-	display: block;
-	font-size: 0.85rem;
-	font-weight: 600;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--pico-muted-color);
-	margin-bottom: 0.5rem;
-}
-
-/* Phase title */
-.phase-title {
-	font-size: clamp(1.35rem, 3vw, 1.65rem);
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 1.25rem 0;
-	line-height: 1.3;
-}
-
-/* Container for phase items */
-.phase-items {
-	display: flex;
-	flex-direction: column;
-	gap: 1.25rem;
-}
-
-/* Individual item within a phase */
-.phase-item {
-	padding: 1.25rem 1.5rem;
-	margin: 0;
-	border: 1px solid var(--pico-border-color);
-	border-radius: 8px;
-	background: #fbfdff;
-	box-shadow: none;
-	border-left: 4px solid var(--accent-green-soft);
-}
-
-.phase-item-title {
-	font-size: 1.05rem;
-	font-weight: 600;
-	color: var(--pico-color);
-	margin: 0 0 0.4rem 0;
-	line-height: 1.4;
-}
-
-.phase-item-body {
-	font-size: 0.97rem;
-	color: var(--pico-muted-color);
-	line-height: 1.6;
-	margin: 0;
-}
-
-/* List inside phase items (e.g., weekly goals) */
-.phase-item-list {
-	margin: 0.75rem 0 0 0;
-	padding-left: 1.25rem;
-	font-size: 0.95rem;
-	color: var(--pico-muted-color);
-	line-height: 1.55;
-}
-
-.phase-item-list li {
-	margin-bottom: 0.5rem;
-}
-
-.phase-item-list li:last-child {
-	margin-bottom: 0;
-}
-
-.phase-item-list strong {
-	color: var(--pico-color);
-	font-weight: 600;
-}
-
-/* ──────────────────────────────────────────────
-   ABOUT SECTION
-────────────────────────────────────────────── */
-.about-section {
-	padding: 3rem 1rem;
-}
-
-.about-card {
-	max-width: 64rem;
-	margin-inline: auto;
-	padding: 3rem 2.5rem;
-	background: var(--pico-card-background-color);
-	border: 1px solid var(--pico-border-color);
-	border-radius: 12px;
-	box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
-	border-top: 4px solid var(--accent-blue-soft);
-}
-
-/* Header */
-.about-header {
-	text-align: center;
-	margin-bottom: 2rem;
-}
-
-.about-heading {
-	font-size: 1.6rem;
-	font-weight: 700;
-	color: var(--pico-color);
-	margin: 0 0 0.5rem 0;
-	line-height: 1.3;
-	position: relative;
-}
-
-.about-heading::after {
-	content: "";
-	display: block;
-	width: 60px;
-	height: 3px;
-	border-radius: 999px;
-	background: var(--accent-green-soft);
-	margin: 0.8rem auto 0;
-}
-
-.about-subheading {
-	font-size: 1rem;
-	color: var(--pico-muted-color);
-	margin: 0;
-	font-style: italic;
-}
-
-/* Image */
-.about-image {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	margin-bottom: 2.5rem;
-}
-
-.about-image img {
-	width: 160px;
-	height: 160px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 4px solid var(--pico-border-color);
-	background: var(--pico-background-color);
-}
-
-.about-caption {
-	margin: 0.75rem 0 0 0;
-	font-size: 0.85rem;
-	color: var(--pico-muted-color);
-	line-height: 1.4;
-}
-
-/* Q&A format */
-.about-qa {
+.toast-container {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 10000;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	max-width: 400px;
+	min-width: 300px;
 }
 
-.qa-card {
-	background: #fbfdff;
-	border: 1px solid var(--pico-border-color);
-	border-radius: 12px;
-	padding: 1.5rem;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-	border-left: 4px solid var(--accent-blue-soft);
-}
-
-.qa-question {
-	font-size: 0.95rem;
-	font-weight: 650;
-	color: var(--brand);
-	margin: 0 0 0.35rem 0;
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
-}
-
-.qa-answer {
-	font-size: 1.02rem;
-	line-height: 1.75;
-	color: var(--pico-color);
-	margin: 0;
-}
-
-.qa-answer strong {
-	font-weight: 600;
-}
-
-@media (max-width: 600px) {
-	.about-card {
-		padding: 2rem 1.5rem;
-	}
-	
-	.about-heading {
-		font-size: 1.4rem;
-	}
-	
-	.about-image img {
-		width: 140px;
-		height: 140px;
-	}
-}
-
-/* ──────────────────────────────────────────────
-   WATCH MY STORY SECTION
-────────────────────────────────────────────── */
-.story-section {
-	padding: 4rem 1rem;
-}
-
-.story-section .story-header {
-	text-align: center;
-	margin-bottom: 2rem;
-}
-
-.story-section .story-header h2 {
-	font-size: clamp(1.4rem, 4vw, 1.75rem);
-	font-weight: 700;
-	margin: 0 0 0.5rem 0;
-	color: var(--pico-color);
-	position: relative;
-}
-
-.story-section .story-header h2::after {
-	content: "";
-	display: block;
-	width: 60px;
-	height: 3px;
-	border-radius: 999px;
-	background: var(--accent-blue-soft);
-	margin: 0.8rem auto 0;
-}
-
-.story-section .story-header .muted {
-	font-size: 1rem;
-	color: var(--pico-muted-color);
-	max-width: 36rem;
-	margin-inline: auto;
-	line-height: 1.6;
-}
-
-.story-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 1.5rem;
-	max-width: 48rem;
-	margin-inline: auto;
-}
-
-.story-card {
-	background: var(--pico-card-background-color);
-	border-radius: var(--radius);
-	padding: 1.5rem;
-	border: 1px solid var(--pico-border-color);
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+.alert {
 	display: flex;
-	flex-direction: column;
-}
-
-.story-card h3 {
-	margin: 0 0 0.5rem 0;
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: var(--pico-color);
-	line-height: 1.3;
-}
-
-.story-card > .muted {
-	font-size: 0.95rem;
-	color: var(--pico-muted-color);
-	margin: 0 0 1rem 0;
-	line-height: 1.55;
-}
-
-.story-thumbnail {
-	position: relative;
+	align-items: flex-start;
+	gap: 0.75rem;
+	padding: 1rem 1.25rem;
 	border-radius: 8px;
-	overflow: hidden;
-	aspect-ratio: 16 / 9;
-	background: var(--pico-border-color);
+	border: 1px solid var(--pico-border-color);
+	background: var(--pico-card-background-color);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	animation: slideIn 0.3s ease-out;
 }
 
-.story-thumbnail a {
-	display: block;
-	width: 100%;
-	height: 100%;
+.alert--success {
+	border-left: 4px solid var(--accent-green);
+	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-green) 10%, transparent) 0%, var(--pico-card-background-color) 30%);
 }
 
-.story-thumbnail img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	display: block;
-	transition: transform 0.2s ease;
+.alert--danger {
+	border-left: 4px solid var(--accent-red);
+	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-red) 8%, transparent) 0%, var(--pico-card-background-color) 30%);
 }
 
-.story-thumbnail:hover img {
-	transform: scale(1.03);
+.alert--warning {
+	border-left: 4px solid var(--accent-amber);
+	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-amber) 10%, transparent) 0%, var(--pico-card-background-color) 30%);
 }
 
-.story-play-badge {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	padding: 0.5rem 1rem;
-	border-radius: 999px;
-	background: rgba(0, 0, 0, 0.75);
-	color: #fff;
-	font-size: 0.85rem;
-	font-weight: 500;
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity 0.2s ease;
+.alert--info {
+	border-left: 4px solid var(--brand);
+	background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 8%, transparent) 0%, var(--pico-card-background-color) 30%);
 }
 
-.story-thumbnail:hover .story-play-badge {
+.alert__icon {
+	flex-shrink: 0;
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+.alert--success .alert__icon { color: var(--accent-green); }
+.alert--danger .alert__icon { color: var(--accent-red); }
+.alert--warning .alert__icon { color: var(--accent-amber); }
+.alert--info .alert__icon { color: var(--brand); }
+
+.alert__message {
+	flex: 1;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	color: var(--pico-color);
+}
+
+.alert__close {
+	flex-shrink: 0;
+	background: none;
+	border: none;
+	padding: 0.25rem;
+	cursor: pointer;
+	color: var(--pico-muted-color);
+	font-size: 1.25rem;
+	line-height: 1;
+	opacity: 0.6;
+	transition: opacity 0.15s;
+}
+
+.alert__close:hover {
 	opacity: 1;
 }
 
-.story-link {
-	margin: 0.75rem 0 0 0;
-	font-size: 0.85rem;
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
+/* ──────────────────────────────────────────────
+   ACCORDION (Native details/summary)
+────────────────────────────────────────────── */
+details {
+	border: 1px solid var(--pico-border-color);
+	border-radius: 8px;
+	background: var(--pico-card-background-color);
+	margin-bottom: 0.5rem;
+}
+
+details summary {
+	padding: 1rem 1.25rem;
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+details summary::-webkit-details-marker {
+	display: none;
+}
+
+details summary::after {
+	content: "+";
+	background-image: none;
+	font-size: 1.25rem;
+	font-weight: 400;
+	color: var(--pico-muted-color);
+	transition: transform 0.2s ease;
+}
+
+details[open] summary::after {
+	content: "−";
+}
+
+details > :not(summary) {
+	padding: 0 1.25rem 1rem;
+}
+
+details p {
+	margin: 0 0 0.75rem;
+}
+
+details p:last-child {
+	margin-bottom: 0;
+}
+
+/* --------───────────────────────────────────── REMOVE BELOW THIS ────────────────────────────────────────────── */
+
+.content-centered {
+	/* margin-inline: auto; */
 	text-align: center;
 }
 
-.story-link a {
-	color: var(--brand);
-	text-decoration: none;
+.content-centered .card {
+	margin-inline: auto;
 }
 
-.story-link a:hover {
-	text-decoration: underline;
-}
-
-/* A reusable class for link-styled buttons */
-.btn-link {
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-  color: var(--pico-primary);
-  text-decoration: underline;
-  font-size: inherit;
-  cursor: pointer;
-}
+/* ──────────────────────────────────────────────
+   BUTTON GROUP UTIL
+────────────────────────────────────────────── */
 
 
 .survey-info-text p {
@@ -976,6 +462,354 @@ sl-alert {
 	background: #fbfdff;
 	box-shadow: none;
 	border-left: 4px solid var(--accent-green-soft);
-  margin-bottom: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+/* ──────────────────────────────────────────────
+   LAYOUT UTILITIES
+  ────────────────────────────────────────────── */
+
+/* Flex grow (pushes content to bottom) */
+.flex-col { display: flex; flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+
+
+/* Card Layout Helpers */
+.card__stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--card-stack-gap);
+}
+
+
+/* ──────────────────────────────────────────────
+   CARD COMPONENT SYSTEM
+
+	The card system has a few conceptual ideas about how it is expected to be used. 
+	
+	.card is the base component. It is a simple container with padding, border, and border-radius.
+
+	A card is usually meant to group a section of related content together. 
+
+	A card may have several sizes. The sizes determine layout, padding, margins, and fonts.
+	- .card--small is for small cards that contain a single piece of information, and not any headers.
+	- .card--medium is for most cards that contain a moderate amount of information, and may still have headers/overlines. It may not have other cards
+	- .card--large is for larger cards that contain a lot of information and potentially any other cards.
+	- .card--xl is for extra large cards that span the full width of the container. Headers are centered.
+
+	Cards can have a few themes:
+	The default theme styles the card as a simple container.
+	- .card--info to use a text callout. Theese call out text even more, and group a smaller section of text. It is styled with a blue background.
+//	- .card--success to use to call out positive information. It is styled with a green background.
+//	- .card--warning to use to call out important information. It is styled with a yellow background.
+//	- .card--error to use to call out negative information. It is styled with a red background.
+
+	We use <hgroup> tags to specify a header. Any header class within the hgroup will be styled according to the card type (section, info, etc.)
+	A hgroup may have a <p> tag before the header, indicating that is is an eyebrow. Any header class within the hgroup will be styled as a header. A hgroup may also have a <p> after a header, indicating that it is a subtitle.
+
+	A card may have a list in it. If the list is the only child of the card, it will be styled as a flush list. 
+	In a flush list, 
+────────────────────────────────────────────── */
+
+/*
+	Base card component with CSS custom properties for sizing
+	Variables cascade naturally, so nested cards override outer card values
+*/
+.card {
+	/* Size variables - defaults (base/medium). Customized in .card--small, .card--medium, .card--large, and .card--xl */
+	--card-h2-size: 1.25rem;
+	--card-h2-weight: 700;
+	--card-h2-margin: 0.5rem;
+	--card-h3-size: 1.1rem;
+	--card-h3-weight: 700;
+	--card-h3-margin: 0.4rem;
+	--card-h4-size: 1rem;
+	--card-h4-weight: 700;
+	--card-h4-margin: 0.3rem;
+	--card-p-size: 1rem;
+	--card-p-line-height: 1.6;
+	--card-overline-size: 0.8rem;
+	--card-overline-margin: 0.4rem;
+	--card-stack-gap: 1.25rem;
+	--card-hgroup-margin: 0.75rem;
+	--card-hgroup-eyebrow-size: 0.75rem;
+	--card-hgroup-eyebrow-margin: 0.3rem;
+	--card-hgroup-p-size: 0.9rem;
+	--card-hgroup-p-margin: 0.25rem;
+	--card-hgroup-p-weight: 400;
+
+	/* Color variables - defaults (base). Customized in .card--info, .card--success, .card--warning, .card--error */
+	--card-foreground-color: var(--pico-color);
+	--card-background-color: var(--pico-card-background-color);
+	--card-border-color: var(--pico-border-color);
+
+	padding: 1.5rem;
+	border: 1px solid var(--card-border-color);
+	border-radius: var(--radius);
+	box-shadow: none;
+	background: var(--card-background-color);
+	color: var(--card-foreground-color);
+}
+
+/* assume that articles in cards are nested cards */
+.card article {
+	margin-bottom: 0;
+}
+
+.card :last-child {
+	margin-bottom: 0;
+}
+
+/* Apply size variables to elements */
+.card.card {
+	font-size: var(--card-p-size);
+	line-height: var(--card-p-line-height);
+}
+.card.card h2 { font-size: var(--card-h2-size); margin-bottom: var(--card-h2-margin); font-weight: var(--card-h2-weight); }
+.card.card h3 { font-size: var(--card-h3-size); margin-bottom: var(--card-h3-margin); font-weight: var(--card-h3-weight); }
+.card.card h4 { font-size: var(--card-h4-size); margin-bottom: var(--card-h4-margin); font-weight: var(--card-h4-weight); }
+
+/* Apply theme-specific foreground color */
+.card :is(address, blockquote, dl, ol, p, pre, table, ul) {
+	color: var(--card-foreground-color);
+}
+
+/** 
+	Card Modifiers - Colors (override variables)
+**/
+.card--info {
+	--card-foreground-color: var(--pico-muted-color);
+	--card-background-color: color-mix(in srgb, var(--pico-primary) 3%, var(--pico-card-background-color));
+	--card-border-color: color-mix(in srgb, var(--pico-primary) 25%, var(--pico-border-color));
+}
+
+/* Card Modifiers - Accent borders */
+.card--accent-left-blue {
+	--card-border-color: var(--accent-blue-soft);
+	border-left: 4px solid var(--card-border-color);
+}
+
+.card--accent-left-green {
+	--card-border-color: var(--accent-green-soft);
+	border-left: 4px solid var(--card-border-color);
+}
+
+.card--accent-top-blue {
+	--card-border-color: var(--accent-blue-soft);
+	border-top: 4px solid var(--card-border-color);
+}
+
+/** 
+	Card Modifiers - Sizes (override variables)
+**/
+.card--small { padding: 0.75rem; }
+
+.card--medium {
+	--card-h2-size: 1.25rem;
+	--card-h2-weight: 700;
+	--card-h2-margin: 0.5rem;
+	--card-h3-size: 1.4rem;
+	--card-h3-weight: 700;
+	--card-h3-margin: 0.4rem;
+	--card-h4-size: 1rem;
+	--card-h4-weight: 700;
+	--card-h4-margin: 0.8rem;
+	--card-p-size: 1rem;
+	--card-p-line-height: 1.6;
+	--card-overline-size: 0.8rem;
+	--card-overline-margin: 0.4rem;
+	--card-stack-gap: 1.25rem;
+	--card-hgroup-margin: 0.75rem;
+	--card-hgroup-eyebrow-size: 0.75rem;
+	--card-hgroup-eyebrow-margin: 0.3rem;
+	--card-hgroup-p-size: 1.05rem;
+	--card-hgroup-p-margin: 0.25rem;
+	--card-hgroup-p-weight: 700;
+
+	padding: 1.25rem 1.5rem;
+}
+
+.card--large {
+	--card-h2-size: 1.5rem;
+	--card-h2-weight: 700;
+	--card-h2-margin: 0.75rem;
+	--card-h3-size: 1.65rem;
+	--card-h3-weight: 700;
+	--card-h3-margin: 0.6rem;
+	--card-h4-weight: 700;
+	--card-h4-size: 1.1rem;
+	--card-h4-margin: 0.5rem;
+	--card-p-size: 1rem;
+	--card-p-line-height: 1.65;
+	--card-overline-size: 0.85rem;
+	--card-overline-margin: 0.5rem;
+	--card-stack-gap: 1.5rem;
+	--card-hgroup-margin: 1.25rem;
+	--card-hgroup-eyebrow-size: 0.8rem;
+	--card-hgroup-eyebrow-margin: 0.4rem;
+	--card-hgroup-p-size: 0.95rem;
+	--card-hgroup-p-margin: 0.35rem;
+
+	padding: 1.75rem 2rem;
+	max-width: 40rem;
+}
+
+.card--xl {
+	--card-h2-size: 1.85rem;
+	--card-h2-weight: 700;
+	--card-h2-margin: 1rem;
+	--card-h3-size: 1.4rem;
+	--card-h3-weight: 700;
+	--card-h3-margin: 0.75rem;
+	--card-h4-size: 1.2rem;
+	--card-h4-weight: 700;
+	--card-h4-margin: 0.6rem;
+	--card-p-size: 1.05rem;
+	--card-p-line-height: 1.7;
+	--card-overline-size: 0.9rem;
+	--card-overline-margin: 0.6rem;
+	--card-stack-gap: 1.75rem;
+	--card-hgroup-margin: 1.5rem;
+	--card-hgroup-eyebrow-size: 0.85rem;
+	--card-hgroup-eyebrow-margin: 0.5rem;
+	--card-hgroup-p-size: 1.15rem;
+	--card-hgroup-p-margin: 0.5rem;
+	--card-hgroup-p-weight: 700;
+
+	padding: 2.5rem 3rem;
+}
+
+/* fix sizing of card-xl on mobile */
+@media (max-width: 640px) {
+	.card--xl {
+		--card-h2-size: 1.5rem;
+		--card-h3-size: 1.25rem;
+		padding: 2rem 1.5rem;
+	}
+}
+
+/* Card--xl layout: centered content (but have a max content width, not applied to dividers or cards) */
+.card.card--xl {
+	text-align: center;
+}
+
+.card.card--xl>* {
+	margin-inline: auto;
+}
+
+/* Card--xl layout: centered content (but have a max content width, not applied to dividers or cards) */
+@media (min-width: 640px) {
+	.card--xl > :not(.card):not(.divider):not(:has(.card)) {
+		max-width: 44rem;
+	}
+}
+
+/* fix list display in card--xl */
+.card--xl ul, .card--xl ol {
+	display: inline-block;
+	text-align: left;
+	padding-left: 1.5rem;
+	margin: 0;
+}
+
+/* Nested smaller cards reset to left-aligned */
+.card--large, .card--medium, .card--small {
+	text-align: left;
+}
+
+/**
+ 	Card hgroup - header groups with optional overline and subtitle 
+ **/
+.card.card hgroup {
+	margin-bottom: var(--card-hgroup-margin);
+}
+
+.card.card hgroup > * {
+	margin-bottom: 0;
+}
+
+/* small within hgroup acts as overline */
+.card.card hgroup p:first-child {
+	display: block;
+	font-size: var(--card-hgroup-eyebrow-size);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--pico-muted-color);
+	margin-bottom: var(--card-hgroup-eyebrow-margin);
+}
+
+/* p within hgroup acts as subtitle */
+.card.card hgroup p {
+	font-size: var(--card-hgroup-p-size);
+	font-weight: var(--card-hgroup-p-weight);
+	color: var(--pico-muted-color);
+	margin-top: var(--card-hgroup-p-margin);
+}
+
+
+/* pico will color the final child in an hgroup. We want to disable that when using an overline, but there is no subtitle  */
+/* pico matches this selector:hgroup>:not(:first-child):last-child  */
+hgroup > p + h2:not(:first-child):last-child {
+    --pico-color: var(--pico-h2-color);
+}
+hgroup > p + h3:not(:first-child):last-child {
+    --pico-color: var(--pico-h3-color);
+}
+hgroup > p + h4:not(:first-child):last-child {
+    --pico-color: var(--pico-h4-color);
+}
+
+/* in cards: figures with captions should bottom-align and add a quote */
+figure.card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	margin: 0;
+
+	& figcaption::before {
+		content: "— ";
+	}
+
+	& figcaption {
+		margin-top: auto;
+	}
+}
+
+/* Lists in Cards */
+/* When a ul is the only child of a card, make it flush */
+.card > ul:only-child {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.card > ul:only-child li {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--pico-border-color);
+}
+
+.card > ul:only-child li:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.card > ul:only-child li:first-child {
+	padding-top: 0;
+}
+
+.card > ul:only-child li {
+	font-weight: 500;
+}
+
+.list__meta  {
+	font-size: 0.85rem;
+	color: var(--pico-muted-color);
+	font-weight: var(--pico-font-weight);
+	text-align: right;
 }
 
