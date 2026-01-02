@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import Survey, Question, SurveySubmission, Answer, SurveySection
 from cohorts.models import UserSurveyResponse
 from cohorts.tasks import find_due_date
@@ -37,10 +38,18 @@ class SurveyAdmin(admin.ModelAdmin):
     """
     Admin view for Surveys, with inline Questions.
     """
-    list_display = ('name', 'slug', 'created_at')
+    list_display = ('name', 'slug', 'created_at', 'preview_link')
     search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [SurveySectionInline, QuestionInline]
+    readonly_fields = ('preview_link', 'created_at')
+    fields = ('name', 'slug', 'description', 'title_template', 'estimated_time_minutes', 'preview_link', 'created_at')
+
+    def preview_link(self, obj):
+        if obj:
+            return format_html('<a href="/surveys/{}/" target="_blank">Preview</a>', obj.slug)
+        return "-"
+    preview_link.short_description = "Preview"
 
 class UserSurveyResponseInline(admin.StackedInline):
     """Allows for inline editing of the UserSurveyResponse."""

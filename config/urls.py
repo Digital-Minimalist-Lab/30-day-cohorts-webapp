@@ -19,6 +19,7 @@ else:
     from payments import urls as payments_urls
     from cohorts import urls as cohorts_urls
     from accounts import api_urls as accounts_api_urls
+    from surveys import urls as surveys_urls
 
     urlpatterns = [
         path('health/', include(health_check_urls)),
@@ -27,6 +28,7 @@ else:
         path('accounts/', include(accounts_urls)),
         path('accounts/', include(allauth_urls)),
         path('payments/', include(payments_urls)),
+        path('surveys/', include(surveys_urls)),
         path('', include(cohorts_urls)),
         path('', include(core_urls)),
     ]
