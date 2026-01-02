@@ -273,13 +273,7 @@ section:last-child {
 	border-radius: 4px;
 }
 
-/* ──────────────────────────────────────────────
-   FORM ELEMENTS
-────────────────────────────────────────────── */
-
-
- 
-/* Error states */
+/* when we have invalid form fields, we want a color for them. Pico CSS only looks at aria-invalid, but we want to style based on the :invalid pseudo-class. */
 input:invalid,
 textarea:invalid {
 	border-color: var(--pico-form-element-invalid-border-color);
@@ -432,7 +426,10 @@ details p:last-child {
 	margin-bottom: 0;
 }
 
-/* --------───────────────────────────────────── REMOVE BELOW THIS ────────────────────────────────────────────── */
+
+/* ──────────────────────────────────────────────
+   LAYOUT UTILITIES
+  ────────────────────────────────────────────── */
 
 .content-centered {
 	/* margin-inline: auto; */
@@ -442,32 +439,6 @@ details p:last-child {
 .content-centered .card {
 	margin-inline: auto;
 }
-
-/* ──────────────────────────────────────────────
-   BUTTON GROUP UTIL
-────────────────────────────────────────────── */
-
-
-.survey-info-text p {
-  margin: 0;
-  color: var(--pico-color);
-  line-height: 1.6;
-}
-
-.survey-info-text {
-	padding: 1.25rem 1.5rem;
-	margin: 0;
-	border: 1px solid var(--pico-border-color);
-	border-radius: 8px;
-	background: #fbfdff;
-	box-shadow: none;
-	border-left: 4px solid var(--accent-green-soft);
-	margin-bottom: 1.5rem;
-}
-
-/* ──────────────────────────────────────────────
-   LAYOUT UTILITIES
-  ────────────────────────────────────────────── */
 
 /* Flex grow (pushes content to bottom) */
 .flex-col { display: flex; flex-direction: column; }
