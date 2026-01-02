@@ -19,13 +19,13 @@
     <h2>Today's Tasks</h2>
 
     {% if tasks %}
-    <div class="card__stack">
+    <div>
         {% for task in tasks %}
         <article class="card card--medium">
             <hgroup>
                 <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
-                {% if task.estimated_time_minutes %}<small>~{{ task.estimated_time_minutes }} min</small>{% endif %}
             </hgroup>
+            {% if task.estimated_time_minutes %}<small>~{{ task.estimated_time_minutes }} min</small>{% endif %}
             <p>{{ task.description|safe }}</p>
         </article>
         {% endfor %}

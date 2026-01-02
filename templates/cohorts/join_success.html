@@ -3,85 +3,87 @@
 {% block title %}You're In! - Intentional Tech{% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin-inline: auto; text-align: center;">
-    <!-- Success Header -->
-    <div style="margin-bottom: 3rem;">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
-        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">You're In!</h1>
-        <p style="font-size: 1.2rem; color: var(--pico-muted-color);">
-            Let's reclaim your attention.
-        </p>
-    </div>
+<div class="content-centered">
+    
+    <hgroup>
+        <h1>🎉 You're In!</h1>
+        <p>Let's reclaim your attention.</p>
+    </hgroup>
 
-    <!-- What Happens Next -->
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: left;">
-        <h2 style="font-size: 1.3rem; margin-bottom: 1.5rem;">What Happens Next</h2>
+    <div class="card__stack">
         
-        <div style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="font-size: 1.5rem; min-width: 2rem;">📊</div>
-            <div>
-                <p style="margin: 0; font-weight: 600;">Access Your Dashboard</p>
-                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
-                    Start your first tasks at the Declutter Dashboard!
-                </p>
-            </div>
-        </div>
-        
-        <div style="display: flex; align-items: start; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="font-size: 1.5rem; min-width: 2rem;">📧</div>
-            <div style="flex-grow: 1;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <p style="margin: 0; font-weight: 600;">Optional: Turn on Email Reminders</p>
-                    <input type="checkbox" 
-                           role="switch" 
-                           id="email-reminder-toggle" 
-                           {% if user.profile.email_daily_reminder %}checked{% endif %}
-                           hx-post="{% url 'accounts_api:toggle_email_reminders' %}"
-                           hx-trigger="change"
-                           hx-swap="none"
-                           hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                           hx-vals='js:{"daily_reminders": event.target.checked}'
-                           hx-on:htmx:response-error="this.checked = !this.checked; showToast('Failed to update preference.', 'error')"
-                           hx-on:htmx:send-error="this.checked = !this.checked; showToast('Network error. Please check your connection.', 'error')">
+        <!-- Next Steps -->
+        <section class="card card--large">
+            <h2>What Happens Next</h2>
+            
+            <ul>
+
+            <li>
+                <div>
+                    <h4>📊 Access Your Dashboard</h4>
+                    <p>Start your first tasks at the Declutter Dashboard!</p>
                 </div>
-                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
-                    Get gentle nudges for daily check-ins.  
-                </p>
-            </div>
+            </li>
+            
+            <li>
+                <div style="width: 100%;">
+                    <div for="email-reminder-toggle" style=" display: flex; justify-content: space-between; align-items: center;">
+                        <strong>📧 Optional: Turn on Email Reminders</strong>
+
+                        <span class="list__meta">
+                        <input type="checkbox" 
+                                role="switch" 
+                                id="email-reminder-toggle" 
+                                {% if user.profile.email_daily_reminder %}checked{% endif %}
+                                hx-post="{% url 'accounts_api:toggle_email_reminders' %}"
+                                hx-trigger="change"
+                                hx-swap="none"
+                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                hx-vals='js:{"daily_reminders": event.target.checked}'
+                                hx-on:htmx:response-error="this.checked = !this.checked; showToast('Failed to update preference.', 'error')"
+                                hx-on:htmx:send-error="this.checked = !this.checked; showToast('Network error. Please check your connection.', 'error')">
+                    </span>
+
+                    </div>
+                    <p>Get gentle nudges for daily check-ins.</p>
+                </div>
+            </li>
+            
+            <li>
+                <div>
+                    <h4>🚀 Daily Check-ins start on {{ cohort.start_date|date:"F j, Y" }}</h4>
+                    <p>You can start exploring the dashboard now.</p>
+                </div>
+            </li>
+
+            </ul>
+        </section>
+
+        <!-- Cohort Info -->
+        <section class="card card--info card--large">
+            <hgroup>
+                <h3>Your Cohort</h3>
+                <p>{{ cohort.name }}</p>
+            </hgroup>
+            <p>
+                Starts <strong>{{ cohort.start_date|date:"F j, Y" }}</strong> • 
+                Ends {{ cohort.end_date|date:"F j, Y" }}
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <div>
+            <a href="{% url 'cohorts:dashboard' %}" role="button">Go to Your Dashboard</a>
         </div>
-        
-        <div style="display: flex; align-items: start; gap: 1rem;">
-            <div style="font-size: 1.5rem; min-width: 2rem;">🚀</div>
-            <div>
-                <p style="margin: 0; font-weight: 600;">Daily Check-ins start on {{ cohort.start_date|date:"F j, Y" }}</p>
-                <p style="margin: 0.25rem 0 0 0; color: var(--pico-muted-color); font-size: 0.95rem;">
-                    You can start exploring the dashboard now.
-                </p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Cohort Info Card -->
-    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: left;">
-        <h2 style="font-size: 1.3rem; margin-bottom: 1rem;">Your Cohort</h2>
-        <p><strong>{{ cohort.name }}</strong></p>
-        <p style="color: var(--pico-muted-color); margin: 0;">
-            Starts <strong>{{ cohort.start_date|date:"F j, Y" }}</strong> • 
-            Ends {{ cohort.end_date|date:"F j, Y" }}
+        <!-- Footer -->
+        <p>
+            <small>
+                <strong>Need help?</strong> Check out the 
+                <a href="{% url 'core:protocol' %}">Protocol</a> page for guidance on how to make the most of your 30 days.
+            </small>
         </p>
-    </div>
 
-    <!-- CTA Button -->
-    <a href="{% url 'cohorts:dashboard' %}" role="button" style="display: inline-block; min-width: 250px; margin-bottom: 1rem;">
-        Go to Your Dashboard
-    </a>
-
-    <!-- Additional Info -->
-    <div style="margin-top: 3rem; padding: 1.5rem; background: var(--pico-card-background-color); border-radius: var(--radius);">
-        <p style="color: var(--pico-muted-color); font-size: 0.95rem; margin: 0;">
-            <strong>Need help?</strong> Check out the 
-            <a href="{% url 'core:protocol' %}">Protocol</a> page for guidance on how to make the most of your 30 days.
-        </p>
     </div>
 </div>
 {% endblock %}

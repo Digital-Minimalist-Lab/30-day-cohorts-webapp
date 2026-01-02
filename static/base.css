@@ -52,7 +52,7 @@
 	--pico-contrast-hover-border: #b91c1c;
 	--pico-contrast-inverse: #ffffff;
 
-	--pico-block-spacing-vertical: 2rem;
+	/* --pico-block-spacing-vertical: 2rem; */
 	/* --pico-typography-spacing-vertical: 2rem; */
 
 	/* Typography */
@@ -122,16 +122,6 @@ nav .brand-link:hover {
 footer {
 	font-size: 0.875rem;
 	text-align: center;
-}
-
-/* tweak spacing between top-level sections containing cards */
-:not(section) > section.card + section,
-:not(section) > section:has(.card:last-child) + section {
-	margin-top: 5rem;
-}
-
-section:last-child {
-	margin-bottom: 0;
 }
 
 /* ──────────────────────────────────────────────
@@ -431,6 +421,16 @@ details p:last-child {
    LAYOUT UTILITIES
   ────────────────────────────────────────────── */
 
+/* Spacing in the dashboard */
+.spaced-out > * + * {
+	margin-bottom: 5rem;
+	--pico-block-spacing-vertical: 2rem;
+}
+
+.spaced-out> *:last-child {
+	margin-bottom: 0rem;
+}
+
 .content-centered {
 	/* margin-inline: auto; */
 	text-align: center;
@@ -481,7 +481,9 @@ details p:last-child {
 	A card may have a list in it. If the list is the only child of the card, it will be styled as a flush list. 
 	In a flush list, 
 ────────────────────────────────────────────── */
-
+div {
+	--card-stack-gap: 1.25rem;
+}
 /*
 	Base card component with CSS custom properties for sizing
 	Variables cascade naturally, so nested cards override outer card values
@@ -749,32 +751,34 @@ figure.card {
 
 /* Lists in Cards */
 /* When a ul is the only child of a card, make it flush */
-.card > ul:only-child {
+
+.card > ul:only-child, 
+.card > ol:only-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-.card > ul:only-child li {
+.card > ul:only-child li, 
+.card > ol:only-child li,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li {
 	display: flex;
 	justify-content: space-between;
-	align-items: baseline;
+	align-items: center;
 	gap: 1rem;
 	padding: 0.75rem 0;
 	border-bottom: 1px solid var(--pico-border-color);
 }
 
-.card > ul:only-child li:last-child {
+.card > ul:only-child li:last-child, 
+.card > ol:only-child li:last-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li:last-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li:last-child {
 	border-bottom: none;
 	padding-bottom: 0;
-}
-
-.card > ul:only-child li:first-child {
-	padding-top: 0;
-}
-
-.card > ul:only-child li {
-	font-weight: 500;
 }
 
 .list__meta  {
@@ -783,4 +787,3 @@ figure.card {
 	font-weight: var(--pico-font-weight);
 	text-align: right;
 }
-
