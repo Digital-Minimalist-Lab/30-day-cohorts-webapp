@@ -20,67 +20,60 @@ class DynamicSurveyForm(forms.Form):
         self._field_sections = {}
         self._info_questions = {}  # Store INFO type questions by key
 
-        for question in self.survey.questions.all():
-            field_key = question.key
-            
-            # Skip INFO type - these are display-only, no form field needed
-            if question.question_type == Question.QuestionType.INFO:
-                self._field_sections[field_key] = question.section
-                self._info_questions[field_key] = question
-                continue
-            
-            field_class = self.get_field_class(question.question_type)
-            field_widget = self.get_field_widget(question)
-            
-            field_kwargs = {
-                'label': question.text,
-                'required': question.is_required,
-                'widget': field_widget,
-            }
-            if question.question_type == Question.QuestionType.RADIO:
-                field_kwargs['choices'] = list(question.choices.items()) if question.choices else []
-            
-            self.fields[field_key] = field_class(**field_kwargs)
-            self._field_sections[field_key] = question.section
+        # Query sections, then questions
+        self._sections = list(self.survey.sections.prefetch_related('questions').all())
+
+        for section in self._sections:
+            for question in section.questions.all():
+                field_key = question.key
+                
+                # Skip INFO type - these are display-only, no form field needed
+                if question.question_type == Question.QuestionType.INFO:
+                    self._field_sections[field_key] = section
+                    self._info_questions[field_key] = question
+                    continue
+                
+                field_class = self.get_field_class(question.question_type)
+                field_widget = self.get_field_widget(question)
+                
+                field_kwargs = {
+                    'label': question.text,
+                    'required': question.is_required,
+                    'widget': field_widget,
+                }
+                if question.question_type == Question.QuestionType.RADIO:
+                    field_kwargs['choices'] = list(question.choices.items()) if question.choices else []
+                
+                self.fields[field_key] = field_class(**field_kwargs)
+                self._field_sections[field_key] = section
     
     def get_fields_by_section(self):
         """
         Returns fields grouped by section for template rendering.
-        Returns a list of tuples: [(section_name, [items]), ...]
+        Returns a list of tuples: [(section, [items]), ...]
+        Where 'section' is a SurveySection object or None.
         Items are dicts with either 'field' (bound field) or 'info' (info question).
-        Section name can be empty string for questions without a section.
         """
         sections = []
-        current_section = None
-        current_items = []
         
-        # Process all questions in order (including INFO types)
-        for question in self.survey.questions.all().order_by('order'):
-            section = self._field_sections.get(question.key, "")
+        for section in self._sections:
+            current_items = []
+            for question in section.questions.all():
+                # Add either info question or bound field
+                if question.key in self._info_questions:
+                    current_items.append({
+                        'is_info': True,
+                        'text': question.text,
+                        'key': question.key
+                    })
+                elif question.key in self.fields:
+                    current_items.append({
+                        'is_info': False,
+                        'field': self[question.key]
+                    })
             
-            if section != current_section:
-                # Save the previous section if it has items
-                if current_items:
-                    sections.append((current_section or "", current_items))
-                current_section = section
-                current_items = []
-            
-            # Add either info question or bound field
-            if question.key in self._info_questions:
-                current_items.append({
-                    'is_info': True,
-                    'text': question.text,
-                    'key': question.key
-                })
-            else:
-                current_items.append({
-                    'is_info': False,
-                    'field': self[question.key]
-                })
-        
-        # Don't forget the last section
-        if current_items:
-            sections.append((current_section or "", current_items))
+            if current_items:
+                sections.append((section, current_items))
         
         return sections
 

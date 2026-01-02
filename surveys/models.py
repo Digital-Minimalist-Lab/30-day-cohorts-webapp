@@ -34,14 +34,27 @@ class Survey(models.Model):
         if include_questions:
             data["sections"] = [
                 {
-                    "title": section,
+                    "title": section.title,
+                    "description": section.description,
                     "questions": [
-                        q.to_design_dict() for q in self.questions.filter(section=section).order_by('order')
+                        q.to_design_dict() for q in section.questions.order_by('order')
                     ]
                 }
-                for section in self.questions.values_list('section', flat=True).distinct()
+                for section in self.sections.all()
             ]
         return data
+
+class SurveySection(models.Model):
+    """A section within a survey."""
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='sections')
+    title = models.CharField(max_length=200, help_text="Section header. Questions with the same section are grouped together visually.")
+    description = models.TextField(blank=True, help_text="Optional description for the section.")
+    order = models.PositiveIntegerField(default=0, help_text="The order in which the section appears in the survey.")
+
+    class Meta:
+        ordering = ['survey', 'order']
+        unique_together = ['survey', 'title']
+
 
 class Question(models.Model):
     """A single question within a survey."""
@@ -57,12 +70,7 @@ class Question(models.Model):
     key = models.CharField(max_length=100, help_text="A unique key for this question within the survey. May be used in templates.")
     text = models.CharField(max_length=3000, help_text="The question text presented to the user.")
     question_type = models.CharField(max_length=20, choices=QuestionType.choices, default=QuestionType.TEXT)
-    section = models.CharField(
-        max_length=200, 
-        blank=True, 
-        default="",
-        help_text="Section header. Questions with the same section are grouped together visually."
-    )
+    section = models.ForeignKey(SurveySection, on_delete=models.CASCADE, related_name='questions', null=True, blank=True)
     order = models.PositiveIntegerField(default=0, help_text="The order in which the question appears in the survey.")
     is_required = models.BooleanField(default=True)
     # For radio/select choices, stored as JSON: {"1": "Low", "5": "High"}
@@ -84,8 +92,6 @@ class Question(models.Model):
             "is_required": self.is_required,
         }
         # Only include optional fields if they have values
-        if self.section:
-            data["section"] = self.section
         if self.choices:
             data["choices"] = self.choices
         return data

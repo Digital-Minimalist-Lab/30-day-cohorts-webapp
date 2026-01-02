@@ -4,7 +4,10 @@
         {% for section_name, items in form.get_fields_by_section %}
             {% if section_name %}
             <div class="survey-section">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">{{ section_name }}</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">{{ section_name.title }}</h3>
+                {% if section_name.description %}
+                    <p class="survey-info-text">{{ section_name.description | safe }}</p>
+                {% endif %}
             {% endif %}
             
             {% for item in items %}
