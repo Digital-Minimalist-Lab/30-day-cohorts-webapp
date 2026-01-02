@@ -72,8 +72,7 @@ class DynamicSurveyForm(forms.Form):
                         'field': self[question.key]
                     })
             
-            if current_items:
-                sections.append((section, current_items))
+            sections.append((section, current_items))
         
         return sections
 
