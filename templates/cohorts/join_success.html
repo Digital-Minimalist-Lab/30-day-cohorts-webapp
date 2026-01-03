@@ -10,7 +10,7 @@
         <p>Let's reclaim your attention.</p>
     </hgroup>
 
-    <div class="card__stack">
+    <div>
         
         <!-- Next Steps -->
         <section class="card card--large">
@@ -20,7 +20,7 @@
 
             <li>
                 <div>
-                    <h4>📊 Access Your Dashboard</h4>
+                    <h4>📊 <a href="{% url 'cohorts:dashboard' %}">Access Your Dashboard</a></h4>
                     <p>Start your first tasks at the Declutter Dashboard!</p>
                 </div>
             </li>
@@ -71,18 +71,13 @@
             </p>
         </section>
 
-        <!-- CTA -->
-        <div>
-            <a href="{% url 'cohorts:dashboard' %}" role="button">Go to Your Dashboard</a>
-        </div>
-
         <!-- Footer -->
-        <p>
+        <section>
             <small>
                 <strong>Need help?</strong> Check out the 
                 <a href="{% url 'core:protocol' %}">Protocol</a> page for guidance on how to make the most of your 30 days.
             </small>
-        </p>
+        </section>
 
     </div>
 </div>

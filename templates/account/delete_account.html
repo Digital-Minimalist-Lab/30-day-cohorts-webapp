@@ -7,33 +7,39 @@
     <h1>Delete Account</h1>
 </header>
 
-<article>
-    <p><strong>Warning: This action cannot be undone.</strong></p>
-    <p>
-        Deleting your account will permanently remove all your data including:
-    </p>
-    <ul>
-        <li>All daily check-ins and reflections</li>
-        <li>All weekly reflections</li>
-        <li>Entry and exit surveys</li>
-        <li>Cohort enrollments</li>
-        <li>Profile and settings</li>
-    </ul>
-    <p>
-        <strong>Note:</strong> We believe in data control and privacy. Hard deletion is a feature, not a bug.
-    </p>
-</article>
+<section>
+    <div class="card card--medium card--border-left card--accent-red-soft">
+        <p><strong>Warning: This action cannot be undone.</strong></p>
+        <p>
+            Deleting your account will permanently remove all your data including:
+        </p>
+        <ul>
+            <li>All daily check-ins and reflections</li>
+            <li>All weekly reflections</li>
+            <li>Entry and exit surveys</li>
+            <li>Cohort enrollments</li>
+            <li>Profile and settings</li>
+        </ul>
+        <p>
+            <strong>Note:</strong> We believe in data control and privacy. Hard deletion is a feature, not a bug.
+        </p>
+    </div>
+</section>
 
-<form method="post">
-    {% csrf_token %}
-    
-    <label for="confirm">
-        Type <code>DELETE</code> to confirm:
-        <input type="text" name="confirm" id="confirm" required>
-    </label>
-    
-    <button type="submit" class="contrast">Permanently Delete My Account</button>
-    <a href="{% url 'accounts:profile' %}" role="button" class="secondary">Cancel</a>
-</form>
+<section>
+    <div class="card card--medium">
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="confirm">
+                Type <code>DELETE</code> to confirm:
+                <input type="text" name="confirm" id="confirm" required>
+            </label>
+
+            <button type="submit" class="contrast">Permanently Delete My Account</button>
+            <a href="{% url 'accounts:profile' %}" role="button" class="secondary">Cancel</a>
+        </form>
+    </div>
+</section>
 {% endblock %}
 

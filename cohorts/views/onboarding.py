@@ -14,6 +14,77 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def generate_quick_select_amounts(minimum_price_cents: int) -> list[int]:
+    """
+    Generate quick select payment amounts based on pricing psychology.
+
+    Uses a gentler progression (1.5-2x multipliers) to create reasonable options
+    that feel like meaningful choices without being overwhelming.
+
+    Research basis:
+    - Offer 4 options (optimal for choice without paralysis)
+    - Use ~1.5-2x multipliers (creates clear tiers without huge jumps)
+    - Round to "charm prices" (5, 10, 15, 20, 25, 30, 50, 75, 100)
+
+    Args:
+        minimum_price_cents: Minimum price in cents
+
+    Returns:
+        List of 3-4 dollar amounts (integers)
+    """
+    min_dollars = 2000 / 100
+
+    def round_to_friendly(amount: float) -> float:
+        """Round to psychologically appealing price points."""
+        if amount <= 5:
+            return 5
+        elif amount <= 7.5:
+            return 7.5
+        elif amount <= 10:
+            return 10
+        elif amount <= 15:
+            return 15
+        elif amount <= 20:
+            return 20
+        elif amount <= 25:
+            return 25
+        elif amount <= 30:
+            return 30
+        elif amount <= 40:
+            return 40
+        elif amount <= 50:
+            return 50
+        elif amount <= 75:
+            return 75
+        elif amount <= 100:
+            return 100
+        elif amount <= 150:
+            return 150
+        elif amount <= 200:
+            return 200
+        else:
+            # Round to nearest 50 for larger amounts
+            return int(round(amount / 50) * 50)
+
+    # Generate 4 options with gentle progression
+    quick_select_amounts = [
+        round_to_friendly(min_dollars * 1),
+        round_to_friendly(min_dollars * 1.25),
+        round_to_friendly(min_dollars * 1.75),
+        round_to_friendly(min_dollars * 2.5),
+    ]
+
+    # Remove duplicates while preserving order
+    seen = set()
+    quick_select_amounts = [x for x in quick_select_amounts if not (x in seen or seen.add(x))]
+
+    # Ensure we have at least 3 options (fallback)
+    if len(quick_select_amounts) < 3:
+        quick_select_amounts = [10, 25, 50, 100]
+
+    return quick_select_amounts
+
+
 @login_required
 def cohort_join(request: HttpRequest, cohort_id: int) -> HttpResponse:
     """Join a cohort (with or without payment)."""
@@ -177,6 +248,7 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
         'cohort': cohort,
         'form': form,
         'minimum_price_dollars': cohort.minimum_price_cents / 100,
+        'quick_select_amounts': generate_quick_select_amounts(cohort.minimum_price_cents),
     }
 
     return render(request, 'cohorts/join_checkout.html', context)

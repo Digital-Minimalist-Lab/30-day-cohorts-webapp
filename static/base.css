@@ -6,21 +6,31 @@
 	color-scheme: light;
 
 	/* Brand colors */
-	--brand: #3182ce;
-	--brand-hover: #2563b5;
+	--brand: #2563b5;
+	--brand-hover: #1e4a8a;
 
 	/* Accent colors */
 	--accent-green: #2f9e7d;
 	--accent-green-soft: #d6ede3;
 	--accent-blue-soft: #d8e6f9;
 	--accent-red: #dc2626;
+	--accent-red-hover: #b91c1c;
 	--accent-red-soft: #fecaca;
 	--accent-amber: #f59e0b;
 
+	/* Secondary button colors */
+	--secondary-blue: #5b9bd5;
+	--secondary-blue-hover: #4a8bc7;
+
+	/* Hero gradient colors */
+	--hero-gradient-start: #e8f2fc;
+	--hero-gradient-end: #f5f9fd;
+
 	/* Neutral palette */
-	--pico-background-color: #fff;
-	--pico-card-background-color: #ffffff;
-	--pico-form-element-background-color: #ffffff;
+	--white: #ffffff;
+	--pico-background-color: var(--white);
+	--pico-card-background-color: var(--white);
+	--pico-form-element-background-color: var(--white);
 	--pico-color: #373c44;
 	--pico-h4-color: #4d535e;
 	--pico-muted-color: #6b7280;
@@ -33,25 +43,25 @@
 	--pico-primary-hover: var(--brand-hover);
 	--pico-primary-hover-background: var(--brand-hover);
 	--pico-primary-hover-border: var(--brand-hover);
-	--pico-primary-inverse: #ffffff;
+	--pico-primary-inverse: var(--white);
 
 	/* Pico secondary button (medium blue) */
-	--pico-secondary: #5b9bd5;
-	--pico-secondary-background: #5b9bd5;
-	--pico-secondary-border: #5b9bd5;
-	--pico-secondary-hover: #4a8bc7;
-	--pico-secondary-hover-background: #4a8bc7;
-	--pico-secondary-hover-border: #4a8bc7;
-	--pico-secondary-inverse: #ffffff;
+	--pico-secondary: var(--secondary-blue);
+	--pico-secondary-background: var(--secondary-blue);
+	--pico-secondary-border: var(--secondary-blue);
+	--pico-secondary-hover: var(--secondary-blue-hover);
+	--pico-secondary-hover-background: var(--secondary-blue-hover);
+	--pico-secondary-hover-border: var(--secondary-blue-hover);
+	--pico-secondary-inverse: var(--white);
 
 	/* Pico contrast button (danger red) */
 	--pico-contrast: var(--accent-red);
 	--pico-contrast-background: var(--accent-red);
 	--pico-contrast-border: var(--accent-red);
-	--pico-contrast-hover: #b91c1c;
-	--pico-contrast-hover-background: #b91c1c;
-	--pico-contrast-hover-border: #b91c1c;
-	--pico-contrast-inverse: #ffffff;
+	--pico-contrast-hover: var(--accent-red-hover);
+	--pico-contrast-hover-background: var(--accent-red-hover);
+	--pico-contrast-hover-border: var(--accent-red-hover);
+	--pico-contrast-inverse: var(--white);
 
 	--pico-block-spacing-vertical: 2rem;
 	/* --pico-typography-spacing-vertical: 2rem; */
@@ -132,7 +142,7 @@ footer {
 	text-align: center;
 	padding: 5rem 2rem 3rem;
 	margin-bottom: 4rem;
-	background: linear-gradient(135deg, #e8f2fc 0%, #f5f9fd 100%);
+	background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
 	border-radius: var(--radius);
 }
 
@@ -544,7 +554,7 @@ div {
 	margin-bottom: 0;
 }
 
-.card :last-child {
+.card > :last-child {
 	margin-bottom: 0;
 }
 
@@ -705,6 +715,8 @@ div {
 	margin: 0;
 }
 
+
+
 /* Nested smaller cards reset to left-aligned */
 .card--large, .card--medium, .card--small {
 	text-align: left;
@@ -778,7 +790,8 @@ figure.card {
 .card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child {
 	list-style: none;
 	padding: 0;
-	margin: 0;
+	margin: 0rem;
+	margin-top: 1.5rem;
 }
 
 .card > ul:only-child li, 
