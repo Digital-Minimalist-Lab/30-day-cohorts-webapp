@@ -12,7 +12,7 @@ import jsonschema
 from django.db import transaction
 
 from cohorts.models import Cohort, TaskScheduler, UserSurveyResponse
-from surveys.models import Survey, Question, SurveySubmission
+from surveys.models import Survey, Question, SurveySubmission, SurveySection
 
 logger = logging.getLogger(__name__)
 
@@ -79,6 +79,7 @@ COHORT_DESIGN_SCHEMA = {
                             "type": "object",
                             "properties": {
                                 "title": {"type": "string"},
+                                "description": {"type": "string"},
                                 "questions": {
                                     "type": "array",
                                     "items": {
@@ -313,12 +314,12 @@ def _questions_changed(survey: Survey, survey_data: dict) -> bool:
         q.key: {
             "text": q.text,
             "question_type": q.question_type,
-            "section": q.section,
+            "section": q.section.title if q.section else "",
             "order": q.order,
             "is_required": q.is_required,
             "choices": q.choices,
         }
-        for q in survey.questions.all()
+        for q in survey.questions.select_related('section').all()
     }
 
     # Compare keys first (additions/removals)
@@ -388,6 +389,7 @@ def _update_or_create_survey_for_cohort(cohort: Cohort, survey_data: dict) -> Su
                 )
             else:
                 existing.questions.all().delete()
+                existing.sections.all().delete()
                 _create_questions_for_survey(existing, survey_data)
 
         return existing
@@ -399,21 +401,31 @@ def _create_questions_for_survey(survey: Survey, survey_data: dict) -> None:
     """
     Create questions for an existing survey from design data.
     """
-    order = 0
+    question_order = 0
+    section_order = 0
     for section_data in survey_data.get("sections", []):
         section_title = section_data.get("title", "")
+        
+        section = SurveySection.objects.create(
+            survey=survey,
+            title=section_title,
+            description=section_data.get("description", ""),
+            order=section_order
+        )
+        section_order += 1
+
         for question_data in section_data.get("questions", []):
             Question.objects.create(
                 survey=survey,
                 key=question_data["key"],
                 text=question_data["text"],
                 question_type=question_data["type"],
-                section=section_title,
-                order=order,
+                section=section,
+                order=question_order,
                 is_required=question_data.get("is_required", True),
                 choices=question_data.get("choices"),
             )
-            order += 1
+            question_order += 1
 
 
 def _create_or_update_scheduler(
@@ -521,4 +533,3 @@ def _cleanup_removed_surveys(cohort: Cohort, kept_survey_internal_ids: set[str])
 
         # Safe to delete
         survey.delete()
-

@@ -159,12 +159,8 @@
       "sections": [
         {
           "title": "A. Smartphone Compulsion",
+          "description": "The following questions help you reflect on your relationship with your smartphone. Please rate each statement based on how true it feels for you.",
           "questions": [
-            {
-              "key": "section_a_intro",
-              "text": "The following questions help you reflect on your relationship with your smartphone. Please rate each statement based on how true it feels for you.",
-              "type": "info"
-            },
             {
               "key": "sc_1_pickup_unintended",
               "text": "I often pick up my phone even when I didn't intend to use it.",
@@ -328,12 +324,8 @@
         },
         {
           "title": "D. Emotional Regulation & Worry",
+          "description": "Over the past two weeks...",
           "questions": [
-            {
-              "key": "section_d_intro",
-              "text": "Over the past two weeks...",
-              "type": "info"
-            },
             {
               "key": "gad_1_tense",
               "text": "How often have you felt keyed-up, tense, or on edge?",
@@ -362,12 +354,8 @@
         },
         {
           "title": "E. Mood & Motivation",
+          "description": "Over the past two weeks...",
           "questions": [
-            {
-              "key": "section_e_intro",
-              "text": "Over the past two weeks...",
-              "type": "info"
-            },
             {
               "key": "phq_1_motivation",
               "text": "How often have you felt low motivation or found it hard to enjoy the things you usually like?",
@@ -396,12 +384,8 @@
         },
         {
           "title": "F. Social Connectedness",
+          "description": "Over the past two weeks, how have you felt the following?",
           "questions": [
-            {
-              "key": "section_f_intro",
-              "text": "Over the past two weeks, how have you felt the following?",
-              "type": "info"
-            },
             {
               "key": "ucla_1_companionship",
               "text": "Feeling like you don't have the companionship or closeness you'd like.",
@@ -439,12 +423,8 @@
         },
         {
           "title": "G. Well-Being & Daily Vitality",
+          "description": "Over the past two weeks...",
           "questions": [
-            {
-              "key": "section_g_intro",
-              "text": "Over the past two weeks...",
-              "type": "info"
-            },
             {
               "key": "who5_1_cheerful",
               "text": "I felt generally upbeat, cheerful, or in good spirits.",
@@ -532,13 +512,8 @@
         },
         {
           "title": "I. Entry Conclusion",
+          "description": "Thank you for taking the time to assess yourself honestly. This will help you assess your progress and us assess the efficacy of this project.",
           "questions": [
-            {
-              "key": "wrap_up",
-              "text": "Thank you for taking the time to assess yourself honestly. This will help you assess your progress and us assess the efficacy of this project.",
-              "type": "info",
-              "is_required": true
-            }
           ]
         }
       ],
@@ -552,27 +527,14 @@
       "sections": [
         {
           "title": "Introduction",
+          "description": "These 30 days aren't about reducing screen-time just to show off low screen-time numbers to your friends. It's about decluttering our digital environments to reconnect with things we love. Let's find out what those things are and how to reconnect with them.",
           "questions": [
-            {
-              "key": "reconnect_intro",
-              "text": "These 30 days aren't about reducing screen-time just to show off low screen-time numbers to your friends. It's about decluttering our digital environments to reconnect with things we love. Let's find out what those things are and how to reconnect with them.",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "Step 1: Identify Your Cherished Goals",
+          "description": "For a moment, let's talk about motivation. It requires some motivation to go through 30 days of big changes to your life - what you're doing now. So, it's important to ask how motivation works. </br></br>Often in psychology, we break motivation into two types: avoidance motivation, and approach motivation. </br></br>Avoidance motivation comes from our desire to avoid some harm, discomfort, suffering. For our purposes that would be something like 'I want to reduce my smartphone use because scrolling for 4 hours makes me feel anxious. </br></br>Approach motivation comes from our desire to bring about something positive in our own lives or in the lives of our loved ones, communities, or some greater good. That's what we're focusing on right now. We want to ask 'By reducing our smartphone use, what positive things might I enable or reconnect with?' What are we approaching? </br></br>Neither of these motivational framings is right or wrong or better. However, I've found most people take the avoidance motivation approach ONLY. Why not make use of both? Let's reduce the harm of the attention economy AND use that extra time we've freed up on things we love! We're going to call these things we're APPROACHING, Cherished Goals (drawing from the Recovery Oriented Cognitive Therapy tradition)</br></br>Take a few minutes to reflect and answer the following:",
           "questions": [
-            {
-              "key": "step1_intro",
-              "text": "For a moment, let's talk about motivation. It requires some motivation to go through 30 days of big changes to your life - what you're doing now. So, it's important to ask how motivation works. </br>Often in psychology, we break motivation into two types: avoidance motivation, and approach motivation. </br>Avoidance motivation comes from our desire to avoid some harm, discomfort, suffering. For our purposes that would be something like 'I want to reduce my smartphone use because scrolling for 4 hours makes me feel anxious. </br>Approach motivation comes from our desire to bring about something positive in our own lives or in the lives of our loved ones, communities, or some greater good. That's what we're focusing on right now. We want to ask 'By reducing our smartphone use, what positive things might I enable or reconnect with?' What are we approaching? </br>Neither of these motivational framings is right or wrong or better. However, I've found most people take the avoidance motivation approach ONLY. Why not make use of both? Let's reduce the harm of the attention economy AND use that extra time we've freed up on things we love! We're going to call these things we're APPROACHING, Cherished Goals (drawing from the Recovery Oriented Cognitive Therapy tradition)",
-              "type": "info"
-            },
-            {
-              "key": "step1_prompt",
-              "text": "Take a few minutes to reflect and answer the following:",
-              "type": "info"
-            },
             {
               "key": "cherished_1_areas",
               "text": "What are one or two areas of your life you want to cultivate more right now? (Examples: a skill you want to build, relationships with loved ones, physical health, creative work, community involvement, faith or spiritual practice, rest and calm.)",
@@ -601,27 +563,14 @@
         },
         {
           "title": "Step 2: Choose Your Four Anchor Activities",
+          "description": "Now, we're going to establish 4 specific activities that we're going to reintroduce into our lives over the next 30 days. We'll call these Anchor Activities.</br></br>We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexible. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
           "questions": [
-            {
-              "key": "step2_intro1",
-              "text": "Now, we're going to establish 4 specific activities that we're going to reintroduce into our lives over the next 30 days. We'll call these Anchor Activities.",
-              "type": "info"
-            },
-            {
-              "key": "step2_intro2",
-              "text": "We'll pick 4 for different energy levels. It's important to note how doomscrolling and digital media consumption can fill a lot of different states. Other activities tend not to be as flexible. For example, if you're already very tired and stressed, it may seem impossible to muster up the energy to throw a party with friends but it may be easy to lean on a lower energy activity like reading to fill that time without going back to scrolling. So, we'll establish 4 activities for different levels.",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "Anchor 1: Low-Energy Solo Activity",
+          "description": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. We highly recommend reading. </br></br> Reading is easy to fit into many of the times and spaces we would often scroll which makes it highly effective at replacing doomscrolling. Want to scroll on Saturday morning? Good thing your book is on your night stand. Waiting for the subway? Good thing you brought your book. Nobody's available to hang out this evening and you can't watch Netflix? Good thing you've got your book.",
           "questions": [
-            {
-              "key": "anchor1_intro",
-              "text": "A calm alternative for tired or overstimulated moments. Choose one low-effort activity you can turn to instead of doomscrolling. We highly recommend reading. </br> Reading is easy to fit into many of the times and spaces we would often scroll which makes it highly effective at replacing doomscrolling. Want to scroll on Saturday morning? Good thing your book is on your night stand. Waiting for the subway? Good thing you brought your book. Nobody's available to hang out this evening and you can't watch Netflix? Good thing you've got your book.",
-              "type": "info"
-            },
             {
               "key": "anchor1_activity",
               "text": "What low-energy activities would you like to engage with? We recommend Reading as a default you can add others to.",
@@ -632,12 +581,8 @@
         },
         {
           "title": "Anchor 2: High-Energy Solo / Skill-Building Activity",
+          "description": "A high energy solo activity (like skill-building or learning). </br></br>Choose one activity you want to practice or improve at this month. Examples: Writing a blog, learning guitar, drawing, cooking, running, lifting, photography, coding a small project, language learning",
           "questions": [
-            {
-              "key": "anchor2_intro",
-              "text": "A high energy solo activity (like skill-building or learning). </br>Choose one activity you want to practice or improve at this month. Examples: Writing a blog, learning guitar, drawing, cooking, running, lifting, photography, coding a small project, language learning",
-              "type": "info"
-            },
             {
               "key": "anchor2_activity",
               "text": "What high-energy solo or skill-building activity will you choose?",
@@ -654,12 +599,8 @@
         },
         {
           "title": "Anchor 3: Social Ritual With Loved Ones",
+          "description": "A recurring low energy social activity. </br></br>Choose one weekly ritual with someone or some folks who you're comfortable relaxing with. Examples: Board game night, weekly phone or video call with a sibling or friend, movie night, Sunday dinner, weekly walk",
           "questions": [
-            {
-              "key": "anchor3_intro",
-              "text": "A recurring low energy social activity. </br>Choose one weekly ritual with someone or some folks who you're comfortable relaxing with. Examples: Board game night, weekly phone or video call with a sibling or friend, movie night, Sunday dinner, weekly walk",
-              "type": "info"
-            },
             {
               "key": "anchor3_activity",
               "text": "What social ritual with loved ones will you choose?",
@@ -676,12 +617,8 @@
         },
         {
           "title": "Anchor 4: Social Hobby / Community Activity",
+          "description": "High Energy Social Activity. </br></br>Choose one weekly activity that involves a group, class, or community. Examples: Run club, art/dance class, volunteering, religious group, climbing gym, Friday Night Magic at a game store.",
           "questions": [
-            {
-              "key": "anchor4_intro",
-              "text": "High Energy Social Activity. </br>Choose one weekly activity that involves a group, class, or community. Examples: Run club, art/dance class, volunteering, religious group, climbing gym, Friday Night Magic at a game store.",
-              "type": "info"
-            },
             {
               "key": "anchor4_activity",
               "text": "What social hobby or community activity will you choose?",
@@ -698,12 +635,8 @@
         },
         {
           "title": "Closing",
+          "description": "Wonderful! You've chosen four different ways to reconnect with what matters to you. </br></br>It's often that people only realize how much digital media consumption has crowded out what they love, when they take the time to reconnect with those things. Remember these things are what we're approaching - it's our approach motivation at work.",
           "questions": [
-            {
-              "key": "closing",
-              "text": "Wonderful! You've chosen four different ways to reconnect with what matters to you. </br>It's often that people only realize how much digital media consumption has crowded out what they love, when they take the time to reconnect with those things. Remember these things are what we're approaching - it's our approach motivation at work.",
-              "type": "info"
-            }
           ]
         }
       ],
@@ -717,37 +650,20 @@
       "sections": [
         {
           "title": "Introduction",
+          "description": "This next step helps envision the benefits of reducing your digital media consumption by imagining two worlds: one where you reduce your smartphone use, and one where your habits stay the same. The attention economy competes for the same resources - attention, time, energy - that your values and meaningful activities depend on. I like to say the primary harm of doomscrolling isn't social media CAUSING anxiety necessarily, but how doomscrolling 'displaces' activities we love and are good for us. </br></br>So now, let's imagine two futures and feel the difference between them.",
           "questions": [
-            {
-              "key": "mc_intro",
-              "text": "This next step helps envision the benefits of reducing your digital media consumption by imagining two worlds: one where you reduce your smartphone use, and one where your habits stay the same. The attention economy competes for the same resources - attention, time, energy - that your values and meaningful activities depend on. I like to say the primary harm of doomscrolling isn't social media CAUSING anxiety necessarily, but how doomscrolling 'displaces' activities we love and are good for us. </br>So now, let's imagine two futures and feel the difference between them.",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "Closing",
+          "description": "This cohort is not here to prescribe behaviours to you. We want to guide you to identifying those things for yourself. This mental contrasting activity is an important step toward that; seeing for yourself the difference you can make in your life by imagining and contrasting.",
           "questions": [
-            {
-              "key": "mc_closing",
-              "text": "This cohort is not here to prescribe behaviours to you. We want to guide you to identifying those things for yourself. This mental contrasting activity is an important step toward that; seeing for yourself the difference you can make in your life by imagining and contrasting.",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "Future A: If Your Digital Habits Stay the Same",
+          "description": "Imagine your life a year from now if nothing changes. Imagine your digital media consumption and smartphone use stay the same or intensify. </br></br>Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
           "questions": [
-            {
-              "key": "future_a_intro",
-              "text": "Imagine your life a year from now if nothing changes. Imagine your digital media consumption and smartphone use stay the same or intensify. ",
-              "type": "info"
-            },
-            {
-              "key": "future_a_prompts",
-              "text": "Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
-              "type": "info"
-            },
             {
               "key": "future_a_response",
               "text": "Write for 2–3 minutes. Imagine your life a year from now if nothing changes:",
@@ -758,17 +674,8 @@
         },
         {
           "title": "Future B: If You Reclaim Your Attention",
+          "description": "Now picture a year from now if you move toward the things you love - your calming activity, your skill-building hobby, your social ritual, and your community activity - and away from doomscrolling and passive media consumption.</br></br>Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
           "questions": [
-            {
-              "key": "future_b_intro",
-              "text": "Now picture a year from now if you move toward the things you love - your calming activity, your skill-building hobby, your social ritual, and your community activity - and away from doomscrolling and passive media consumption.",
-              "type": "info"
-            },
-            {
-              "key": "future_b_prompts",
-              "text": "Consider: What does your average day look and feel like? Imagine this concretely. What do you do the moment you wake up? What do you do while eating lunch? What do you do before bed? What did you make time for: hobbies, relationships, health, YouTube, Tiktok? What does your focus feel like? How do you feel physically and mentally? How do you feel about your values and things you love? How do your relationships feel? etc.",
-              "type": "info"
-            },
             {
               "key": "future_b_response",
               "text": "Write for 2–3 minutes. Picture a year from now if you make small, consistent shifts:",
@@ -805,57 +712,20 @@
       "sections": [
         {
           "title": "Introduction",
+          "description": "Pick What Fits - But More = More Effective. </br></br>Today we'll be implementing 3 things to help you reshape your relationship with digital media consumption across all your devices - what we call your digital environment. </br></br>1. Tech Boundaries: Setting boundaries for your tech. Time and spaces that tech is not allowed to enter. For example 'no smartphones in the bedroom.' </br></br>2. Nudges: These are defaults, blockers, etc. you can set on your phone or computer to help you reshape your digital media consumption habits. Example: set your phone to grayscale to make it less attention grabby. </br></br>3. Intentional Integrations: There are plenty of ways that technology facilitates our values and things we love. Let's make room for those things intentionally. For example 'I've set a Tech Boundary around Netrlix, but I'd love to host a watch party with my friends. Let me Intentionally Integrate TV with the rule 'I can watch TV with friends and family if it is a social event.' </br></br>You get to choose which tech boundaries, nudges, and intentional integrations fit your life best. You don't need to adopt everything and if something doesn't work for your situation, feel free to adapt it. </br></br>That being said, the more of these changes you implement, the more likely it is that your screen time will drop — and the easier it becomes to reconnect with your values.",
           "questions": [
-            {
-              "key": "intro_header",
-              "text": "Pick What Fits - But More = More Effective. </br>Today we'll be implementing 3 things to help you reshape your relationship with digital media consumption across all your devices - what we call your digital environment. </br>1. Tech Boundaries: Setting boundaries for your tech. Time and spaces that tech is not allowed to enter. For example 'no smartphones in the bedroom.' </br>2. Nudges: These are defaults, blockers, etc. you can set on your phone or computer to help you reshape your digital media consumption habits. Example: set your phone to grayscale to make it less attention grabby. </br>3. Intentional Integrations: There are plenty of ways that technology facilitates our values and things we love. Let's make room for those things intentionally. For example 'I've set a Tech Boundary around Netrlix, but I'd love to host a watch party with my friends. Let me Intentionally Integrate TV with the rule 'I can watch TV with friends and family if it is a social event.' </br>You get to choose which tech boundaries, nudges, and intentional integrations fit your life best. You don't need to adopt everything and if something doesn't work for your situation, feel free to adapt it. </br>That being said, the more of these changes you implement, the more likely it is that your screen time will drop — and the easier it becomes to reconnect with your values.",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "1. Why This Works",
+          "description": "Most modern apps are deliberately designed to pull and hold your attention: Infinite scroll, Autoplay, Notifications, Algorithmic feeds. Much of what we'll do today, is disabling or blocking these features in as many places as we can in your digital environment. This makes it much easier to use apps as tools, instead of them using you for ad revenue.</br></br>Day 1 is all about laying the groundwork of your new digital environment. Today, we'll guide you through setting your Tech Boundaries, Nudges, and Intentional Integrations. </br></br>We'll follow that up with a Psychological Practice called Implementation Intentions. These help you envision scenarios where you may be tempted to fall back on old habits, and how you can prevent that before you're in that situation at all. </br></br>You may want a notepad and paper and some sticky notes to help track your new Tech Boundaries, Intentional Integrations, and Implementation Intentions. NOTE in future versions of this app we intend to track those for you ... but this is beta software.</br></br>Before we dive in, we'd also like to give credit to the researchers who have created, studied, and inspired these digital environment changes. For more on the scientific backing supporting the Environment Redesign, visit: https://www.healthyscreens.com/strategies and take a look at the paper by Olson et al. https://doi.org/10.1007/s11469-022-00826-w",
           "questions": [
-            {
-              "key": "why_this_works_intro",
-              "text": "Most modern apps are deliberately designed to pull and hold your attention: Infinite scroll, Autoplay, Notifications, Algorithmic feeds. Much of what we'll do today, is disabling or blocking these features in as many places as we can in your digital environment. This makes it much easier to use apps as tools, instead of them using you for ad revenue.",
-              "type": "info"
-            },
-            {
-              "key": "why_this_works_layers",
-              "text": "Day 1 is all about laying the groundwork of your new digital environment. Today, we'll guide you through setting your Tech Boundaries, Nudges, and Intentional Integrations. </br>We'll follow that up with a Psychological Practice called Implementation Intentions. These help you envision scenarios where you may be tempted to fall back on old habits, and how you can prevent that before you're in that situation at all. </br>You may want a notepad and paper and some sticky notes to help track your new Tech Boundaries, Intentional Integrations, and Implementation Intentions. NOTE in future versions of this app we intend to track those for you ... but this is beta software.",
-              "type": "info"
-            },
-            {
-              "key": "scientific_backing",
-              "text": "Before we dive in, we'd also like to give credit to the researchers who have created, studied, and inspired these digital environment changes. For more on the scientific backing supporting the Environment Redesign, visit: https://www.healthyscreens.com/strategies and take a look at the paper by Olson et al. https://doi.org/10.1007/s11469-022-00826-w",
-              "type": "info"
-            }
           ]
         },
         {
           "title": "2. Tech Boundaries",
+          "description": "These are three boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.</br></br>Boundary 1: Do phone tasks on your computer. </br></br>Why it works: Phones are frictionless constant companions; computers, not so much. On a laptop, or better, a desktop, there are fewer attention hooks AND you must go to the device instead of it being with you at all times. Computers are also more malleable digital environments which means we can add extra browser-based blockers.</br></br>Boundary 2: No phone in the bedroom. </br></br>Why it works: When we're tired, we're much more likely to lean on easy dopamine. Right before bed and right after waking up are key moments. Also, sleep quality is important for your health and ability to exert self-control. Removing the phone from the bedroom eliminates morning doomscrolling, eliminates 'I'll just check one thing' at night, improves sleep, and breaks a highly ingrained cue-action loop. We bet this single boundary will dramatically improve your success for the rest of the cohort.</br></br>Boundary 3: No YouTube or TV during meals. </br></br>Why it works: The lunch-time video is a super common habit. But it crowds out time for mindfulness, gratitude, and most importantly, time with coworkers, lovedones, etc. Chances are you'll be bored at lunch time. This is good! Either embrace the boredom or use the boredom as a motivator to find somebody to spend lunch time chatting with. I (Nathan) have loved this change in my life and find myself calling friends, or chatting with my partner a lot more because of this. I hope it helps you too.",
           "questions": [
-            {
-              "key": "boundaries_intro",
-              "text": "These are three boundaries that immediately reduce screen time. They're simple, low-friction, and high-impact.",
-              "type": "info"
-            },
-            {
-              "key": "boundary_1_info",
-              "text": "Boundary 1: Do phone tasks on your computer. </br>Why it works: Phones are frictionless constant companions; computers, not so much. On a laptop, or better, a desktop, there are fewer attention hooks AND you must go to the device instead of it being with you at all times. Computers are also more malleable digital environments which means we can add extra browser-based blockers.",
-              "type": "info"
-            },
-            {
-              "key": "boundary_2_info",
-              "text": "Boundary 2: No phone in the bedroom. </br>Why it works: When we're tired, we're much more likely to lean on easy dopamine. Right before bed and right after waking up are key moments. Also, sleep quality is important for your health and ability to exert self-control. Removing the phone from the bedroom eliminates morning doomscrolling, eliminates 'I'll just check one thing' at night, improves sleep, and breaks a highly ingrained cue-action loop. We bet this single boundary will dramatically improve your success for the rest of the cohort.",
-              "type": "info"
-            },
-            {
-              "key": "boundary_3_info",
-              "text": "Boundary 3: No YouTube or TV during meals. </br>Why it works: The lunch-time video is a super common habit. But it crowds out time for mindfulness, gratitude, and most importantly, time with coworkers, lovedones, etc. Chances are you'll be bored at lunch time. This is good! Either embrace the boredom or use the boredom as a motivator to find somebody to spend lunch time chatting with. I (Nathan) have loved this change in my life and find myself calling friends, or chatting with my partner a lot more because of this. I hope it helps you too.",
-              "type": "info"
-            },
             {
               "key": "boundaries_commitment",
               "text": "You can use these boundaries, or define your own. However, these 3 are pretty solid and I'd recommend trying them out. Also, it may be useful to keep sticky notes around your home to remind you of these boundaries.",
@@ -866,42 +736,8 @@
         },
         {
           "title": "3. Nudges (Environment Redesign)",
+          "description": "Nudges are subtle changes we can make to our environments (like turning off notifications) that make desirable behaviours more probable than others, without us having to think or muster up the will. Your phone already employs nudges to suck you into attention loops, so a lot of what we'll do is just turning those off. </br></br> We'll introduce a few here, but if you want to read it straight from the scientists who developed these: go to https://www.healthyscreens.com/strategies</br></br>We'll start with changes you can make to your smartphone. Many of these will feel obvious. The more of these you can stick to, the better but don't beat yourself up about it if you slip or aren't ready to make a change.</br></br>Smartphone nudges: </br></br>1. Move all apps off the homescreen </br></br>2. Uninstall or at least hide social media apps.  </br></br>3.Turn off all non-essential notifications (leave on notifications for calls from your loved ones but turn off social media group chat notifications)</br></br>4. Use grayscale and simple wallpapers. </br></br>5. Use web versions instead of apps (example: access instagram group chats via safari/chrome instead of the instagram app. That experience sucks and that's the point. If it sucks you'll be less likely to do it automatically.)</br></br>Our digital media consumption isn't just tied to our smartphones, though that is the worst of it. Our computers are just as much a part of our digital environments. Luckily, they're much flexible. Instead of removing apps entirely, we can use browser extensions and other tricks to pull out the addictive elements and retain the functionality - like removing instagram's infinite feed but keeping the messaging.</br></br>Laptop or Computer nudges: </br></br>1. Install browser extensions that remove feeds/autoplay/recommendations (check out unhook, undistracted, and uninternet on chrome) </br></br>2. Use a blank or calm start page (no newsfeeds on your homepage) </br></br>3. Log out of social media accounts - forcing you to log back in to use them. </br></br>5. Remove pinned or bookmarked doomscrolly apps.</br></br>Same idea with our smart TVs. Netflix and YouTube can be binged just as much on a TV as on a phone. Unfortunately, like on our smartphones and unlike our comptuers, these apps aren't very malleable. So, we primarily resort to uninstalling, hiding, and logging out. Basically, we want to introduce friction to use so that we have a moment to stop and think 'do I really want to do this right now?'</br></br>Smart TV / Console nudges: Turn off autoplay, Turn off recommendations if possible, Move apps into a hidden folder, Log out of binge-prone platforms when not in use.",
           "questions": [
-            {
-              "key": "nudges_intro",
-              "text": "Nudges are subtle changes we can make to our environments (like turning off notifications) that make desirable behaviours more probable than others, without us having to think or muster up the will. Your phone already employs nudges to suck you into attention loops, so a lot of what we'll do is just turning those off. </br> We'll introduce a few here, but if you want to read it straight from the scientists who developed these: go to https://www.healthyscreens.com/strategies",
-              "type": "info"
-            },
-            {
-              "key": "nudges_smartphone_intro",
-              "text": "We'll start with changes you can make to your smartphone. Many of these will feel obvious. The more of these you can stick to, the better but don't beat yourself up about it if you slip or aren't ready to make a change.",
-              "type": "info"
-            },
-            {
-              "key": "nudges_smartphone",
-              "text": "Smartphone nudges: </br>1. Move all apps off the homescreen </br>2. Uninstall or at least hide social media apps.  </br>3.Turn off all non-essential notifications (leave on notifications for calls from your loved ones but turn off social media group chat notifications)</br>4. Use grayscale and simple wallpapers. </br>5. Use web versions instead of apps (example: access instagram group chats via safari/chrome instead of the instagram app. That experience sucks and that's the point. If it sucks you'll be less likely to do it automatically.)",
-              "type": "info"
-            },
-            {
-              "key": "nudges_laptop_intro",
-              "text": "Our digital media consumption isn't just tied to our smartphones, though that is the worst of it. Our computers are just as much a part of our digital environments. Luckily, they're much flexible. Instead of removing apps entirely, we can use browser extensions and other tricks to pull out the addictive elements and retain the functionality - like removing instagram's infinite feed but keeping the messaging.",
-              "type": "info"
-            },
-            {
-              "key": "nudges_laptop",
-              "text": "Laptop or Computer nudges: </br>1. Install browser extensions that remove feeds/autoplay/recommendations (check out unhook, undistracted, and uninternet on chrome) </br>2. Use a blank or calm start page (no newsfeeds on your homepage) </br>3. Log out of social media accounts - forcing you to log back in to use them. </br>5. Remove pinned or bookmarked doomscrolly apps.",
-              "type": "info"
-            },
-            {
-              "key": "nudges_tv_intro",
-              "text": "Same idea with our smart TVs. Netflix and YouTube can be binged just as much on a TV as on a phone. Unfortunately, like on our smartphones and unlike our comptuers, these apps aren't very malleable. So, we primarily resort to uninstalling, hiding, and logging out. Basically, we want to introduce friction to use so that we have a moment to stop and think 'do I really want to do this right now?'",
-              "type": "info"
-            },
-            {
-              "key": "nudges_tv",
-              "text": "Smart TV / Console nudges: Turn off autoplay, Turn off recommendations if possible, Move apps into a hidden folder, Log out of binge-prone platforms when not in use.",
-              "type": "info"
-            },
             {
               "key": "nudges_commitment",
               "text": "Try to employ as many of these nudges as possible. However, we know it's a lot. A good starting combo is undistracted on your browser(s), hiding apps on your TV, and as many nudges as possible on your smartphone.",
@@ -912,38 +748,14 @@
         },
         {
           "title": "4. Intentional Integrations",
+          "description": "Intentional Integrations are how you reintroduce technology in ways that align with your values. These replace 'mindless default behaviors' with mindful engagement decided by you for you. We're not advocating a full rejection of technology, but a more meaningful way to make use of it. So let's define how you want to do that.</br></br>Examples: 'I can watch TV if it's with loved ones in person, or over a video call if we live far apart.' / 'If I use social media, I'll use the web version and only on Saturday afternoon's to keep up with a cherished social group.' / 'I can check my YouTube subscriptions on Fridays for an hour to watch videos from creators I really learn from or enjoy.'</br></br>Write out 2–3 intentional integrations that feel sustainable for you. </br></br> NOTE: don't be afraid to introduce more throughout the 30 days. If you cut some digital media out of your life and find out later it was actually meaningful to you in some contexts that's a huge win! You've learned more about yourself. Reorientation of attention to what you love is more important than arbitrarily reducing screen-time.",
           "questions": [
-            {
-              "key": "integrations_intro",
-              "text": "Intentional Integrations are how you reintroduce technology in ways that align with your values. These replace 'mindless default behaviors' with mindful engagement decided by you for you. We're not advocating a full rejection of technology, but a more meaningful way to make use of it. So let's define how you want to do that.",
-              "type": "info"
-            },
-            {
-              "key": "integrations_examples",
-              "text": "Examples: 'I can watch TV if it's with loved ones in person, or over a video call if we live far apart.' / 'If I use social media, I'll use the web version and only on Saturday afternoon's to keep up with a cherished social group.' / 'I can check my YouTube subscriptions on Fridays for an hour to watch videos from creators I really learn from or enjoy.'",
-              "type": "info"
-            },
-            {
-              "key": "integrations_commitment",
-              "text": "Write out 2–3 intentional integrations that feel sustainable for you. </br> NOTE: don't be afraid to introduce more throughout the 30 days. If you cut some digital media out of your life and find out later it was actually meaningful to you in some contexts that's a huge win! You've learned more about yourself. Reorientation of attention to what you love is more important than arbitrarily reducing screen-time.",
-              "type": "info",
-              "is_required": true
-            }
           ]
         },
         {
           "title": "5. Implementation Intentions",
+          "description": "Implementation Intentions prepare you for the exact moments the attention economy usually wins. Format: IF I feel the urge to… THEN I will… </br></br>Focus on urges, not ongoing behavior. The 'THEN' action might work better if you connect it directly to one of your Four Anchor Activities, or another healthy alternative (walk, call someone, drink water, step outside).</br></br>Examples: IF I feel the urge to scroll in bed, THEN I will pick up the book I left on my nightstand. / IF I reach for YouTube during lunch, THEN I will read a few pages of my book. / IF I feel bored on a Sunday evening and want to watch Netflix, THEN I will call a friend.",
           "questions": [
-            {
-              "key": "implementation_intro",
-              "text": "Implementation Intentions prepare you for the exact moments the attention economy usually wins. Format: IF I feel the urge to… THEN I will… </br>Focus on urges, not ongoing behavior. The 'THEN' action might work better if you connect it directly to one of your Four Anchor Activities, or another healthy alternative (walk, call someone, drink water, step outside).",
-              "type": "info"
-            },
-            {
-              "key": "implementation_examples",
-              "text": "Examples: IF I feel the urge to scroll in bed, THEN I will pick up the book I left on my nightstand. / IF I reach for YouTube during lunch, THEN I will read a few pages of my book. / IF I feel bored on a Sunday evening and want to watch Netflix, THEN I will call a friend.",
-              "type": "info"
-            },
             {
               "key": "implementation_1",
               "text": "IF I feel the urge to ___, THEN I will ___.",
@@ -966,12 +778,8 @@
         },
         {
           "title": "Closing",
+          "description": "Today, we've made a lot of progress toward restructuring your digital environment to work better for you! </br></br>This is a lot to do all in one day, so take a moment and thank yourself for that work. Also note, these are pretty big changes. You'll probably forget, slip, get tired and give in to temptation at least a few times throughout the 30 days. That's normal and I (Nathan) slipped up during my first 30 days too. You can do two things to help yourself in those situations. </br></br>1. Leave real reminders around your home - I like sticky notes. </br></br>2. Be kind to yourself. If you slip up, don't focus on that slip up as a mistake. Focus on all the other times you DID succeed in changing your behaviour and how that helped you. Then focus on how you'll show up tomorrow. </br></br>If you get 20 good days out of 30, that's 20 more than if you hadn't tried at all! If that's not a win, I don't know what is.",
           "questions": [
-            {
-              "key": "closing_message",
-              "text": "Today, we've made a lot of progress toward restructuring your digital environment to work better for you! </br>This is a lot to do all in one day, so take a moment and thank yourself for that work. Also note, these are pretty big changes. You'll probably forget, slip, get tired and give in to temptation at least a few times throughout the 30 days. That's normal and I (Nathan) slipped up during my first 30 days too. You can do two things to help yourself in those situations. </br>1. Leave real reminders around your home - I like sticky notes. </br>2. Be kind to yourself. If you slip up, don't focus on that slip up as a mistake. Focus on all the other times you DID succeed in changing your behaviour and how that helped you. Then focus on how you'll show up tomorrow. </br>If you get 20 good days out of 30, that's 20 more than if you hadn't tried at all! If that's not a win, I don't know what is.",
-              "type": "info"
-            }
           ]
         }
       ],
@@ -1288,12 +1096,8 @@
       "sections": [
         {
           "title": "This Week's Focus",
+          "description": "This week focuses on a low-energy solo activity something calming, easy to do, but satisfying. These activities matter because they give your mind a quiet alternative to the feed and help rebuild your baseline attention.",
           "questions": [
-            {
-              "key": "week_focus_intro",
-              "text": "This week focuses on a low-energy solo activity something calming, easy to do, but satisfying. These activities matter because they give your mind a quiet alternative to the feed and help rebuild your baseline attention.",
-              "type": "info"
-            }
           ]
         },
         {
@@ -1342,12 +1146,8 @@
       "sections": [
         {
           "title": "This Week's Focus",
+          "description": "This week focuses on a higher-energy skill activity - something you want to practice or improve at. These activities matter because they help you feel competence, progress, and the satisfaction that scrolling often displaces.",
           "questions": [
-            {
-              "key": "week_focus_intro",
-              "text": "This week focuses on a higher-energy skill activity - something you want to practice or improve at. These activities matter because they help you feel competence, progress, and the satisfaction that scrolling often displaces.",
-              "type": "info"
-            }
           ]
         },
         {
@@ -1396,12 +1196,8 @@
       "sections": [
         {
           "title": "This Week's Focus",
+          "description": "This week focuses on a lowkey social 'ritual'. It's about setting a rhythm, a simple, easy activity you can share with your loved ones regularly like a scheduled phone call or in-person movie night.",
           "questions": [
-            {
-              "key": "week_focus_intro",
-              "text": "This week focuses on a lowkey social 'ritual'. It's about setting a rhythm, a simple, easy activity you can share with your loved ones regularly like a scheduled phone call or in-person movie night.",
-              "type": "info"
-            }
           ]
         },
         {
@@ -1450,12 +1246,8 @@
       "sections": [
         {
           "title": "This Week's Focus",
+          "description": "This week focuses on a social or community-based activity that brings you into shared spaces with others. These activities broaden your world beyond digital consumption and anchor you in real belonging.",
           "questions": [
-            {
-              "key": "week_focus_intro",
-              "text": "This week focuses on a social or community-based activity that brings you into shared spaces with others. These activities broaden your world beyond digital consumption and anchor you in real belonging.",
-              "type": "info"
-            }
           ]
         },
         {
@@ -1504,12 +1296,8 @@
       "sections": [
         {
           "title": "Introduction",
+          "description": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
           "questions": [
-            {
-              "key": "exit_intro",
-              "text": "Thank you for completing the 30-day Digital Declutter Cohort. This short survey helps you see your progress and helps us improve future cohorts.",
-              "type": "info"
-            }
           ]
         },
         {
@@ -1869,12 +1657,8 @@
         },
         {
           "title": "Section 3: Planning What Comes Next",
+          "description": "Over the past 30 days, you've recentered your attention, rebuilt your digital environment and habits, and created a more intentional relationship with your digital life. Many people choose to continue parts of their practice after the cohort ends.",
           "questions": [
-            {
-              "key": "section3_intro",
-              "text": "Over the past 30 days, you've recentered your attention, rebuilt your digital environment and habits, and created a more intentional relationship with your digital life. Many people choose to continue parts of their practice after the cohort ends.",
-              "type": "info"
-            },
             {
               "key": "intervention_profile_review",
               "text": "Take a moment to look at your Intervention Profile (Nudges, Boundaries, Integrations). Is there anything you want to keep, modify, or remove as you move forward?",
@@ -1946,12 +1730,8 @@
         },
         {
           "title": "Section 5: Optional Ongoing Support",
+          "description": "If you found this helpful but want a lighter-touch way to stay intentional, we are planning an optional ongoing digital use support subscription. With this, you would be able to: Continue receiving daily reflection prompts, Redo the entry survey anytime to track your progress over time, Keep and manage your Intervention Profile, and get ongoing reminders to maintain the attention you reclaimed. It's a softer, more flexible structure to help you stay centered long after the cohort ends.",
           "questions": [
-            {
-              "key": "section5_intro",
-              "text": "If you found this helpful but want a lighter-touch way to stay intentional, we are planning an optional ongoing digital use support subscription. With this, you would be able to: Continue receiving daily reflection prompts, Redo the entry survey anytime to track your progress over time, Keep and manage your Intervention Profile, and get ongoing reminders to maintain the attention you reclaimed. It's a softer, more flexible structure to help you stay centered long after the cohort ends.",
-              "type": "info"
-            },
             {
               "key": "ongoing_support_interest",
               "text": "Would a feature like this be useful to you?",
@@ -1966,12 +1746,8 @@
         },
         {
           "title": "Closing",
+          "description": "Thank you for completing the 30-day cohort and for being part of this experiment in reclaiming digital agency. Attention is one of the most meaningful things we have. We're grateful you spent some of it here. If you'd like to keep learning about attention and digital agency, consider subscribing to our e-mail newsletter: https://nathanlaundry.substack.com",
           "questions": [
-            {
-              "key": "closing_message",
-              "text": "Thank you for completing the 30-day cohort and for being part of this experiment in reclaiming digital agency. Attention is one of the most meaningful things we have. We're grateful you spent some of it here. If you'd like to keep learning about attention and digital agency, consider subscribing to our e-mail newsletter: https://nathanlaundry.substack.com",
-              "type": "info"
-            }
           ]
         }
       ],

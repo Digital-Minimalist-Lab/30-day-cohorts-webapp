@@ -2,6 +2,7 @@
 import pytz
 
 from django import forms
+from django.urls import reverse_lazy
 from allauth.account.forms import SignupForm
 from .models import UserProfile
 
@@ -67,7 +68,7 @@ class UserProfileForm(forms.ModelForm):
     """Form for updating user profile settings."""
     class Meta:
         model = UserProfile
-        fields = ['timezone', 'email_product_updates', 'email_daily_reminder']
+        fields = ['timezone', 'email_product_updates', 'email_daily_reminder', 'view_past_submissions']
         widgets = {
             'timezone': forms.Select(),
             'email_product_updates': forms.CheckboxInput(
@@ -75,5 +76,12 @@ class UserProfileForm(forms.ModelForm):
             ),
             'email_daily_reminder': forms.CheckboxInput(
                 attrs={'role': 'switch'},
+            ),
+            'view_past_submissions': forms.CheckboxInput(
+                attrs={
+                    'role': 'switch',
+                    'hx-post': reverse_lazy('accounts_api:update_preferences'),
+                    'hx-swap': 'none',
+                },
             ),
         }

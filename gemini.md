@@ -1,1 +1,1 @@
-AI_GUIDELINES.md
+AGENTS.md

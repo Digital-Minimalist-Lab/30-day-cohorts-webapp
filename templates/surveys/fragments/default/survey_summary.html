@@ -1,9 +1,9 @@
 <article>
-    <h3>{{ response.due_date|date:"Y-m-d" }}</h3>
+    <h3>{{ response.submission.survey.name }} -  {{ response.submission.completed_at|date:"Y-m-d" }}</h3>
     <ul>
         {% for answer in response.submission.answers.all %}
         <li>
-            <strong>{{ answer.question.text }}:</strong> {{ answer.value }}
+            <strong>{{ answer.question.text }}:</strong> {{ answer.display_value }}
         </li>
         {% endfor %}
     </ul>

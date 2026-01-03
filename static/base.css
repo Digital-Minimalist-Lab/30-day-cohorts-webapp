@@ -556,7 +556,27 @@ div {
 	--card-border-color: color-mix(in srgb, var(--pico-primary) 25%, var(--pico-border-color));
 }
 
-/* Card Modifiers - Accent borders */
+/* Card Modifiers - Accent colors and borders */
+.card--border-top {
+	border-top: 4px solid var(--card-border-color);
+}
+
+.card--border-left {
+	border-left: 4px solid var(--card-border-color);
+}
+
+.card--accent-blue {
+	--card-border-color: var(--accent-blue-soft);
+}
+
+.card--accent-green {
+	--card-border-color: var(--accent-green-soft);
+}
+
+.card--accent-red {
+	--card-border-color: var(--accent-red);
+}
+
 .card--accent-left-blue {
 	--card-border-color: var(--accent-blue-soft);
 	border-left: 4px solid var(--card-border-color);

@@ -6,16 +6,17 @@ from .models import UserProfile
 
 @login_required
 @require_POST
-def toggle_email_reminders(request: HttpRequest) -> JsonResponse:
+def update_profile_preferences(request: HttpRequest) -> JsonResponse:
     """
-    API endpoint to toggle email reminders.
+    API endpoint to toggle profile preferences (emails, view settings).
     
-    Path: /api/accounts/toggle-email-reminders/
+    Path: /api/accounts/preferences/
     Method: POST
     Body: 
     {
         "product_updates": optional boolean,
-        "daily_reminders": optional boolean
+        "daily_reminders": optional boolean,
+        "view_past_submissions": optional boolean
     }
     """
     # Handle both JSON (if sent) and Form Data (HTMX default)
@@ -46,6 +47,10 @@ def toggle_email_reminders(request: HttpRequest) -> JsonResponse:
     product_updates = get_bool('product_updates')
     if product_updates is not None:
         profile.email_product_updates = product_updates
+
+    view_past_submissions = get_bool('view_past_submissions')
+    if view_past_submissions is not None:
+        profile.view_past_submissions = view_past_submissions
 
     profile.save()
     
