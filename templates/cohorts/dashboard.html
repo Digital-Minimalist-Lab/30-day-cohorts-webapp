@@ -19,15 +19,15 @@
     <h2>Today's Tasks</h2>
 
     {% if tasks %}
-    <div>
+    <div class="card__stack">
         {% for task in tasks %}
-        <article class="card card--medium">
-            <hgroup>
+        <div class="card card--medium card--border-left card--accent-green-soft">
+            <div class="card__header">
                 <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
-            </hgroup>
-            {% if task.estimated_time_minutes %}<small>~{{ task.estimated_time_minutes }} min</small>{% endif %}
+                {% if task.estimated_time_minutes %}<span class="card__meta">~{{ task.estimated_time_minutes }} min</span>{% endif %}
+            </div>
             <p>{{ task.description|safe }}</p>
-        </article>
+        </div>
         {% endfor %}
     </div>
     {% else %}
@@ -40,7 +40,7 @@
 {% if upcoming_tasks %}
 <!-- Upcoming Tasks -->
 <section>
-    <h2>Upcoming</h2>
+    <h2>Upcoming Tasks</h2>
     <div class="card card--info card--medium">
         <ul>
             {% for task in upcoming_tasks %}
@@ -61,15 +61,17 @@
 <!-- All Tasks / Past Submissions -->
 <section>
     <h2>Previous Submissions</h2>
-    <ul>
-        {% for scheduler in cohort.task_schedulers.all %}
-            {% if scheduler.id in submitted_scheduler_ids %}
-            <li>
-                <a href="/cohorts/{{ cohort.id }}/tasks/{{ scheduler.slug }}/submissions/">{{ scheduler.survey.title|default:scheduler.slug }}</a>
-            </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <div class="card card--info card--medium">
+        <ul>
+            {% for scheduler in cohort.task_schedulers.all %}
+                {% if scheduler.id in submitted_scheduler_ids %}
+                <li>
+                    <a href="/cohorts/{{ cohort.id }}/tasks/{{ scheduler.slug }}/submissions/">{{ scheduler.survey.title|default:scheduler.slug }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
 </section>
 {% endif %}
 

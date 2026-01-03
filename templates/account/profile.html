@@ -7,51 +7,63 @@
     <h1>Profile</h1>
 </header>
 
+<!-- Account Info -->
+<section>
+    <h2>Account</h2>
+    <div class="card card--info card--medium">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+</section>
+
 <!-- Settings Form -->
 <section>
     <h2>Settings</h2>
-    <form method="post">
-        {% csrf_token %}
-        
-        Email: {{ user.email }}
+    <div class="card card--medium">
+        <form method="post">
+            {% csrf_token %}
 
-        {% for field in form %}
-        <label for="{{ field.id_for_label }}">
-            {% if field.field.widget.input_type == 'checkbox' %}
-                {{ field }}
-                {{ field.label }}
-            {% else %}
-                {{ field.label }}
-                {{ field }}
-            {% endif %}
-            {% if field.help_text %}
-            <small>{{ field.help_text }}</small>
-            {% endif %}
-            {% if field.errors %}
-            <small>{{ field.errors.0 }}</small>
-            {% endif %}
-        </label>
-        {% endfor %}
-        
-        <button type="submit">Save Settings</button>
-    </form>
+            {% for field in form %}
+            <label for="{{ field.id_for_label }}">
+                {% if field.field.widget.input_type == 'checkbox' %}
+                    {{ field }}
+                    {{ field.label }}
+                {% else %}
+                    {{ field.label }}
+                    {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                <small>{{ field.errors.0 }}</small>
+                {% endif %}
+            </label>
+            {% endfor %}
+
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
 </section>
 
 <!-- Privacy & Data -->
 <section>
     <h2>Privacy & Data</h2>
-    <p>
-        <a href="{% url 'accounts:export_data' %}" role="button" class="secondary">Export My Data</a>
-    </p>
-    <p><small>Download all your data as JSON</small></p>
-</section>
+    <div class="card__stack">
+        <div class="card card--info card--medium">
+            <h3>Export your data</h3>
+            <p>You have full control over your data. Export it anytime as JSON.</p>
+            <p>
+                <a href="{% url 'accounts:export_data' %}" role="button" class="secondary">Export My Data</a>
+            </p>
+        </div>
 
-<!-- Danger Zone -->
-<section>
-    <h2>Danger Zone</h2>
-    <p>
-        <a href="{% url 'accounts:delete_account' %}" role="button" class="contrast">Delete Account</a>
-    </p>
-    <p><small>Permanently delete your account and all data. This cannot be undone.</small></p>
+        <div class="card card--medium card--border-left card--accent-red-soft">
+            <h3>Delete your account</h3>
+            <p>Permanently delete your account and all data. This cannot be undone.</p>
+            <p>
+                <a href="{% url 'accounts:delete_account' %}" role="button" class="contrast">Delete Account</a>
+            </p>
+        </div>
+    </div>
 </section>
 {% endblock %}

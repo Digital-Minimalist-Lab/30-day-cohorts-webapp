@@ -14,6 +14,7 @@
 	--accent-green-soft: #d6ede3;
 	--accent-blue-soft: #d8e6f9;
 	--accent-red: #dc2626;
+	--accent-red-soft: #fecaca;
 	--accent-amber: #f59e0b;
 
 	/* Neutral palette */
@@ -52,7 +53,7 @@
 	--pico-contrast-hover-border: #b91c1c;
 	--pico-contrast-inverse: #ffffff;
 
-	/* --pico-block-spacing-vertical: 2rem; */
+	--pico-block-spacing-vertical: 2rem;
 	/* --pico-typography-spacing-vertical: 2rem; */
 
 	/* Typography */
@@ -452,6 +453,20 @@ details p:last-child {
 	gap: var(--card-stack-gap);
 }
 
+.card__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.card__meta {
+	font-size: 0.85rem;
+	color: var(--pico-muted-color);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
 
 /* ──────────────────────────────────────────────
    CARD COMPONENT SYSTEM
@@ -556,20 +571,25 @@ div {
 	--card-border-color: color-mix(in srgb, var(--pico-primary) 25%, var(--pico-border-color));
 }
 
-/* Card Modifiers - Accent borders */
-.card--accent-left-blue {
-	--card-border-color: var(--accent-blue-soft);
-	border-left: 4px solid var(--card-border-color);
-}
-
-.card--accent-left-green {
-	--card-border-color: var(--accent-green-soft);
-	border-left: 4px solid var(--card-border-color);
-}
-
-.card--accent-top-blue {
-	--card-border-color: var(--accent-blue-soft);
+/* Card Modifiers - Accent colors and borders */
+.card--border-top {
 	border-top: 4px solid var(--card-border-color);
+}
+
+.card--border-left {
+	border-left: 4px solid var(--card-border-color);
+}
+
+.card--accent-blue-soft {
+	--card-border-color: var(--accent-blue-soft);
+}
+
+.card--accent-green-soft {
+	--card-border-color: var(--accent-green-soft);
+}
+
+.card--accent-red-soft {
+	--card-border-color: var(--accent-red-soft);
 }
 
 /** 
@@ -773,6 +793,14 @@ figure.card {
 	border-bottom: 1px solid var(--pico-border-color);
 }
 
+.card > ul:only-child li:first-child, 
+.card > ol:only-child li:first-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li:first-child,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li:first-child {
+	border-top: none;
+	padding-top: 0;
+}
+
 .card > ul:only-child li:last-child, 
 .card > ol:only-child li:last-child,
 .card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li:last-child,
@@ -780,6 +808,7 @@ figure.card {
 	border-bottom: none;
 	padding-bottom: 0;
 }
+
 
 .list__meta  {
 	font-size: 0.85rem;

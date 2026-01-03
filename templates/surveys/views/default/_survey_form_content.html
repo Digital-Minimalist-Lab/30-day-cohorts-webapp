@@ -1,19 +1,19 @@
 <form method="post" novalidate>
     {% csrf_token %}
     <div>
-        {% for section_name, items in form.get_fields_by_section %}
-            {% if section_name %}
-            <div class="survey-section">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">{{ section_name.title }}</h3>
-                {% if section_name.description %}
-                    <p class="survey-info-text">{{ section_name.description | safe }}</p>
+        {% for section, items in form.get_fields_by_section %}
+            {% if section %}
+            <section class="card card--medium card--border-left card--accent-blue-soft">
+                <h3>{{ section.title }}</h3>
+                {% if section.description %}
+                <p>{{ section.description | safe }}</p>
                 {% endif %}
             {% endif %}
             
             {% for item in items %}
                 {% if item.is_info %}
                     {# Display-only info text #}
-                    <p class="card card--info card--small card--accent-left-blue">
+                    <p class="card card--info card--small card--border-left card--accent-blue-soft">
                         {{ item.text | safe }}
                     </p>
                 {% else %}
