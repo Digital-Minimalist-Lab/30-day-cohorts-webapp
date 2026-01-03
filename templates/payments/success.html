@@ -7,10 +7,13 @@
     <h1>Payment Successful</h1>
 </header>
 
-<p>Thank you for joining the cohort. You're all set!</p>
-
-<p>
-    <a href="{% url 'cohorts:dashboard' %}" role="button">Continue to Dashboard</a>
-</p>
+<section>
+    <div class="card card--medium card--border-left card--accent-green-soft">
+        <p>Thank you for joining the cohort. You're all set!</p>
+        <p>
+            <a href="{% url 'cohorts:dashboard' %}" role="button">Continue to Dashboard</a>
+        </p>
+    </div>
+</section>
 {% endblock %}
 

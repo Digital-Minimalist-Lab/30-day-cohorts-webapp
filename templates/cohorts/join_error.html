@@ -7,10 +7,13 @@
     <h1>Cannot Join Cohort</h1>
 </header>
 
-<p>{{ message }}</p>
-
-<p>
-    <a href="{% url 'cohorts:dashboard' %}" role="button">View Available Cohorts</a>
-</p>
+<section>
+    <div class="card card--medium card--border-left card--accent-red-soft">
+        <p>{{ message }}</p>
+        <p>
+            <a href="{% url 'cohorts:dashboard' %}" role="button" class="secondary">View Available Cohorts</a>
+        </p>
+    </div>
+</section>
 {% endblock %}
 

@@ -7,10 +7,13 @@
     <h1>Payment Cancelled</h1>
 </header>
 
-<p>No worries. You can try again when you're ready.</p>
-
-<p>
-    <a href="{% url 'cohorts:dashboard' %}" role="button">Back to Main Page</a>
-</p>
+<section>
+    <div class="card card--info card--medium">
+        <p>No worries. You can try again when you're ready.</p>
+        <p>
+            <a href="{% url 'cohorts:dashboard' %}" role="button" class="secondary">Back to Dashboard</a>
+        </p>
+    </div>
+</section>
 {% endblock %}
 
