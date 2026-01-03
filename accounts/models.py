@@ -16,6 +16,10 @@ class UserProfile(models.Model):
     email_daily_reminder = models.BooleanField(
         default=False,
     )
+    view_past_submissions = models.BooleanField(
+        default=False,
+        help_text="Toggle to view all past cohort tasks/submissions in the dashboard."
+    )
     timezone = models.CharField(
         max_length=50,
         choices=TIMEZONE_CHOICES,
@@ -34,6 +38,7 @@ class UserProfile(models.Model):
             'timezone': self.timezone,
             'email_product_updates': self.email_product_updates,
             'email_daily_reminder': self.email_daily_reminder,
+            'view_past_submissions': self.view_past_submissions,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
         }

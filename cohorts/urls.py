@@ -24,5 +24,9 @@ urlpatterns = [
     path('cohorts/<int:cohort_id>/entry-survey/', surveys.onboarding_survey_view, name='onboarding_entry_survey'),
 
     # past submissions
-    path('cohorts/<int:cohort_id>/surveys/<slug:survey_slug>/submissions/', surveys.PastSubmissionsListView.as_view(), name='submission_list'),
+    path('cohorts/<int:cohort_id>/tasks/<slug:scheduler_slug>/submissions/', surveys.PastSubmissionsListView.as_view(), name='submission_list'),
+
+    # past submissions (legacy)
+    path('cohorts/<int:cohort_id>/surveys/<slug:survey_slug>/submissions/', surveys.PastSurveysListView.as_view(), name='legacy_submission_list'),
+
 ]

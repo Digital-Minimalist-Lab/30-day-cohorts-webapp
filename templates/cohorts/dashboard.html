@@ -48,4 +48,20 @@
 </section>
 {% endif %}
 
+{% if user.profile.view_past_submissions %}
+<!-- All Tasks / Past Submissions -->
+<section>
+    <h2>Previous Submissions</h2>
+    <ul>
+        {% for scheduler in cohort.task_schedulers.all %}
+            {% if scheduler.id in submitted_scheduler_ids %}
+            <li>
+                <a href="/cohorts/{{ cohort.id }}/tasks/{{ scheduler.slug }}/submissions/">{{ scheduler.survey.title|default:scheduler.slug }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
 {% endblock %}

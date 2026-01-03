@@ -163,7 +163,7 @@ def onboarding_survey_view(request: HttpRequest, cohort_id: int) -> HttpResponse
 
 
 @method_decorator(login_required, name='dispatch')
-class PastSubmissionsListView(ListView):
+class PastSurveysListView(ListView):
     """
     A view which can list survey results. 
     """
@@ -207,5 +207,56 @@ class PastSubmissionsListView(ListView):
             'cohort': self.cohort,
             'summary_template_names': summary_template_names,
             'empty_message': f"No submissions for '{self.survey.name}' yet.",
+        })
+        return context
+
+
+
+
+@method_decorator(login_required, name='dispatch')
+class PastSubmissionsListView(ListView):
+    """
+    A view which can list survey results. 
+    """
+    template_name = "surveys/views/default/past_submissions_list.html"
+
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        """Initialize the cohort and survey."""
+        super().setup(request, *args, **kwargs)
+        self.cohort = get_object_or_404(Cohort, id=self.kwargs['cohort_id'])
+        self.scheduler = get_object_or_404(TaskScheduler, cohort=self.cohort, slug=self.kwargs['scheduler_slug'])
+
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """Verify enrollment before proceeding."""
+        if not Enrollment.objects.filter(user=request.user, cohort=self.cohort).exists():
+            messages.error(request, 'You must be enrolled in this cohort.')
+            return redirect('cohorts:dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        """Return submissions for the user, cohort, and survey, with specific ordering."""
+        return UserSurveyResponse.objects.filter(
+            user=self.request.user,
+            cohort=self.cohort,
+            scheduler=self.scheduler,
+        ).select_related('submission').prefetch_related('submission__answers', 'submission__answers__question').order_by('-submission__completed_at')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Add dynamic page title, empty message, and summary template names."""
+        context = super().get_context_data(**kwargs)
+
+        # Dynamically generate summary template names to try.
+        summary_template_names = [
+            f"surveys/fragments/{self.scheduler.survey.slug}_survey_summary.html",
+            "surveys/fragments/default/survey_summary.html",
+        ]
+
+        logger.info(f"Using summary templates: {summary_template_names}")
+
+        context.update({
+            'page_title': f"Past {self.scheduler.survey.name}s",
+            'cohort': self.cohort,
+            'summary_template_names': summary_template_names,
+            'empty_message': f"No submissions for '{self.scheduler.survey.name}' yet.",
         })
         return context

@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.db.models import Count, Q
 from cohorts.tasks import get_user_tasks, get_upcoming_tasks
 
-from ..models import Cohort, Enrollment
+from ..models import Cohort, Enrollment, UserSurveyResponse
 from ..utils import get_user_today
 
 import logging
@@ -39,6 +39,14 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     tasks = get_user_tasks(request.user, cohort, today)
     upcoming_tasks = get_upcoming_tasks(cohort, today)
 
+    submitted_scheduler_ids = set()
+    if hasattr(request.user, 'profile') and request.user.profile.view_past_submissions:
+        submitted_scheduler_ids = set(UserSurveyResponse.objects.filter(
+            user=request.user,
+            cohort=cohort,
+            submission__isnull=False
+        ).values_list('scheduler_id', flat=True))
+
     context = {
         'enrollment': enrollment,
         'cohort': cohort,
@@ -46,6 +54,7 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         'tasks': tasks,
         'upcoming_tasks': upcoming_tasks,
         'today': today,
+        'submitted_scheduler_ids': submitted_scheduler_ids,
     }
 
     return render(request, 'cohorts/dashboard.html', context)

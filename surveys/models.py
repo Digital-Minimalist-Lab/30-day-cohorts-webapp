@@ -126,3 +126,10 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"Answer to '{self.question.key}' in submission {self.submission.id}"
+
+    @property
+    def display_value(self):
+        """Returns the human-readable label if the question has choices, otherwise the raw value."""
+        if self.question.choices and isinstance(self.question.choices, dict):
+            return self.question.choices.get(self.value, self.value)
+        return self.value
