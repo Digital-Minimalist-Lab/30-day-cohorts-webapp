@@ -28,6 +28,26 @@
         .color-var { color: var(--pico-muted-color); font-family: monospace; font-size: 0.7rem; }
 
         .icon-box { font-size: 1.5rem; }
+
+        /* New Card Row System */
+        .card__row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .card__row > hgroup {
+            margin-bottom: 0;
+        }
+
+        .card__row > span {
+            color: var(--pico-muted-color);
+            font-size: 0.875rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -244,33 +264,136 @@
             </div>
 
             <h3>Themes & Borders</h3>
+            
+            {% for i in "1234" %}
+            {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+            {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+            
+            <h4{% if not forloop.first %} style="margin-top: 2rem;"{% endif %}>{{ label }} Accent</h4>
             <div class="grid">
-                <div class="card card--medium card--info">
-                    <hgroup>
-                        <h3>Info Card</h3>
-                    </hgroup>
-                    <p>Uses a subtle brand-tinted background.</p>
+                <div class="card card--medium card--accent-{{ color }}-soft">
+                    <h3>Default</h3>
+                    <p>Border only</p>
                 </div>
-                <div class="card card--medium card--border-left card--accent-blue-soft">
-                    <hgroup>
-                        <h3>Blue Border</h3>
-                    </hgroup>
-                    <p>Left border with soft blue accent.</p>
+                <div class="card card--medium card--accent-{{ color }}-soft card--border-left">
+                    <h3>Left Border</h3>
+                    <p>Border only</p>
                 </div>
-                <div class="card card--medium card--border-top card--accent-green-soft">
-                    <hgroup>
-                        <h3>Green Border</h3>
-                    </hgroup>
-                    <p>Top border with soft green accent.</p>
+                <div class="card card--medium card--accent-{{ color }}-soft card--border-top">
+                    <h3>Top Border</h3>
+                    <p>Border only</p>
                 </div>
-                <div class="card card--medium card--border-left card--accent-red-soft">
-                    <hgroup>
-                        <h3>Red Border</h3>
-                    </hgroup>
-                    <p>Left border with soft red accent.</p>
+            </div>
+            <div class="grid">
+                <div class="card card--medium card--accent-{{ color }}-soft card--theme-background">
+                    <h3>Background</h3>
+                    <p>With background</p>
                 </div>
-                <!-- TODO TKTKTK apply backgrounds -->
-                <!-- TODO TKTKTK apply edges -->
+                <div class="card card--medium card--accent-{{ color }}-soft card--border-left card--theme-background">
+                    <h3>Left + BG</h3>
+                    <p>With background</p>
+                </div>
+                <div class="card card--medium card--accent-{{ color }}-soft card--border-top card--theme-background">
+                    <h3>Top + BG</h3>
+                    <p>With background</p>
+                </div>
+            </div>
+            <div class="card card--medium card--accent-{{ color }}-soft card--theme-background">
+                <h3>{% if forloop.first %}UI Elements{% else %}Buttons{% endif %}</h3>
+                <div class="grid">
+                    <button>Primary</button>
+                    <button class="secondary">Secondary</button>
+                    <button class="contrast">Contrast</button>
+                    <button disabled>Disabled</button>
+                </div>
+                <br>
+                <form class="grid">
+                    <label>
+                        Text Input
+                        <input type="text" name="text" placeholder="Text input">
+                    </label>
+                    <fieldset>
+                        <legend>Radio Group</legend>
+                        <label>
+                            <input type="radio" name="radio">
+                            Radio 1
+                        </label>
+                        <label>
+                            <input type="radio" name="radio">
+                            Radio 2
+                        </label>
+                        <label>
+                            <input type="radio" name="radio" aria-invalid="true">
+                            Radio 3
+                        </label>
+                        <label>
+                            <input type="radio" name="radio" aria-invalid="true" required>
+                            Radio 3
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Checkbox Group</legend>
+                        <label>
+                            <input type="checkbox" name="checkbox" checked>
+                            Checkbox 1
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox">
+                            Checkbox 2
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox" aria-invalid="true" checked>
+                            Checkbox 3
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox" aria-invalid="true">
+                            Checkbox 4
+                        </label>
+                    </fieldset>
+                </form>
+            </div>
+            {% endfor %}
+        </section>
+
+        <!-- Card Rows (New System) -->
+        <section class="doc-section">
+            <h2>Card Rows (New System)</h2>
+            <p>Use <code>.card__row</code> to create right-justified layouts. Works with headers, hgroups, and lists.</p>
+            
+            <!-- Basic Row -->
+            <div class="card card--medium">
+                <div class="card__row">
+                    <h3>Basic Row</h3>
+                    <span>Meta Info</span>
+                </div>
+                <p>Content body.</p>
+            </div>
+
+            <!-- With Hgroup -->
+            <div class="card card--medium">
+                <header class="card__row">
+                    <hgroup>
+                        <h3>Hgroup Title</h3>
+                        <p>Subtitle content</p>
+                    </hgroup>
+                    <span>Meta Info</span>
+                </header>
+                <p>The hgroup margin is automatically handled inside a row.</p>
+            </div>
+
+            <!-- List Integration -->
+            <div class="card card--medium">
+                <h3>List Rows</h3>
+                <ul>
+                    <li class="card__row">
+                        <p>List Item 1</p>
+                        <span><p>Status: OK</p></span>
+                    </li>
+                    <li class="card__row">
+                        <p>List Item 2</p>
+                        <span><p>Status: Pending</p></span>
+                    </li>
+                </ul>
             </div>
         </section>
 

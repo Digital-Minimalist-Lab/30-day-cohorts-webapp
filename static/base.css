@@ -5,37 +5,40 @@
 [data-theme="light"] {
 	color-scheme: light;
 
-	/* Brand colors */
+	/* Brand colors (primary buttons) - darker blue for primary actions */
 	--brand: #2563b5;
 	--brand-hover: #1e4a8a;
 
+	/* Secondary button colors - aligned with accent-blue */
+	--secondary-blue: var(--accent-blue);
+	--secondary-blue-hover: var(--accent-blue-hover);
+
 	/* Accent colors */
 	/* we want a hover, normal, soft, and background variant for all colors */
+
+	/* Green - success/positive */
 	--accent-green: #2f9e7d;
-	--accent-green-hover: #227054;
-	--accent-green-background: #f5f9fd;
-	--accent-green-soft: #d6ede3;
+	--accent-green-hover: #267a63;
+	--accent-green-background: #f0fdf7;
+	--accent-green-soft: #a7dcc8;
 
-
+	/* Blue - info/neutral */
 	--accent-blue: #5b9bd5;
 	--accent-blue-hover: #4a8bc7;
-	--accent-blue-background: color-mix(in srgb, var(--pico-primary) 3%, var(--pico-card-background-color));
-	--accent-blue-soft: #d8e6f9;
+	--accent-blue-background: #f0f7fd;
+	--accent-blue-soft: #b3d7f0;
 
+	/* Red - danger/error */
 	--accent-red: #dc2626;
 	--accent-red-hover: #b91c1c;
 	--accent-red-background: #fef2f2;
-	--accent-red-soft: #fecaca;
+	--accent-red-soft: #f5a3a3;
 
+	/* Amber/Yellow - warning/attention */
 	--accent-amber: #f59e0b;
-	--accent-amber-hover: #d18200;
-	--accent-amber-background: #fef9e7;
-	--accent-amber-soft: #fff3cd;
-
-
-	/* Secondary button colors */
-	--secondary-blue: #5b9bd5;
-	--secondary-blue-hover: #4a8bc7;
+	--accent-amber-hover: #d97706;
+	--accent-amber-background: #fffbf0;
+	--accent-amber-soft: #fcd34d;
 
 	/* Hero gradient colors */
 	--hero-gradient-start: #e8f2fc;
@@ -77,6 +80,10 @@
 	--pico-contrast-hover-background: var(--accent-red-hover);
 	--pico-contrast-hover-border: var(--accent-red-hover);
 	--pico-contrast-inverse: var(--white);
+
+	/* form colors (soft red) */
+	--pico-form-element-invalid-border-color: var(--accent-red);
+	--pico-form-element-invalid-background-color: var(--accent-red-background);
 
 	--pico-block-spacing-vertical: 2rem;
 	/* --pico-typography-spacing-vertical: 2rem; */
@@ -557,10 +564,9 @@ div {
 	--card-border-color: var(--pico-border-color);
 
 	padding: 1.5rem;
-	border: 1px solid var(--card-border-color);
+	border: 1px solid var(--card-border-color); /* border color always applies, but background needs to be opted in */
 	border-radius: var(--radius);
 	box-shadow: none;
-	background: var(--card-background-color);
 	color: var(--card-foreground-color);
 }
 
@@ -593,38 +599,48 @@ div {
 }
 
 /** 
-	Card Modifiers - Colors (override variables)
+	Card Modifiers - Colors and Borders
 **/
-.card--info {
-	--card-background-color: color-mix(in srgb, var(--pico-primary) 3%, var(--pico-card-background-color));
-	--card-border-color: color-mix(in srgb, var(--pico-primary) 25%, var(--pico-border-color));
-	--card-foreground-color: var(--pico-color);
-}
-
-/* Card Modifiers - Accent colors and borders */
 .card--border-top {
 	border-top: 4px solid var(--card-border-color);
 }
 
+.card--info,
+.card--warn,
+.card--danger,
+.card--success,
 .card--border-left {
 	border-left: 4px solid var(--card-border-color);
 }
 
+.card--info,
 .card--accent-blue-soft {
 	--card-border-color: var(--accent-blue-soft);
+	--card-background-color: var(--accent-blue-background);
+}
+
+.card--danger,
+.card--accent-red-soft {
+	--card-border-color: var(--accent-red-soft);
+	--card-background-color: var(--accent-red-background);
+}
+
+.card--warn,
+.card--accent-amber-soft {
+	--card-border-color: var(--accent-amber-soft);
+	--card-background-color: var(--accent-amber-background);
 }
 
 .card--success,
 .card--accent-green-soft {
 	--card-border-color: var(--accent-green-soft);
+	--card-background-color: var(--accent-green-background);
 }
 
-
-.card--danger,
-.card--warn,
-.card--accent-red-soft {
-	--card-border-color: var(--accent-red-soft);
+.card--theme-background {
+	background-color: var(--card-background-color);
 }
+
 
 /** 
 	Card Modifiers - Sizes (override variables)
