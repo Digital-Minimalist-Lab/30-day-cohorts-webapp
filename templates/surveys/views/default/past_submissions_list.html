@@ -7,15 +7,23 @@
     <h1>{{ page_title }}</h1>
 </header>
 
-{% if object_list %}
-    {% for response in object_list %}
-      {% include summary_template_names %}
-    {% endfor %}
-{% else %}
-    <p>{{ empty_message }}</p>
-{% endif %}
+<section>
+    {% if object_list %}
+    <div class="card__stack">
+        {% for response in object_list %}
+        {% include summary_template_names %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card card--info card--medium">
+        <p>{{ empty_message }}</p>
+    </div>
+    {% endif %}
+</section>
 
-<p>
-    <a href="{% url 'cohorts:dashboard' %}">Back to Home</a>
-</p>
+<section>
+    <p>
+        <a href="{% url 'cohorts:dashboard' %}">← Back to Dashboard</a>
+    </p>
+</section>
 {% endblock %}

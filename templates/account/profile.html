@@ -7,41 +7,36 @@
     <h1>Profile</h1>
 </header>
 
-<!-- Account Info -->
 <section>
-    <h2>Account</h2>
-    <div class="card card--info card--medium">
-        <p><strong>Email:</strong> {{ user.email }}</p>
-    </div>
-</section>
 
-<!-- Settings Form -->
-<section>
-    <h2>Settings</h2>
     <div class="card card--medium">
+            <div>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
         <form method="post">
             {% csrf_token %}
 
             {% for field in form %}
             <div>
-                    <!-- <label for="{{ field.id_for_label }}"> -->
-                        {% if field.field.widget.input_type == 'checkbox' %}
-                        <!-- <div style="display: flex; align-items: center; gap: 10rem;"> -->
+                {% if field.field.widget.input_type == 'checkbox' %}
+                    <label for="{{ field.id_for_label }}" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0rem 1rem; margin-bottom: 0.5rem;">
+                        <span style="display: flex; align-items: center; gap: 0.5rem;">
                             {{ field }}
                             {{ field.label }}
-                        <!-- </div> -->
-                        {% else %}
-                            {{ field.label }}
-                            {{ field }}
-                        {% endif %}
-
+                        </span>
                         {% if field.help_text %}
-                        <small id="{{ field.auto_id}}_helptext">{{ field.help_text }}</small>
+                        <small style="color: var(--pico-muted-color);">{{ field.help_text }}</small>
                         {% endif %}
-                    <!-- </label> -->
-                    {% if field.errors %}
+                    </label>
+                {% else %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<small id="{{ field.auto_id}}_helptext">{{ field.help_text }}</small>{% endif %}
+                {% endif %}
+                {% if field.errors %}
                     <small>{{ field.errors.0 }}</small>
-                    {% endif %}
+                {% endif %}
             </div>
             {% endfor %}
 
@@ -53,7 +48,7 @@
 <!-- Privacy & Data -->
 <section>
     <h2>Privacy & Data</h2>
-    <div class="card__stack">
+    <div class="grid">
         <div class="card card--info card--medium">
             <h3>Export your data</h3>
             <p>You have full control over your data. Export it anytime as JSON.</p>
