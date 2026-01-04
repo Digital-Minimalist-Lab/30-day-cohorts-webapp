@@ -3,6 +3,7 @@ Django settings for digital minimalist cohorts project.
 """
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 import dj_database_url
 
@@ -17,8 +18,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 LANDING_ONLY = os.getenv('LANDING_ONLY', 'False') == 'True'
 
@@ -131,7 +130,60 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SITE_ID = 1
+# Site Configuration
+# SITE_DOMAIN is the domain name of the site, e.g. "example.com"
+# SITE_ID is the ID of the Site object in the database
+# SITE_NAME is the name of the site, e.g. "My Website"
+# ALLOWED_HOSTS is a list of host/domain names that the Django server can serve.
+# CSRF_TRUSTED_ORIGINS is a list of allowed origins for CSRF checks.
+SITE_ID = int(os.getenv('SITE_ID', 1))
+
+# convenience URLs, invented by us.
+SITE_NAME = os.getenv('SITE_NAME', 'Intentional Tech')
+SITE_DOMAIN = os.getenv('SITE_DOMAIN')
+
+# incoming traffic and frontend
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if host.strip()]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
+
+def configure_site_settings(site_domain, allowed_hosts, csrf_trusted_origins):
+    """
+    Consolidates site configuration logic.
+    1. Infers SITE_DOMAIN if missing.
+    2. Adds SITE_DOMAIN to ALLOWED_HOSTS.
+    3. Adds ALLOWED_HOSTS to CSRF_TRUSTED_ORIGINS.
+    """
+    # 1. Infer SITE_DOMAIN if not set
+    if not site_domain:
+        site_domain = 'localhost:8000'
+        for host in allowed_hosts:
+            if host not in ['*', 'localhost', '127.0.0.1']:
+                site_domain = host
+                break
+    
+    # 2. Ensure SITE_DOMAIN is in ALLOWED_HOSTS
+    if site_domain:
+        # Handle schemes and ports
+        parse_target = site_domain if '://' in site_domain else f'http://{site_domain}'
+        try:
+            parsed = urlparse(parse_target)
+            domain_host = parsed.netloc.rsplit(':', 1)[0] if parsed.port else parsed.netloc
+            
+            if domain_host and domain_host not in allowed_hosts:
+                allowed_hosts.insert(0, domain_host)
+        except ValueError:
+            pass
+
+    # 3. Sync ALLOWED_HOSTS to CSRF_TRUSTED_ORIGINS
+    for host in allowed_hosts:
+        if host not in ['*', 'localhost', '127.0.0.1']:
+            origin = f'https://{host}'
+            if origin not in csrf_trusted_origins:
+                csrf_trusted_origins.append(origin)
+                
+    return site_domain, allowed_hosts, csrf_trusted_origins
+
+SITE_DOMAIN, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS = configure_site_settings(SITE_DOMAIN, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS)
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -152,7 +204,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django Allauth Configuration
-SITE_ID = 1
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -195,9 +246,6 @@ STRIPE_ENABLED = os.getenv('STRIPE_ENABLED', 'True') == 'True'
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
-
-# Site URL
-SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')
 
 # WhiteNoise Configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -293,4 +341,3 @@ if SENTRY_DSN != "":
         # run the profiler on when there is an active transaction
         profile_lifecycle="trace",
     )
-

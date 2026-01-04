@@ -13,7 +13,7 @@ Taking a few minutes each day to reflect helps you stay mindful and intentional 
 ---
 
 You're receiving this email because you enabled task reminders in your profile.
-Update your preferences: {{ site_url }}/accounts/profile/
+Update your preferences: {{ account_profile_url }}
 
 Intentional Tech
 Helping you reclaim your attention, one day at a time.

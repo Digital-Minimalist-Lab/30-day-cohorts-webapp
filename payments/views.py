@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpRequest
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
 from cohorts.models import Cohort, Enrollment
 import stripe
 import logging
@@ -41,6 +42,10 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
     else:
         amount_cents = cohort.minimum_price_cents
     
+    current_site = get_current_site(request)
+    protocol = request.scheme
+    site_url = f"{protocol}://{current_site.domain}"
+
     try:
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -56,8 +61,8 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
                 'quantity': 1,
             }],
             mode='payment',
-            success_url=settings.SITE_URL + '/cohort/join/success/',
-            cancel_url=settings.SITE_URL + '/cohort/join/checkout/',
+            success_url=site_url + '/cohort/join/success/',
+            cancel_url=site_url + '/cohort/join/checkout/',
             client_reference_id=f'{request.user.id}:{cohort.id}:{amount_cents}',
             metadata={
                 'user_id': request.user.id,
@@ -155,4 +160,3 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
                 logger.error(f"Webhook processing error for client_ref {client_ref}: {str(e)}")
     
     return HttpResponse(status=200)
-

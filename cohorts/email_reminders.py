@@ -24,6 +24,8 @@ from django.template import TemplateDoesNotExist
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.contrib.sites.models import Site
+from django.urls import reverse
 
 from accounts.models import UserProfile
 from cohorts.tasks import get_user_tasks, PendingTask
@@ -176,10 +178,15 @@ def _send_email_with_template(user: AbstractUser, pending_tasks: List[PendingTas
         pending_tasks: List of PendingTask objects to include
         template_name: Template name without extension (e.g., 'emails/task_reminder')
     """
+    current_site = Site.objects.get_current()
+    protocol = 'https' if not settings.DEBUG else 'http'
+    site_url = f"{protocol}://{current_site.domain}"
+
     context = {
         'user': user,
         'pending_tasks': pending_tasks,
-        'site_url': settings.SITE_URL,
+        'site_url': site_url,
+        'account_profile_url': f"{site_url}{reverse('accounts:profile')}",
     }
 
     # Try to render custom templates, fall back to default
@@ -222,4 +229,3 @@ def send_task_reminder_email(user: AbstractUser, pending_tasks: List[PendingTask
     internal helper names.
     """
     _send_email_with_template(user, pending_tasks, "emails/task_reminder")
-

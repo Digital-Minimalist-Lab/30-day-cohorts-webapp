@@ -1,8 +1,9 @@
 
-To set up railway we need 3 services:
+To set up railway we need 4 services:
 - The cohorts app itself
 - a qcluster
 - a postgres db. 
+- An email cron service
 
 The postgres DB is a "standard" database. Make sure it exports variables to both qcluster and teh cohorts app.
 
