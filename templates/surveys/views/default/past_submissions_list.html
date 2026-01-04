@@ -9,11 +9,9 @@
 
 <section>
     {% if object_list %}
-    <div class="card__stack">
-        {% for response in object_list %}
-        {% include summary_template_names %}
-        {% endfor %}
-    </div>
+    {% for response in object_list %}
+    {% include summary_template_names %}
+    {% endfor %}
     {% else %}
     <div class="card card--info card--medium">
         <p>{{ empty_message }}</p>

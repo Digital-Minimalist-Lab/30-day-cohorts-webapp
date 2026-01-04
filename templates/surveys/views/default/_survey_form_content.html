@@ -3,7 +3,7 @@
     <div>
         {% for section, items in form.get_fields_by_section %}
             {% if section %}
-            <section class="card card--medium card--border-left card--accent-blue-soft">
+            <section class="card card--medium card--accent-blue-soft">
                 <h3>{{ section.title }}</h3>
                 {% if section.description %}
                 <p>{{ section.description | safe }}</p>
@@ -11,11 +11,13 @@
             {% endif %}
             
             {% for item in items %}
+                {% if item.strength %}
+                <div class="card card--{{ item.strength }} card--small card--border-left card--accent-blue-soft">
+                {% endif %}
+
                 {% if item.is_info %}
                     {# Display-only info text #}
-                    <p class="card card--info card--small card--border-left card--accent-blue-soft">
-                        {{ item.text | safe }}
-                    </p>
+                    <p>{{ item.text | safe }}</p>
                 {% else %}
                     {# Regular form field #}
                     {% with field=item.field %}
@@ -42,7 +44,10 @@
 
                     {% endwith %}
 
+                {% endif %}
 
+                {% if item.strength %}
+                </div>
                 {% endif %}
             {% endfor %}
             

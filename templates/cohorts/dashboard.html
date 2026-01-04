@@ -19,17 +19,15 @@
     <h2>Today's Tasks</h2>
 
     {% if tasks %}
-    <div class="card__stack">
-        {% for task in tasks %}
-        <div class="card card--medium card--border-left card--accent-green-soft">
-            <div class="card__header">
-                <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
-                {% if task.estimated_time_minutes %}<span class="card__meta">~{{ task.estimated_time_minutes }} min</span>{% endif %}
-            </div>
-            <p>{{ task.description|safe }}</p>
+    {% for task in tasks %}
+    <div class="card card--medium card--border-left card--accent-green-soft">
+        <div class="card__header">
+            <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
+            {% if task.estimated_time_minutes %}<span class="card__meta">~{{ task.estimated_time_minutes }} min</span>{% endif %}
         </div>
-        {% endfor %}
+        <p>{{ task.description|safe }}</p>
     </div>
+    {% endfor %}
     {% else %}
     <div class="card card--info card--medium">
         <p>✨ There's nothing to do but seize the day!</p>

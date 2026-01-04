@@ -86,12 +86,14 @@ class DynamicSurveyForm(forms.Form):
                     current_items.append({
                         'is_info': True,
                         'text': question.text,
+                        'strength': question.strength,
                         'key': question.key
                     })
                 elif question.key in self.fields:
                     current_items.append({
                         'is_info': False,
-                        'field': self[question.key]
+                        'field': self[question.key],
+                        'strength': question.strength,
                     })
             
             sections.append((section, current_items))

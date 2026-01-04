@@ -10,13 +10,28 @@
 	--brand-hover: #1e4a8a;
 
 	/* Accent colors */
+	/* we want a hover, normal, soft, and background variant for all colors */
 	--accent-green: #2f9e7d;
+	--accent-green-hover: #227054;
+	--accent-green-background: #f5f9fd;
 	--accent-green-soft: #d6ede3;
+
+
+	--accent-blue: #5b9bd5;
+	--accent-blue-hover: #4a8bc7;
+	--accent-blue-background: color-mix(in srgb, var(--pico-primary) 3%, var(--pico-card-background-color));
 	--accent-blue-soft: #d8e6f9;
+
 	--accent-red: #dc2626;
 	--accent-red-hover: #b91c1c;
+	--accent-red-background: #fef2f2;
 	--accent-red-soft: #fecaca;
+
 	--accent-amber: #f59e0b;
+	--accent-amber-hover: #d18200;
+	--accent-amber-background: #fef9e7;
+	--accent-amber-soft: #fff3cd;
+
 
 	/* Secondary button colors */
 	--secondary-blue: #5b9bd5;
@@ -456,11 +471,9 @@ details p:last-child {
 .flex-grow { flex-grow: 1; }
 
 
-/* Card Layout Helpers */
-.card__stack {
-	display: flex;
-	flex-direction: column;
-	gap: var(--card-stack-gap);
+/* cards need to be spaced out with a gap */
+.card:not(section) {
+	margin-bottom: var(--card-stack-gap);
 }
 
 .card__header {
@@ -581,9 +594,9 @@ div {
 	Card Modifiers - Colors (override variables)
 **/
 .card--info {
-	--card-foreground-color: var(--pico-muted-color);
 	--card-background-color: color-mix(in srgb, var(--pico-primary) 3%, var(--pico-card-background-color));
 	--card-border-color: color-mix(in srgb, var(--pico-primary) 25%, var(--pico-border-color));
+	--card-foreground-color: var(--pico-color);
 }
 
 /* Card Modifiers - Accent colors and borders */
@@ -599,10 +612,14 @@ div {
 	--card-border-color: var(--accent-blue-soft);
 }
 
+.card--success,
 .card--accent-green-soft {
 	--card-border-color: var(--accent-green-soft);
 }
 
+
+.card--danger,
+.card--warn,
 .card--accent-red-soft {
 	--card-border-color: var(--accent-red-soft);
 }

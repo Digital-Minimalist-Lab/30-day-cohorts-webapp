@@ -90,6 +90,7 @@ COHORT_DESIGN_SCHEMA = {
                                             "type": {"enum": ["text", "textarea", "integer", "decimal", "radio", "info"]},
                                             "is_required": {"type": "boolean"},
                                             "choices": {"type": ["object", "null"]},
+                                            "strength": {"enum": ["info", "warn", "success", "danger"]},
                                         },
                                         "required": ["key", "text", "type"]
                                     }
@@ -306,6 +307,7 @@ def _questions_changed(survey: Survey, survey_data: dict) -> bool:
                 "order": order,
                 "is_required": q.get("is_required", True),
                 "choices": q.get("choices"),
+                "strength": q.get("strength", ""),
             }
             order += 1
 
@@ -318,6 +320,7 @@ def _questions_changed(survey: Survey, survey_data: dict) -> bool:
             "order": q.order,
             "is_required": q.is_required,
             "choices": q.choices,
+            "strength": q.strength,
         }
         for q in survey.questions.select_related('section').all()
     }
@@ -424,7 +427,9 @@ def _create_questions_for_survey(survey: Survey, survey_data: dict) -> None:
                 order=question_order,
                 is_required=question_data.get("is_required", True),
                 choices=question_data.get("choices"),
+                strength=question_data.get("strength"),
             )
+
             question_order += 1
 
 

@@ -66,6 +66,12 @@ class Question(models.Model):
         RADIO = 'radio', _('Radio Select')
         INFO = 'info', _('Information (display only)')
 
+    class Strength(models.TextChoices):
+        INFO = 'info', _('Information')
+        WARN = 'warn', _('Warning')
+        SUCCESS = 'success', _('Success')
+        DANGER = 'danger', _('Danger')
+
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='questions')
     key = models.CharField(max_length=100, help_text="A unique key for this question within the survey. May be used in templates.")
     text = models.CharField(max_length=3000, help_text="The question text presented to the user.")
@@ -75,6 +81,9 @@ class Question(models.Model):
     is_required = models.BooleanField(default=True)
     # For radio/select choices, stored as JSON: {"1": "Low", "5": "High"}
     choices = models.JSONField(blank=True, null=True, help_text="JSON object for choices if question_type is 'radio'.")
+    
+    # for info type: add a 'strength' field (WARN, INFO, SUCCESS, DANGER) 
+    strength = models.CharField(max_length=20, choices=Strength.choices, blank=True, null=True)
 
     class Meta:
         ordering = ['survey', 'order']

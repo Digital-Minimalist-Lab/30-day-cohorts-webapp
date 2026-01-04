@@ -11,7 +11,7 @@ class QuestionInline(admin.TabularInline):
     model = Question
     extra = 1
     ordering = ['order']
-    fields = ('order', 'section', 'key', 'text', 'question_type', 'is_required', 'choices')
+    fields = ('order', 'section', 'key', 'text', 'question_type', 'is_required', 'choices', 'strength')
     list_display = ('order', 'section', 'text', 'question_type', 'is_required')
     # A simple way to suggest a key from the text, though it won't auto-populate dynamically.
     # For a better UX, custom JavaScript would be needed.

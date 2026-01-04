@@ -1,7 +1,7 @@
 {
   "name": "30-Day Digital Declutter Cohort",
   "is_paid": false,
-  "minimum_price_cents": 2000,
+  "minimum_price_cents": 0,
   "max_seats": 100,
   "dates": {
     "enroll_start": "2025-12-01",
@@ -14,7 +14,7 @@
     {
       "frequency": "ONCE",
       "offset_days": 0,
-      "offset_from": "COHORT_START",
+      "offset_from": "ENROLL_START",
       "is_cumulative": false,
       "task_title_template": "Complete Your Entry Survey",
       "task_description_template": "Welcome to the cohort! Please complete your entry survey to establish your baseline.",
@@ -23,8 +23,8 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 0,
-      "offset_from": "COHORT_START",
+      "offset_days": 3,
+      "offset_from": "ENROLL_START",
       "is_cumulative": true,
       "task_title_template": "Reconnect: Choose Your Anchor Activities",
       "task_description_template": "Define the meaningful activities you'll reconnect with this month.",
@@ -33,18 +33,8 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 14,
-      "offset_from": "COHORT_START",
-      "is_cumulative": true,
-      "task_title_template": "Day 1: Environment Redesign",
-      "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes.",
-      "slug": "day-1-environment-redesign",
-      "survey_id": "day-1-environment-redesign"
-    },
-    {
-      "frequency": "ONCE",
-      "offset_days": 0,
-      "offset_from": "COHORT_START",
+      "offset_days": 6,
+      "offset_from": "ENROLL_START",
       "is_cumulative": true,
       "task_title_template": "Mental Contrasting: Envision Your Future",
       "task_description_template": "Imagine two futures and clarify what you're moving toward.",
@@ -61,7 +51,17 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 20,
+      "offset_days": 0,
+      "offset_from": "COHORT_START",
+      "is_cumulative": true,
+      "task_title_template": "Day 1: Environment Redesign",
+      "task_description_template": "Reshape your digital environment to serve you instead of being pulled by it. Estimated time: 30-60 minutes.",
+      "slug": "day-1-environment-redesign",
+      "survey_id": "day-1-environment-redesign"
+    },
+    {
+      "frequency": "ONCE",
+      "offset_days": 7,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 1",
@@ -71,7 +71,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 27,
+      "offset_days": 14,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 2",
@@ -81,7 +81,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 34,
+      "offset_days": 21,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 3",
@@ -91,7 +91,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 41,
+      "offset_days": 28,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Reflection: Week 4",
@@ -101,7 +101,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 15,
+      "offset_days": 2,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 1",
@@ -111,7 +111,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 21,
+      "offset_days": 7,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 2",
@@ -121,7 +121,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 28,
+      "offset_days": 14,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 3",
@@ -131,7 +131,7 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 35,
+      "offset_days": 21,
       "offset_from": "COHORT_START",
       "is_cumulative": true,
       "task_title_template": "Weekly Planning: Week 4",
@@ -141,8 +141,8 @@
     },
     {
       "frequency": "ONCE",
-      "offset_days": 42,
-      "offset_from": "COHORT_START",
+      "offset_days": 0,
+      "offset_from": "COHORT_END",
       "is_cumulative": true,
       "task_title_template": "Exit Survey - Celebrate Your Progress",
       "task_description_template": "Reflect on your 30-day journey and see how far you've come.",
@@ -189,7 +189,7 @@
             },
             {
               "key": "sc_3_lose_track_time",
-              "text": "I often lose track of time whie scrolling on my phone.",
+              "text": "I often lose track of time while scrolling on my phone.",
               "type": "radio",
               "choices": {
                 "1": "Strongly disagree",
@@ -514,6 +514,21 @@
           "title": "I. Entry Conclusion",
           "description": "Thank you for taking the time to assess yourself honestly. This will help you assess your progress and us assess the efficacy of this project.",
           "questions": [
+            {
+              "key": "consent_info",
+              "text": "I acknowledge this is not therapy and no members of the development team are licensed therapists or counselors. If you are suffering with mental illness or severe distress, we strongly advise seeking out professional help with your mental health.",
+              "type": "info",
+              "strength": "warn"
+            },
+            {
+              "key": "therapy_consent",
+              "text": "I acknowledge this is not therapy and no members of the development team are licensed therapists or counselors. If you are suffering with mental illness or severe distress, we strongly advise seeking out professional help with your mental health.",
+              "type": "radio",
+              "choices": {
+                "0": "Yes"
+              },
+              "is_required": true
+            }
           ]
         }
       ],
