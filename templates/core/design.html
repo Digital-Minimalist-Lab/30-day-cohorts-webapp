@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System - 30 Day Cohorts</title>
+    <!-- Pico CSS (Dependency) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <!-- Custom Design System -->
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    
+    <style>
+        /* Documentation specific styles */
+        body { padding-bottom: 5rem; }
+        .doc-section { margin-bottom: 4rem; border-bottom: 1px solid var(--pico-border-color); padding-bottom: 2rem; }
+        
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .color-card { 
+            border: 1px solid var(--pico-border-color); 
+            border-radius: var(--radius); 
+            overflow: hidden; 
+            font-size: 0.8rem;
+        }
+        .color-swatch { height: 80px; width: 100%; }
+        .color-info { padding: 0.5rem; background: var(--pico-card-background-color); }
+        .color-name { font-weight: bold; display: block; }
+        .color-var { color: var(--pico-muted-color); font-family: monospace; font-size: 0.7rem; }
+
+        .icon-box { font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <hgroup>
+            <h1>Design System</h1>
+            <p>Reference for UI components, colors, and typography.</p>
+        </hgroup>
+
+        <!-- Colors -->
+        <section class="doc-section">
+            <h2>Colors</h2>
+            <h3>Brand</h3>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--brand);"></div>
+                    <div class="color-info"><span class="color-name">Brand</span><span class="color-var">--brand</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--brand-hover);"></div>
+                    <div class="color-info"><span class="color-name">Brand Hover</span><span class="color-var">--brand-hover</span></div>
+                </div>
+            </div>
+
+            <h3>Accents</h3>
+            <div class="color-grid" style="margin-top: 1rem;">
+                <!-- Green -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-green);"></div>
+                    <div class="color-info"><span class="color-name">Green</span><span class="color-var">--accent-green</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-green-soft);"></div>
+                    <div class="color-info"><span class="color-name">Green Soft</span><span class="color-var">--accent-green-soft</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-green-background);"></div>
+                    <div class="color-info"><span class="color-name">Green BG</span><span class="color-var">--accent-green-background</span></div>
+                </div>
+
+                <!-- Blue -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-blue);"></div>
+                    <div class="color-info"><span class="color-name">Blue</span><span class="color-var">--accent-blue</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-blue-soft);"></div>
+                    <div class="color-info"><span class="color-name">Blue Soft</span><span class="color-var">--accent-blue-soft</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-blue-background);"></div>
+                    <div class="color-info"><span class="color-name">Blue BG</span><span class="color-var">--accent-blue-background</span></div>
+                </div>
+
+                <!-- Red -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-red);"></div>
+                    <div class="color-info"><span class="color-name">Red</span><span class="color-var">--accent-red</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-red-soft);"></div>
+                    <div class="color-info"><span class="color-name">Red Soft</span><span class="color-var">--accent-red-soft</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-red-background);"></div>
+                    <div class="color-info"><span class="color-name">Red BG</span><span class="color-var">--accent-red-background</span></div>
+                </div>
+
+                <!-- Amber -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-amber);"></div>
+                    <div class="color-info"><span class="color-name">Amber</span><span class="color-var">--accent-amber</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-amber-soft);"></div>
+                    <div class="color-info"><span class="color-name">Amber Soft</span><span class="color-var">--accent-amber-soft</span></div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--accent-amber-background);"></div>
+                    <div class="color-info"><span class="color-name">Amber BG</span><span class="color-var">--accent-amber-background</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="doc-section">
+            <h2>Typography</h2>
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <p>Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p><small>Small text for disclaimers or secondary information.</small></p>
+            <blockquote>
+                "Digital minimalism is a philosophy of technology use in which you focus your online time on a small number of carefully selected and optimized activities that strongly support things you value, and then happily miss out on everything else."
+                <footer><cite>— Cal Newport</cite></footer>
+            </blockquote>
+        </section>
+
+        <!-- Buttons -->
+        <section class="doc-section">
+            <h2>Buttons</h2>
+            <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                <div>
+                    <button>Primary</button>
+                    <small>Default (Brand)</small>
+                </div>
+                <div>
+                    <button class="secondary">Secondary</button>
+                    <small>Secondary Blue</small>
+                </div>
+                <div>
+                    <button class="contrast">Contrast</button>
+                    <small>Accent Red</small>
+                </div>
+                <div>
+                    <button disabled>Disabled</button>
+                    <small>Disabled State</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero -->
+        <section class="doc-section">
+            <h2>Hero Section</h2>
+            <div class="hero">
+                <h1>
+                    <span class="hero-line-small">30-Day Cohort</span>
+                    <span class="hero-line-large">Digital Declutter</span>
+                </h1>
+                <h2>Reclaim your attention, reconnect with your values, and build a healthier relationship with technology.</h2>
+                <div class="hero-cta">
+                    <button class="btn-primary-large">Join the Cohort</button>
+                    <p class="hero-meta">Next cohort starts January 1st</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cards -->
+        <section class="doc-section">
+            <h2>Cards</h2>
+            
+            <h3>Sizes</h3>
+            <div class="card card--small">
+                <hgroup>
+                    <p>Small</p>
+                    <h3>Small Card</h3>
+                </hgroup>
+                <p>Minimal padding. Good for stats or grid items.</p>
+            </div>
+            <div class="card card--medium">
+                <hgroup>
+                    <p>Medium</p>
+                    <h3>Medium Card</h3>
+                </hgroup>
+                <p>Default size. Good for most content sections.</p>
+            </div>
+            
+            <div class="card card--large">
+                <hgroup>
+                    <p>Large</p>
+                    <h2>Large Card</h2>
+                </hgroup>
+                <p>More padding and larger typography. Intended for main content blocks.</p>
+                <ul>
+                    <li>Flush list item example</li>
+                    <li>Another item <span class="list__meta">Meta</span></li>
+                </ul>
+            </div>
+            <div class="card card--xl">
+                <hgroup>
+                    <p>XL</p>
+                    <h2>Extra Large Card</h2>
+                </hgroup>
+                <p>Centered content, maximum padding. Used for major page sections or landing page content.</p>
+                <div class="grid">
+                    <div class="card card--small card--info">
+                        <hgroup>
+                            <h3>Nested Card Grids</h3>
+                        </hgroup>
+                        <p>Side by side</p>
+                    </div>
+                    <div class="card card--small card--info">
+                        <hgroup>
+                            <h3>Nested Card Grids</h3>
+                        </hgroup>
+                        <p>Vertical when space decreases</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card--xl">
+                <div class="divider"></div>
+
+                <h2>Card Stack</h2>
+                <div class="card card--medium card--info card--border-left">
+                    <hgroup>
+                        <h3>Card Stack</h3>
+                    </hgroup>
+                    <p>Content</p>
+                </div>
+                <div class="card card--medium card--info card--border-left">
+                    <hgroup>
+                        <h3>Card Stack</h3>
+                    </hgroup>
+                    <p>Content</p>
+                </div>
+                <div class="card card--medium card--info card--border-left">
+                    <hgroup>
+                        <h3>Card Stack</h3>
+                    </hgroup>
+                    <p>Content</p>
+                </div>            
+            </div>
+
+            <h3>Themes & Borders</h3>
+            <div class="grid">
+                <div class="card card--medium card--info">
+                    <hgroup>
+                        <h3>Info Card</h3>
+                    </hgroup>
+                    <p>Uses a subtle brand-tinted background.</p>
+                </div>
+                <div class="card card--medium card--border-left card--accent-blue-soft">
+                    <hgroup>
+                        <h3>Blue Border</h3>
+                    </hgroup>
+                    <p>Left border with soft blue accent.</p>
+                </div>
+                <div class="card card--medium card--border-top card--accent-green-soft">
+                    <hgroup>
+                        <h3>Green Border</h3>
+                    </hgroup>
+                    <p>Top border with soft green accent.</p>
+                </div>
+                <div class="card card--medium card--border-left card--accent-red-soft">
+                    <hgroup>
+                        <h3>Red Border</h3>
+                    </hgroup>
+                    <p>Left border with soft red accent.</p>
+                </div>
+                <!-- TODO TKTKTK apply backgrounds -->
+                <!-- TODO TKTKTK apply edges -->
+            </div>
+        </section>
+
+        <!-- Special Card Lahouts -->
+        <section class="doc-section">
+            <h2>Special Card Layouts</h2>
+            <div class="card card--medium card--border-left card--accent-green-soft">
+                <div class="card__header">
+                    <h3><a href="/cohorts/10/tasks/weekly-planning-week-1/0/">Card with meta header</a></h3>
+                    <span class="card__meta">meta information</span>
+                </div>
+                <p>Something goes here</p>
+            </div>
+        
+            <article class="card card--medium">
+                <!-- <div class="card__header"> -->
+                <hgroup>
+                    <h3>List with header, and items have header</h3>
+                    <p class="card__meta">Subtitle</p>
+                </hgroup>
+                <!-- </div> -->
+
+                <!-- only if the first one -->
+                <div>
+                    <h4>How do you feel today? (1-5)</h4>
+                    <p>1</p>
+                </div>
+            
+                <hr> <!-- only if the first one -->
+                <div>
+                    <h4>Satisfaction with your digital use today (1-5)</h4>
+                    <p>1</p>
+                </div>
+            </article>
+        
+        </section>
+        
+
+        <section class="doc-section">
+            <h2>List Cards</h2>
+
+            <!-- card with a list -->
+             <div class="card card--info card--medium">
+                <h3>List Card</h3>
+                <ul>
+                    <li>
+                        Item 1
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                    <li>
+                        Item 2
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                    <li>
+                        Item 3
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                </ul>
+            </div>
+
+             <div class="card card--info card--medium">
+                <ul>
+                    <li>
+                        Item 1
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                    <li>
+                        Item 2
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                    <li>
+                        Item 3
+                        <span class="card__meta">Meta Text</small>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section class="doc-section">
+            <h2>Alerts</h2>
+            <div class="alert alert--success">
+                <div class="alert__icon">✓</div>
+                <div class="alert__message"><strong>Success:</strong> Your entry has been saved successfully.</div>
+                <button class="alert__close">×</button>
+            </div>
+            <br>
+            <div class="alert alert--warning">
+                <div class="alert__icon">!</div>
+                <div class="alert__message"><strong>Warning:</strong> Your subscription is ending soon.</div>
+                <button class="alert__close">×</button>
+            </div>
+            <br>
+            <div class="alert alert--danger">
+                <div class="alert__icon">⚠</div>
+                <div class="alert__message"><strong>Error:</strong> Unable to connect to the server.</div>
+                <button class="alert__close">×</button>
+            </div>
+            <br>
+            <div class="alert alert--info">
+                <div class="alert__icon">ℹ</div>
+                <div class="alert__message"><strong>Info:</strong> New tasks are available.</div>
+                <button class="alert__close">×</button>
+            </div>
+        </section>
+
+        <!-- UI Elements -->
+        <section class="doc-section">
+            <h2>UI Elements</h2>
+            <div class="grid">
+                <div>
+                    <h3>Avatar</h3>
+                    <div class="avatar" style="background-color: #eee; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--pico-muted-color);">
+                        NL
+                    </div>
+                </div>
+                <div>
+                    <h3>Video Thumbnail</h3>
+                    <div class="video-thumb">
+                        <img src="https://placehold.co/600x338/2563b5/ffffff?text=Video+Content" alt="Video Placeholder">
+                        <span class="badge">12:34</span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <h3>Block Quotes</h3>
+            <div class="grid">
+                <figure class="card card--small">
+                    <blockquote>
+                        Digital minimalism is a philosophy of technology use in which you focus your online time on a small number of carefully selected and optimized activities that strongly support things you value, and then happily miss out on everything else.
+                    </blockquote>
+                    <figcaption>Cal Newport</figcaption>
+                </figure>
+                <figure class="card card--small">
+                    <blockquote>
+                        Digital minimalism is a philosophy of technology use in which you focus your online time on a small number
+                    </blockquote>
+                    <figcaption>Myself</figcaption>
+                </figure>
+            </div>
+            <br>
+            </div>
+        
+            <h3>Accordion</h3>
+            <details>
+                <summary>Why is digital minimalism important?</summary>
+                <p>It helps you regain control over your time and attention, allowing you to focus on what truly matters to you.</p>
+            </details>
+            <details open>
+                <summary>How does the cohort work?</summary>
+                <p>You join a group of people committing to a 30-day digital declutter, supported by daily tasks and weekly reflections.</p>
+            </details>
+        </section>
+
+    </main>
+</body>
+</html>

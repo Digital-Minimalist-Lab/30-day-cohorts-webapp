@@ -30,3 +30,7 @@ def feedback_view(request: HttpRequest) -> HttpResponse:
 def mailinglist_view(request: HttpRequest) -> HttpResponse:
     """Mailing list page."""
     return redirect("https://nathanlaundry.substack.com/")
+
+def design_view(request: HttpRequest) -> HttpResponse:
+    """UI design page."""
+    return render(request, 'core/design.html')
