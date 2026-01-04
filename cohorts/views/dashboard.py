@@ -19,7 +19,7 @@ def homepage(request: HttpRequest, next_cohort: Cohort | None = None) -> HttpRes
     }
     if next_cohort:
         context['seats_available'] = next_cohort.seats_available()
-    return render(request, 'cohorts/homepage.html')
+    return render(request, 'cohorts/homepage.html', context)
 
 def dashboard(request: HttpRequest) -> HttpResponse:
     """Homepage showing today's tasks for logged-in users or enrollment landing for logged-out."""
