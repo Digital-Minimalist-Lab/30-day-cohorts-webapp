@@ -1,14 +1,41 @@
-<article>
-    <h3>{{ response.due_date|date:"Y-m-d" }}</h3>
-    <p><small>
-        Mood: {{ response.submission.answer_dict.mood_1to5 }}/5 | Digital Satisfaction: {{ response.submission.answer_dict.digital_satisfaction_1to5 }}/5 | 
-        Screen Time: {{ response.submission.answer_dict.screentime_min }} min
-    </small></p>
-    <p><strong>Proud moment:</strong> {{ response.submission.answer_dict.proud_moment_text }}</p>
+<article class="card card--medium">
+    <div class="card__header">
+        <!-- <hgroup> -->
+            <h3>{{ response.submission.survey.name }}</h3>
+        <!-- </hgroup> -->
+
+        <p>{{ response.submission.completed_at|date:"F j, Y" }}</p>
+
+    </div>
+
+            <span class="card__meta">
+            {{ response.submission.answer_dict.mood_1to5 }}/5 mood •
+            {{ response.submission.answer_dict.digital_satisfaction_1to5 }}/5 digital satisfaction •
+            {{ response.submission.answer_dict.screentime_min }} min screen time
+        </span>
+
+    <hr/>
+    
+    <div>
+        <p><strong>Proud moment</strong><p>
+        <p>{{ response.submission.answer_dict.proud_moment_text }}</p>
+    </div>
+
     {% with digital_slip=response.submission.answer_dict.digital_slip_text %}
     {% if digital_slip %}
-    <p><strong>Digital slip:</strong> {{ digital_slip }}</p>
+    <hr/>
+
+    <div>
+        <p><strong>Digital slip</strong></p>
+        <p>{{ digital_slip }}</p>
+    </div>
     {% endif %}
     {% endwith %}
-    <p><strong>Reflection:</strong> {{ response.submission.answer_dict.reflection_text }}</p>
+
+    <hr/>
+
+    <div>
+        <p><strong>Reflection</strong></p>
+        <p>{{ response.submission.answer_dict.reflection_text }}</p>
+    </div>
 </article>

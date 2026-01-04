@@ -1,10 +1,12 @@
-<article>
-    <h3>{{ response.submission.survey.name }} -  {{ response.submission.completed_at|date:"Y-m-d" }}</h3>
-    <ul>
-        {% for answer in response.submission.answers.all %}
-        <li>
-            <strong>{{ answer.question.text }}:</strong> {{ answer.display_value }}
-        </li>
-        {% endfor %}
-    </ul>
+<article class="card card--medium">
+    <h3>{{ response.submission.survey.name }}</h3>
+    <p class="card__meta">{{ response.submission.completed_at|date:"F j, Y" }}</p>
+
+    {% for answer in response.submission.answers.all %}
+        {% if not forloop.first %}<hr/>{% endif %} <!-- only if the first one -->
+        <div>
+            <h4>{{ answer.question.text }}</h4>
+            <p>{{ answer.display_value }}</p>
+        </div>
+    {% endfor %}
 </article>

@@ -554,7 +554,12 @@ div {
 	margin-bottom: 0;
 }
 
-.card > :last-child {
+/* Remove bottom margin from the very last elements before card bottom
+   Cascades through nested containers (div, section, etc.) to reach actual content */
+.card > :last-child,
+.card > :last-child > :last-child,
+.card > :last-child > :last-child > :last-child,
+.card > :last-child > :last-child > :last-child > :last-child {
 	margin-bottom: 0;
 }
 
@@ -785,7 +790,12 @@ figure.card {
 /* When a ul is the only child of a card, make it flush */
 
 .card > ul:only-child, 
-.card > ol:only-child,
+.card > ol:only-child {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
 .card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child,
 .card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child {
 	list-style: none;
@@ -795,14 +805,19 @@ figure.card {
 }
 
 .card > ul:only-child li, 
-.card > ol:only-child li,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li {
+.card > ol:only-child li {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	gap: 1rem;
 	padding: 0.75rem 0;
+	border-top: 1px solid var(--pico-border-color);
+}
+
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li,
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li {
+	display: flex;
+	margin-top: 1rem;
 	border-bottom: 1px solid var(--pico-border-color);
 }
 
