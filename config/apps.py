@@ -25,7 +25,16 @@ def setup_site_domain(sender, **kwargs):
                 'name': settings.SITE_NAME,
             }
         )
-        logger.info(f"✅ Site configuration updated: {settings.SITE_DOMAIN}")
+        logger.info(f"""
+✅ Site configuration updated
+    ALLOWED_HOSTS: {settings.ALLOWED_HOSTS}
+    CSRF_TRUSTED_ORIGINS: {settings.CSRF_TRUSTED_ORIGINS}
+    SITE_DOMAIN: {settings.SITE_DOMAIN}
+    SITE_NAME: {settings.SITE_NAME}
+    SITE_ID: {settings.SITE_ID}
+""")
+
+
     except Exception as e:
         logger.error(f"⚠️ Could not update Site: {e}")
 
