@@ -17,28 +17,29 @@
 	/* we want a hover, normal, soft, and background variant for all colors */
 
 	/* Green - success/positive */
-	--accent-green: #2f9e7d;
-	--accent-green-hover: #267a63;
-	--accent-green-background: #f0fdf7;
-	--accent-green-soft: #a7dcc8;
+	--accent-green: #5bb59a;
+	--accent-green-hover: #4ea188;
+	--accent-green-background: #fafffd;
+	--accent-green-border: #d6ede3;
 
 	/* Blue - info/neutral */
 	--accent-blue: #5b9bd5;
 	--accent-blue-hover: #4a8bc7;
-	--accent-blue-background: #f0f7fd;
-	--accent-blue-soft: #b3d7f0;
+	/* --accent-blue-background: #f0f7fd; */
+	--accent-blue-background: #fbfdff;
+	--accent-blue-border: #d8e6f9;
 
 	/* Red - danger/error */
-	--accent-red: #dc2626;
-	--accent-red-hover: #b91c1c;
-	--accent-red-background: #fef2f2;
-	--accent-red-soft: #f5a3a3;
+	--accent-red: #d66e6e;
+	--accent-red-hover: #c25454;
+	--accent-red-background: #fff8f8;
+	--accent-red-border: #ebd5d5;
 
 	/* Amber/Yellow - warning/attention */
-	--accent-amber: #f59e0b;
-	--accent-amber-hover: #d97706;
-	--accent-amber-background: #fffbf0;
-	--accent-amber-soft: #fcd34d;
+	--accent-amber: #e6b055;
+	--accent-amber-hover: #cf9840;
+	--accent-amber-background: #fffdf7;
+	--accent-amber-border: #f0e0c0;
 
 	/* Hero gradient colors */
 	--hero-gradient-start: #e8f2fc;
@@ -96,48 +97,6 @@
 	--content-width: 64rem;
 	--section-gap: 3rem;
 	--radius: 8px;
-}
-
-/* Force light mode universally */
-html,
-body {
-	color-scheme: light;
-	background-color: var(--pico-background-color);
-	color: var(--pico-color);
-}
-
-
-/* Block dark mode preference override */
-@media (prefers-color-scheme: dark) {
-	:root,
-	[data-theme="light"],
-	html[data-theme="light"],
-	html[data-theme="light"] body,
-	html[data-theme="light"] nav,
-	html[data-theme="light"] main,
-	html[data-theme="light"] article,
-	html[data-theme="light"] form,
-	html[data-theme="light"] label,
-	html[data-theme="light"] input,
-	html[data-theme="light"] textarea,
-	html[data-theme="light"] select,
-	html[data-theme="light"] button {
-		color-scheme: light;
-		background-color: var(--pico-background-color);
-		color: var(--pico-color);
-	}
-
-	html[data-theme="light"] input,
-	html[data-theme="light"] textarea,
-	html[data-theme="light"] select {
-		background-color: var(--pico-form-element-background-color);
-		border-color: var(--pico-border-color);
-	}
-
-	html[data-theme="light"] button {
-		background-color: var(--pico-primary-background);
-		color: var(--pico-primary-foreground);
-	}
 }
 
 /* ──────────────────────────────────────────────
@@ -258,7 +217,7 @@ footer {
 	max-width: 5rem;
 	margin: 1.5rem auto;
 	border: none;
-	border-top: 3px solid var(--accent-green-soft);
+	border-top: 3px solid var(--accent-green-border);
 	opacity: 1;
 }
 
@@ -601,46 +560,44 @@ div {
 /** 
 	Card Modifiers - Colors and Borders
 **/
+
+/* Defining colors for bg and semantic colors */
+.card--blue,  .card--bg-blue,  .card--info    { --card-background-color: var(--accent-blue-background); }
+.card--red,   .card--bg-red,   .card--danger  { --card-background-color: var(--accent-red-background); }
+.card--amber, .card--bg-amber, .card--warn    { --card-background-color: var(--accent-amber-background); }
+.card--green, .card--bg-green, .card--success { --card-background-color: var(--accent-green-background); }
+
+.card--blue,  .card--border-blue,  .card--info    { --card-border-color: var(--accent-blue-border);  }
+.card--red,   .card--border-red,   .card--danger  { --card-border-color: var(--accent-red-border);   }
+.card--amber, .card--border-amber, .card--warn    { --card-border-color: var(--accent-amber-border); }
+.card--green, .card--border-green, .card--success { --card-border-color: var(--accent-green-border); }
+
+.card--border-blue-hard { --card-border-color: var(--accent-blue); }
+
+/* background application */
+.card--blue,
+.card--red,
+.card--amber,
+.card--green,
+.card--bg-blue,
+.card--bg-red,
+.card--bg-amber,
+.card--bg-green,
+.card--info,
+.card--warn,
+.card--danger,
+.card--success {
+	background-color: var(--card-background-color);
+}
+
 .card--border-top {
 	border-top: 4px solid var(--card-border-color);
 }
 
-.card--info,
-.card--warn,
-.card--danger,
-.card--success,
+.card--info, .card--warn, .card--danger, .card--success,
 .card--border-left {
 	border-left: 4px solid var(--card-border-color);
 }
-
-.card--info,
-.card--accent-blue-soft {
-	--card-border-color: var(--accent-blue-soft);
-	--card-background-color: var(--accent-blue-background);
-}
-
-.card--danger,
-.card--accent-red-soft {
-	--card-border-color: var(--accent-red-soft);
-	--card-background-color: var(--accent-red-background);
-}
-
-.card--warn,
-.card--accent-amber-soft {
-	--card-border-color: var(--accent-amber-soft);
-	--card-background-color: var(--accent-amber-background);
-}
-
-.card--success,
-.card--accent-green-soft {
-	--card-border-color: var(--accent-green-soft);
-	--card-background-color: var(--accent-green-background);
-}
-
-.card--theme-background {
-	background-color: var(--card-background-color);
-}
-
 
 /** 
 	Card Modifiers - Sizes (override variables)

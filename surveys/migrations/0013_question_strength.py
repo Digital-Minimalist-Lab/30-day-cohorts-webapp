@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='question',
             name='strength',
-            field=models.CharField(choices=[('info', 'Information'), ('warn', 'Warning'), ('success', 'Success'), ('danger', 'Danger')], default='info', max_length=20),
+            field=models.CharField(blank=True, choices=[('info', 'Information'), ('warn', 'Warning'), ('success', 'Success'), ('danger', 'Danger')], max_length=20, null=True),
         ),
     ]

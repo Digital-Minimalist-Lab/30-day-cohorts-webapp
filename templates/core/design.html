@@ -73,63 +73,32 @@
             </div>
 
             <h3>Accents</h3>
+            {% for i in "1234" %}
+            {% cycle 'blue' 'green' 'red' 'amber' as bg_color silent %}
+            {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
             <div class="color-grid" style="margin-top: 1rem;">
-                <!-- Green -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-green);"></div>
-                    <div class="color-info"><span class="color-name">Green</span><span class="color-var">--accent-green</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-green-soft);"></div>
-                    <div class="color-info"><span class="color-name">Green Soft</span><span class="color-var">--accent-green-soft</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-green-background);"></div>
-                    <div class="color-info"><span class="color-name">Green BG</span><span class="color-var">--accent-green-background</span></div>
-                </div>
 
-                <!-- Blue -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-blue);"></div>
-                    <div class="color-info"><span class="color-name">Blue</span><span class="color-var">--accent-blue</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-blue-soft);"></div>
-                    <div class="color-info"><span class="color-name">Blue Soft</span><span class="color-var">--accent-blue-soft</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-blue-background);"></div>
-                    <div class="color-info"><span class="color-name">Blue BG</span><span class="color-var">--accent-blue-background</span></div>
-                </div>
-
-                <!-- Red -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-red);"></div>
-                    <div class="color-info"><span class="color-name">Red</span><span class="color-var">--accent-red</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-red-soft);"></div>
-                    <div class="color-info"><span class="color-name">Red Soft</span><span class="color-var">--accent-red-soft</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-red-background);"></div>
-                    <div class="color-info"><span class="color-name">Red BG</span><span class="color-var">--accent-red-background</span></div>
-                </div>
-
-                <!-- Amber -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-amber);"></div>
-                    <div class="color-info"><span class="color-name">Amber</span><span class="color-var">--accent-amber</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-amber-soft);"></div>
-                    <div class="color-info"><span class="color-name">Amber Soft</span><span class="color-var">--accent-amber-soft</span></div>
-                </div>
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent-amber-background);"></div>
-                    <div class="color-info"><span class="color-name">Amber BG</span><span class="color-var">--accent-amber-background</span></div>
-                </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: var(--accent-{{ bg_color }});"></div>
+                <div class="color-info"><span class="color-name">{{ label }}</span><span class="color-var">--accent-green</span></div>
             </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: var(--accent-{{ bg_color }}-hover);"></div>
+                <div class="color-info"><span class="color-name">{{ label }} Hover</span><span class="color-var">--accent-green-hover</span></div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: var(--accent-{{ bg_color }}-background);"></div>
+                <div class="color-info"><span class="color-name">{{ label }} BG</span><span class="color-var">--accent-{{ bg_color }}-background</span></div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: var(--accent-{{ bg_color }}-border);"></div>
+                <div class="color-info"><span class="color-name">{{ label }} BG</span><span class="color-var">--accent-{{ bg_color }}-border</span></div>
+            </div>
+
+            </div>
+
+            {% endfor %}
         </section>
 
         <!-- Typography -->
@@ -263,43 +232,103 @@
                 </div>            
             </div>
 
-            <h3>Themes & Borders</h3>
+            <!-- <h3>Themes, Borders, and Backgrounds</h3> -->
             
+            <h3>Themes, Borders, and Backgrounds</h3>
+                
+                <div class="card card--medium card--red card--border-left card--border-green">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{level}}</p>
+                </div>
+
+
+
+            <h4>High Level Themes</h4>
+            <div class="grid">
+                {% for i in "1234" %}
+                {% cycle 'info' 'success' 'warn' 'danger' as level silent %}
+                {% cycle 'Info' 'Success' 'Warn' 'Danger' as label silent %}
+                <div class="card card--medium card--{{ level }}">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{level}}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h4>Colored Boxes</h4>
+            <div class="grid">
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--{{ color }}">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{color}}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <h4>All possible themes</h4>
+            
+            {% for row in "12345" %}
+            <div class="grid">
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                
+                <div class="card card--medium 
+                    {% if row == '1' %}card--border-{{ color }}{% endif %}
+                    {% if row == '2' %}card--border-{{ color }} card--border-left{% endif %}
+                    {% if row == '3' %}card--border-{{ color }} card--border-top{% endif %}
+                    {% if row == '4' %}card--bg-{{ color }}{% endif %}
+                    {% if row == '5' %}card--bg-{{ color }} card--border-{{ color }} card--border-top{% endif %}
+                ">
+                    <h3>{{ label }}</h3>
+                    <p>
+                        {% if row == '1' %}Default{% endif %}
+                        {% if row == '2' %}Left Border{% endif %}
+                        {% if row == '3' %}Top Border{% endif %}
+                        {% if row == '4' %}Background{% endif %}
+                        {% if row == '5' %}Top + BG{% endif %}
+                    </p>
+                    
+                    {% if row == '2' %}<p>--card--border-left</p>{% endif %}
+                    {% if row == '3' or row == '5' %}<p>--card--border-top</p>{% endif %}
+                    
+                    {% if row == '4' or row == '5' %}<p>--card--bg-{{color}}</p>{% endif %}
+                    {% if row != '4' %}<p>--card--border-{{color}}</p>{% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
             {% for i in "1234" %}
-            {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
-            {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+            {% cycle 'blue' 'green' 'red' 'amber' as border_color silent %}
+            {% cycle 'Blue' 'Green' 'Red' 'Amber' as border_label silent %}
+            <div class="grid">
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as bg_color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--bg-{{ bg_color }} card--border-left card--border-{{ border_color }}">
+                    <h3>{{ label }}</h3>
+                    <p>BG + {{ border_label }} Border</p>
+                    <p>--card--border-{{border_color}}</p>
+                    <p>--card--bg-{{bg_color}}</p>
+                    <p>--card--border-left</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+
+            <!-- UI Elements-->
             
-            <h4{% if not forloop.first %} style="margin-top: 2rem;"{% endif %}>{{ label }} Accent</h4>
-            <div class="grid">
-                <div class="card card--medium card--accent-{{ color }}-soft">
-                    <h3>Default</h3>
-                    <p>Border only</p>
-                </div>
-                <div class="card card--medium card--accent-{{ color }}-soft card--border-left">
-                    <h3>Left Border</h3>
-                    <p>Border only</p>
-                </div>
-                <div class="card card--medium card--accent-{{ color }}-soft card--border-top">
-                    <h3>Top Border</h3>
-                    <p>Border only</p>
-                </div>
-            </div>
-            <div class="grid">
-                <div class="card card--medium card--accent-{{ color }}-soft card--theme-background">
-                    <h3>Background</h3>
-                    <p>With background</p>
-                </div>
-                <div class="card card--medium card--accent-{{ color }}-soft card--border-left card--theme-background">
-                    <h3>Left + BG</h3>
-                    <p>With background</p>
-                </div>
-                <div class="card card--medium card--accent-{{ color }}-soft card--border-top card--theme-background">
-                    <h3>Top + BG</h3>
-                    <p>With background</p>
-                </div>
-            </div>
-            <div class="card card--medium card--accent-{{ color }}-soft card--theme-background">
-                <h3>{% if forloop.first %}UI Elements{% else %}Buttons{% endif %}</h3>
+            <h3>UI Elements</h3>
+            {% for i in "12345" %}
+            {% cycle 'none' 'blue' 'green' 'red' 'amber' as bg_color silent %}
+            {% cycle 'Normal' 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+            <div class="card card--medium card--{{ bg_color }}">
+                <h3>{{ label }} Background </h3>
                 <div class="grid">
                     <button>Primary</button>
                     <button class="secondary">Secondary</button>

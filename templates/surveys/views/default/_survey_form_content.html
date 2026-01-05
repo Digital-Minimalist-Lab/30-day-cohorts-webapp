@@ -3,7 +3,7 @@
     <div>
         {% for section, items in form.get_fields_by_section %}
             {% if section %}
-            <section class="card card--medium card--accent-blue-soft">
+            <section>
                 <h3>{{ section.title }}</h3>
                 {% if section.description %}
                 <p>{{ section.description | safe }}</p>
@@ -12,7 +12,7 @@
             
             {% for item in items %}
                 {% if item.strength %}
-                <div class="card card--{{ item.strength }} card--small card--border-left card--accent-blue-soft">
+                <div class="card card--small card--{{ item.strength }}">
                 {% endif %}
 
                 {% if item.is_info %}
