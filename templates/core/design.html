@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <!-- Custom Design System -->
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    
+    <!-- Toast notification script -->
+    <script src="{% static 'toast.js' %}"></script>
+
     <style>
         /* Documentation specific styles */
         body { padding-bottom: 5rem; }
@@ -507,25 +509,34 @@
 
         <section class="doc-section">
             <h2>Alerts</h2>
-            <div class="alert alert--success">
+
+            <!-- buttons to show alerts -->
+            <div class="card card--blue">   
+                <button onclick="showToast('Something was successful', 'success')">Success</button>
+                <button onclick="showToast('Something is warning', 'warning')">Warning</button>
+                <button onclick="showToast('Something is dangerous', 'error')">Danger</button>
+                <button onclick="showToast('Something is informational', 'info')">Info</button>
+            </div>
+
+            <div class="card card--success alert alert--success card--hard-border">
                 <div class="alert__icon">✓</div>
                 <div class="alert__message"><strong>Success:</strong> Your entry has been saved successfully.</div>
                 <button class="alert__close">×</button>
             </div>
-            <br>
-            <div class="alert alert--warning">
+
+            <div class="card card--warn alert alert--warning card--hard-border">
                 <div class="alert__icon">!</div>
                 <div class="alert__message"><strong>Warning:</strong> Your subscription is ending soon.</div>
                 <button class="alert__close">×</button>
             </div>
-            <br>
-            <div class="alert alert--danger">
+
+            <div class="card card--danger alert alert--danger card--hard-border">
                 <div class="alert__icon">⚠</div>
                 <div class="alert__message"><strong>Error:</strong> Unable to connect to the server.</div>
                 <button class="alert__close">×</button>
             </div>
-            <br>
-            <div class="alert alert--info">
+
+            <div class="card card--info alert alert--info card--hard-border">
                 <div class="alert__icon">ℹ</div>
                 <div class="alert__message"><strong>Info:</strong> New tasks are available.</div>
                 <button class="alert__close">×</button>
@@ -581,5 +592,9 @@
         </section>
 
     </main>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
 </body>
 </html>

@@ -6,8 +6,13 @@
 	color-scheme: light;
 
 	/* Brand colors (primary buttons) - darker blue for primary actions */
-	--brand: #2563b5;
-	--brand-hover: #1e4a8a;
+	/* --brand: #2563b5; */
+	/* --brand-hover: #1e4a8a; */
+
+	--brand: var(--accent-blue);
+	--brand-hover: var(--accent-blue-hover);
+
+	/* Accent colors
 
 	/* Secondary button colors - aligned with accent-blue */
 	--secondary-blue: var(--accent-blue);
@@ -261,104 +266,6 @@ textarea:invalid {
 }
 
 /* ──────────────────────────────────────────────
-   ALERTS / TOAST NOTIFICATIONS
-────────────────────────────────────────────── */
-.toast-container {
-	position: fixed;
-	top: 1rem;
-	right: 1rem;
-	z-index: 10000;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-	max-width: 400px;
-	min-width: 300px;
-}
-
-.alert {
-	display: flex;
-	align-items: flex-start;
-	gap: 0.75rem;
-	padding: 1rem 1.25rem;
-	border-radius: 8px;
-	border: 1px solid var(--pico-border-color);
-	background: var(--pico-card-background-color);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	animation: slideIn 0.3s ease-out;
-}
-
-.alert--success {
-	border-left: 4px solid var(--accent-green);
-	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-green) 10%, transparent) 0%, var(--pico-card-background-color) 30%);
-}
-
-.alert--danger {
-	border-left: 4px solid var(--accent-red);
-	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-red) 8%, transparent) 0%, var(--pico-card-background-color) 30%);
-}
-
-.alert--warning {
-	border-left: 4px solid var(--accent-amber);
-	background: linear-gradient(90deg, color-mix(in srgb, var(--accent-amber) 10%, transparent) 0%, var(--pico-card-background-color) 30%);
-}
-
-.alert--info {
-	border-left: 4px solid var(--brand);
-	background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 8%, transparent) 0%, var(--pico-card-background-color) 30%);
-}
-
-.alert__icon {
-	flex-shrink: 0;
-	font-size: 1.25rem;
-	line-height: 1;
-}
-
-.alert--success .alert__icon { color: var(--accent-green); }
-.alert--danger .alert__icon { color: var(--accent-red); }
-.alert--warning .alert__icon { color: var(--accent-amber); }
-.alert--info .alert__icon { color: var(--brand); }
-
-.alert__message {
-	flex: 1;
-	font-size: 0.95rem;
-	line-height: 1.5;
-	color: var(--pico-color);
-}
-
-.alert__close {
-	flex-shrink: 0;
-	background: none;
-	border: none;
-	padding: 0.25rem;
-	cursor: pointer;
-	color: var(--pico-muted-color);
-	font-size: 1.25rem;
-	line-height: 1;
-	opacity: 0.6;
-	transition: opacity 0.15s;
-}
-
-.alert__close:hover {
-	opacity: 1;
-}
-
-@keyframes slideIn {
-	from {
-		transform: translateX(100%);
-		opacity: 0;
-	}
-	to {
-		transform: translateX(0);
-		opacity: 1;
-	}
-}
-
-@keyframes fadeOut {
-	from { opacity: 1; }
-	to { opacity: 0; }
-}
-
-/* ──────────────────────────────────────────────
    ACCORDION (Native details/summary)
 ────────────────────────────────────────────── */
 details {
@@ -571,7 +478,11 @@ div {
 .card--amber, .card--border-amber, .card--warn    { --card-border-color: var(--accent-amber-border); }
 .card--green, .card--border-green, .card--success { --card-border-color: var(--accent-green-border); }
 
-.card--border-blue-hard { --card-border-color: var(--accent-blue); }
+/* 'hard' border variant (for alerts, etc) */
+.card--hard-border.card--success { --card-border-color: var(--accent-green); }
+.card--hard-border.card--danger  { --card-border-color: var(--accent-red); }
+.card--hard-border.card--warn    { --card-border-color: var(--accent-amber); }
+.card--hard-border.card--info    { --card-border-color: var(--brand); }
 
 /* background application */
 .card--blue,
@@ -836,4 +747,71 @@ figure.card {
 	color: var(--pico-muted-color);
 	font-weight: var(--pico-font-weight);
 	text-align: right;
+}
+
+/* ──────────────────────────────────────────────
+   ALERTS / TOAST NOTIFICATIONS
+   (Extends Card System)
+────────────────────────────────────────────── */
+.toast-container {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	z-index: 10000;
+	display: flex;
+	flex-direction: column;
+	max-width: 400px;
+	min-width: 300px;
+}
+
+.alert {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem 1.25rem; /* Overrides card padding */
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Overrides card shadow */
+	animation: slideIn 0.3s ease-out;
+	margin-bottom: 0;
+}
+
+
+.alert__icon {
+	flex-shrink: 0;
+	font-size: 1.25rem;
+	line-height: 1;
+}
+
+.card--success .alert__icon { color: var(--accent-green); }
+.card--danger .alert__icon { color: var(--accent-red); }
+.card--warn .alert__icon { color: var(--accent-amber); }
+.card--info .alert__icon { color: var(--brand); }
+
+.alert__close {
+	flex-shrink: 0;
+	margin-left: auto;
+	align-self: baseline;
+	background: none;
+	border: none;
+	padding: 0.25rem;
+	cursor: pointer;
+	color: var(--pico-muted-color);
+	font-size: 0.85rem;
+	white-space: nowrap;
+	line-height: 1;
+	opacity: 0.6;
+	transition: opacity 0.15s;
+}
+
+.alert__close:hover {
+	opacity: 1;
+}
+
+@keyframes slideIn {
+	from { transform: translateX(100%); opacity: 0; }
+	to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
 }
