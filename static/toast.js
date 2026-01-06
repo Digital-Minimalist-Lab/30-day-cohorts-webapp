@@ -51,13 +51,13 @@ function showToast(message, level) {
 	// Append to container
 	container.appendChild(alert);
 
-	// Auto-dismiss after 5 seconds
-	// setTimeout(function() {
-	// 	if (alert.parentNode) {
-	// 		alert.style.animation = 'fadeOut 0.2s ease-out forwards';
-	// 		setTimeout(function() { alert.remove(); }, 200);
-	// 	}
-	// }, 5000);
+	Auto-dismiss after 5 seconds
+	setTimeout(function() {
+		if (alert.parentNode) {
+			alert.style.animation = 'fadeOut 0.2s ease-out forwards';
+			setTimeout(function() { alert.remove(); }, 200);
+		}
+	}, 5000);
 }
 
 // Show toast notifications from Django messages
