@@ -343,6 +343,12 @@ details p:last-child {
 .flex-grow { flex-grow: 1; }
 
 
+.grid-vert4 {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	grid-gap: 1rem;
+}
+
 /* cards need to be spaced out with a gap */
 .card:not(section) {
 	margin-bottom: var(--card-stack-gap);
@@ -382,10 +388,16 @@ details p:last-child {
 
 	Cards can have a few themes:
 	The default theme styles the card as a simple container.
-	- .card--info to use a text callout. Theese call out text even more, and group a smaller section of text. It is styled with a blue background.
-//	- .card--success to use to call out positive information. It is styled with a green background.
-//	- .card--warning to use to call out important information. It is styled with a yellow background.
-//	- .card--error to use to call out negative information. It is styled with a red background.
+	- .card--info to use a text callout. Theese call out text even more, and group a smaller section of text. It is styled with a blue background, and a thicker left-border.
+	- .card--success to use to call out positive information. It is styled with a green background, and a thicker left-border.
+	- .card--warn to use to call out important information. It is styled with a yellow background, and a thicker left-border.
+	- .card--danger to use to call out negative information. It is styled with a red background, and a thicker left-border.
+
+	All parts of the card may be colored and themed with these colors:
+	- red, amber, green, and blue.
+	- You can style the cards with .card--bg-{color}, .card--border-{color}, .card--hard-border-{color}
+	- The top or left border may be "thickened" with .card--border-top or .card--border-left.
+	- When card--{color} is used, it colors both the border and the background.
 
 	We use <hgroup> tags to specify a header. Any header class within the hgroup will be styled according to the card type (section, info, etc.)
 	A hgroup may have a <p> tag before the header, indicating that is is an eyebrow. Any header class within the hgroup will be styled as a header. A hgroup may also have a <p> after a header, indicating that it is a subtitle.
@@ -479,10 +491,10 @@ div {
 .card--green, .card--border-green, .card--success { --card-border-color: var(--accent-green-border); }
 
 /* 'hard' border variant (for alerts, etc) */
-.card--hard-border.card--success { --card-border-color: var(--accent-green); }
-.card--hard-border.card--danger  { --card-border-color: var(--accent-red); }
-.card--hard-border.card--warn    { --card-border-color: var(--accent-amber); }
-.card--hard-border.card--info    { --card-border-color: var(--brand); }
+.card--hard-border-green, .card--hard-border-success { --card-border-color: var(--accent-green); }
+.card--hard-border-red, .card--hard-border-danger { --card-border-color: var(--accent-red); }
+.card--hard-border-amber, .card--hard-border-warn { --card-border-color: var(--accent-amber); }
+.card--hard-border-blue, .card--hard-border-info { --card-border-color: var(--brand); }
 
 /* background application */
 .card--blue,

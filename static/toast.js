@@ -36,7 +36,7 @@ function showToast(message, level) {
 
 	// Create alert element
 	const alert = document.createElement('div');
-	alert.className = 'card card--' + variant + ' alert alert--' + variant + ' card--hard-border';
+	alert.className = 'card card--' + variant + ' alert alert--' + variant + ' card--hard-border-' + variant;
 	alert.innerHTML =
 		'<span class="alert__icon">' + icon + '</span>' +
 		'<span class="alert__message">' + message + '</span>' +

@@ -241,13 +241,6 @@
             
             <h3>Themes, Borders, and Backgrounds</h3>
                 
-                <div class="card card--medium card--red card--border-left card--border-green">
-                    <h3>{{ label }}</h3>
-                    <p>--card--{{level}}</p>
-                </div>
-
-
-
             <h4>High Level Themes</h4>
             <div class="grid">
                 {% for i in "1234" %}
@@ -261,7 +254,7 @@
             </div>
 
             <h4>Colored Boxes</h4>
-            <div class="grid">
+            <div class="grid-vert4">
                 {% for i in "1234" %}
                 {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
                 {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
@@ -270,8 +263,61 @@
                     <p>--card--{{color}}</p>
                 </div>
                 {% endfor %}
+
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--{{ color }} card--border-left">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{color}}</p>
+                    <p>--card--border-left</p>
+                </div>
+                {% endfor %}
             </div>
 
+            <h4>Hard Borders</h4>
+            <div class="grid-vert4">
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--hard-border-{{ color }}">
+                    <h3>{{ label }}</h3>
+                    <p>--card--hard-border-{{ color }}</p>
+                </div>
+                {% endfor %}
+
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--{{ color }} card--hard-border-{{ color }}">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{color}}</p>
+                    <p>--card--hard-border-{{ color }}</p>
+                </div>
+                {% endfor %}
+
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--{{ color }} card--hard-border-{{ color }} card--border-left">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{color}}</p>
+                    <p>--card--hard-border-{{ color }}</p>
+                    <p>--card--border-left</p>
+                </div>
+                {% endfor %}
+
+                {% for i in "1234" %}
+                {% cycle 'blue' 'green' 'red' 'amber' as color silent %}
+                {% cycle 'Blue' 'Green' 'Red' 'Amber' as label silent %}
+                <div class="card card--medium card--{{ color }} card--hard-border-{{ color }} card--border-top">
+                    <h3>{{ label }}</h3>
+                    <p>--card--{{color}}</p>
+                    <p>--card--hard-border-{{ color }}</p>
+                    <p>--card--border-top</p>
+                </div>
+                {% endfor %}
+            </div>
 
             <h4>All possible themes</h4>
             
@@ -516,30 +562,6 @@
                 <button onclick="showToast('Something is warning', 'warning')">Warning</button>
                 <button onclick="showToast('Something is dangerous', 'error')">Danger</button>
                 <button onclick="showToast('Something is informational', 'info')">Info</button>
-            </div>
-
-            <div class="card card--success alert alert--success card--hard-border">
-                <div class="alert__icon">✓</div>
-                <div class="alert__message"><strong>Success:</strong> Your entry has been saved successfully.</div>
-                <button class="alert__close">×</button>
-            </div>
-
-            <div class="card card--warn alert alert--warning card--hard-border">
-                <div class="alert__icon">!</div>
-                <div class="alert__message"><strong>Warning:</strong> Your subscription is ending soon.</div>
-                <button class="alert__close">×</button>
-            </div>
-
-            <div class="card card--danger alert alert--danger card--hard-border">
-                <div class="alert__icon">⚠</div>
-                <div class="alert__message"><strong>Error:</strong> Unable to connect to the server.</div>
-                <button class="alert__close">×</button>
-            </div>
-
-            <div class="card card--info alert alert--info card--hard-border">
-                <div class="alert__icon">ℹ</div>
-                <div class="alert__message"><strong>Info:</strong> New tasks are available.</div>
-                <button class="alert__close">×</button>
             </div>
         </section>
 
