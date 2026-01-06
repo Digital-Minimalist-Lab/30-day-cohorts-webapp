@@ -6,11 +6,11 @@
 	color-scheme: light;
 
 	/* Brand colors (primary buttons) - darker blue for primary actions */
-	/* --brand: #2563b5; */
-	/* --brand-hover: #1e4a8a; */
+	--brand: #2563b5;
+	--brand-hover: #1e4a8a;
 
-	--brand: var(--accent-blue);
-	--brand-hover: var(--accent-blue-hover);
+	/* --brand: var(--accent-blue);
+	--brand-hover: var(--accent-blue-hover); */
 
 	/* Accent colors
 
