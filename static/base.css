@@ -18,28 +18,27 @@
 
 	/* Green - success/positive */
 	--accent-green: #5bb59a;
-	--accent-green-hover: #4ea188;
-	--accent-green-background: #fafffd;
-	--accent-green-border: #d6ede3;
+	--accent-green-hover: color-mix(in srgb, var(--accent-green), black 10%);
+	--accent-green-background: color-mix(in srgb, var(--accent-green) 6%, white);
+	--accent-green-border: color-mix(in srgb, var(--accent-green) 25%, white);
 
 	/* Blue - info/neutral */
 	--accent-blue: #5b9bd5;
-	--accent-blue-hover: #4a8bc7;
-	/* --accent-blue-background: #f0f7fd; */
-	--accent-blue-background: #fbfdff;
-	--accent-blue-border: #d8e6f9;
+	--accent-blue-hover: color-mix(in srgb, var(--accent-blue), black 10%);
+	--accent-blue-background: color-mix(in srgb, var(--accent-blue) 6%, white);
+	--accent-blue-border: color-mix(in srgb, var(--accent-blue) 25%, white);
 
 	/* Red - danger/error */
 	--accent-red: #d66e6e;
-	--accent-red-hover: #c25454;
-	--accent-red-background: #fff8f8;
-	--accent-red-border: #ebd5d5;
+	--accent-red-hover: color-mix(in srgb, var(--accent-red), black 10%);
+	--accent-red-background: color-mix(in srgb, var(--accent-red) 6%, white);
+	--accent-red-border: color-mix(in srgb, var(--accent-red) 25%, white);
 
 	/* Amber/Yellow - warning/attention */
 	--accent-amber: #e6b055;
-	--accent-amber-hover: #cf9840;
-	--accent-amber-background: #fffdf7;
-	--accent-amber-border: #f0e0c0;
+	--accent-amber-hover: color-mix(in srgb, var(--accent-amber), black 10%);
+	--accent-amber-background: color-mix(in srgb, var(--accent-amber) 6%, white);
+	--accent-amber-border: color-mix(in srgb, var(--accent-amber) 25%, white);
 
 	/* Hero gradient colors */
 	--hero-gradient-start: #e8f2fc;
