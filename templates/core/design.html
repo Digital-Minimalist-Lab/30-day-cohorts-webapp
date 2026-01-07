@@ -29,27 +29,56 @@
         .color-name { font-weight: bold; display: block; }
         .color-var { color: var(--pico-muted-color); font-family: monospace; font-size: 0.7rem; }
 
-        .icon-box { font-size: 1.5rem; }
 
-        /* New Card Row System */
-        .card__row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            width: 100%;
-        }
 
-        .card__row > hgroup {
-            margin-bottom: 0;
-        }
+.card-row {
+  padding: 20px 24px;
+}
 
-        .card__row > span {
-            color: var(--pico-muted-color);
-            font-size: 0.875rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
+.card-row__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  /* gap: 16px; */
+}
+
+/* Title & text hierarchy */
+
+.card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+hgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Optional body text (below hgroup if you add it later) */
+.card-body {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* Meta */
+
+.card-meta {
+  font-size: 0.85rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
     </style>
 </head>
 <body>
@@ -58,6 +87,50 @@
             <h1>Design System</h1>
             <p>Reference for UI components, colors, and typography.</p>
         </hgroup>
+
+
+<div class="card card--medium">
+  <ul>
+    <li>
+        <div class="card__row">
+            <hgroup>
+                <h3>Weekly Reflection: Week 1</h3>
+                <p>hello world</p>
+            </hgroup>
+
+            <time class="card__meta" datetime="2026-01-08">
+            Jan 08 (~10 min)
+            </time>
+        </div>
+
+        <p>hello world</p>
+        <p>hello world</p>
+    </li>
+
+    <li>
+      <div class="card__row">
+        <h3 class="card-title">Weekly Planning: Week 2</h3>
+
+        <time class="card-meta" datetime="2026-01-08">
+          Jan 08 (~10 min)
+        </time>
+      </div>
+      <p>hello world</p>
+      <p>hello world</p>
+    </li>
+  </ul>
+</div>
+
+<div class="card card--medium">
+    <hgroup>
+        <h3>Hello</h3>
+        <p>hello world</p>
+    </hgroup>
+    <p>hello world</p>
+    <p>hello world</p>
+    <p>hello world</p>
+    <p>hello world</p>
+</div>
 
         <!-- Colors -->
         <section class="doc-section">
@@ -101,44 +174,6 @@
             </div>
 
             {% endfor %}
-        </section>
-
-        <!-- Typography -->
-        <section class="doc-section">
-            <h2>Typography</h2>
-            <h1>Heading 1</h1>
-            <h2>Heading 2</h2>
-            <h3>Heading 3</h3>
-            <h4>Heading 4</h4>
-            <p>Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p><small>Small text for disclaimers or secondary information.</small></p>
-            <blockquote>
-                "Digital minimalism is a philosophy of technology use in which you focus your online time on a small number of carefully selected and optimized activities that strongly support things you value, and then happily miss out on everything else."
-                <footer><cite>— Cal Newport</cite></footer>
-            </blockquote>
-        </section>
-
-        <!-- Buttons -->
-        <section class="doc-section">
-            <h2>Buttons</h2>
-            <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
-                <div>
-                    <button>Primary</button>
-                    <small>Default (Brand)</small>
-                </div>
-                <div>
-                    <button class="secondary">Secondary</button>
-                    <small>Secondary Blue</small>
-                </div>
-                <div>
-                    <button class="contrast">Contrast</button>
-                    <small>Accent Red</small>
-                </div>
-                <div>
-                    <button disabled>Disabled</button>
-                    <small>Disabled State</small>
-                </div>
-            </div>
         </section>
 
         <!-- Hero -->
@@ -185,7 +220,7 @@
                 <p>More padding and larger typography. Intended for main content blocks.</p>
                 <ul>
                     <li>Flush list item example</li>
-                    <li>Another item <span class="list__meta">Meta</span></li>
+                    <li>Another item <span class="card__meta">Meta</span></li>
                 </ul>
             </div>
             <div class="card card--xl">
@@ -371,15 +406,219 @@
             </div>
             {% endfor %}
 
+        </section>
 
+        <!-- Card Rows (New System) -->
+        <section class="doc-section">
+            <h2>Card Rows (New System)</h2>
+            <p>Use <code>.card__row</code> to create right-justified layouts. Works with headers, hgroups, and lists.</p>
+            
+            <!-- Basic Row -->
+            <div class="card card--medium">
+                <div class="card__row">
+                    <h3>Basic Row</h3>
+                    <span class="card__meta">Meta Info</span>
+                </div>
+                <p>Content body.</p>
+            </div>
+
+            <!-- With Hgroup -->
+            <div class="card card--medium">
+                <header class="card__row card__row">
+                    <hgroup>
+                        <h3>Hgroup Title</h3>
+                        <p>Subtitle content</p>
+                    </hgroup>
+                    <span class="card__meta">Meta Info</span>
+                </header>
+                <p>The hgroup margin is automatically handled inside a row.</p>
+            </div>
+
+            <!-- List Integration -->
+            <div class="card card--medium">
+                <h3>List Rows</h3>
+                <ul>
+                    <li class="card__row">
+                        List Item 1
+                        <span class="card__meta">Status: OK</span>
+                    </li>
+                    <li class="card__row">
+                        List Item 2
+                        <span class="card__meta">Status: Pending</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Special Card Lahouts -->
+        <section class="doc-section">
+            <h2>Special Card Layouts</h2>
+            <div class="card card--medium card--border-left card--accent-green-soft">
+                <div class="card__row">
+                    <h3><a href="/cohorts/10/tasks/weekly-planning-week-1/0/">Card with meta header</a></h3>
+                    <span class="card__meta">meta information</span>
+                </div>
+                <p>Something goes here</p>
+            </div>
+        
+            <article class="card card--medium">
+                <!-- <div class="card__row"> -->
+                <hgroup>
+                    <h3>List with header, and items have header</h3>
+                    <p class="card__meta">Subtitle</p>
+                </hgroup>
+                <!-- </div> -->
+
+                <!-- only if the first one -->
+                <div>
+                    <h4>How do you feel today? (1-5)</h4>
+                    <p>1</p>
+                </div>
+            
+                <hr> <!-- only if the first one -->
+                <div>
+                    <h4>Satisfaction with your digital use today (1-5)</h4>
+                    <p>1</p>
+                </div>
+            </article>
+        
+        </section>
+        
+
+        <section class="doc-section">
+            <h2>List Cards</h2>
+
+            <!-- card with a list -->
+             <div class="card card--blue card--medium">
+                <ul>
+                {% for i in  "1234" %}
+                    <li class="card__row">
+                        Item {{ i }}
+                        <span class="card__meta">Meta Text for {{ i }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+             <div class="card card--blue card--medium">
+                <h3>List Card with header</h3>
+                <ul>
+                {% for i in  "1234" %}
+                    <li class="card__row">
+                        Item {{ i }}
+                        <span class="card__meta">Meta Text for {{ i }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+                <div class="card card--blue card--medium">
+                    <hgroup>
+                        <h3>List Card with header</h3>
+                        <p>Subtitle</p>
+                    </hgroup>
+                <ul>
+                {% for i in  "1234" %}
+                    <li>
+                        <div class="card__row">
+                            <h4>test header {{ i }}</h4>
+                            <span class="card__meta">Meta Text for {{ i }}</span>
+                        </div>
+                        Body {{ i }}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+        </section>
+
+        <section class="doc-section">
             <!-- UI Elements-->
             
+            <h2>Typography</h2>
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <p>Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p><small>Small text for disclaimers or secondary information.</small></p>
+            <blockquote>
+                "Digital minimalism is a philosophy of technology use in which you focus your online time on a small number of carefully selected and optimized activities that strongly support things you value, and then happily miss out on everything else."
+                <footer><cite>— Cal Newport</cite></footer>
+            </blockquote>
+                <div class="grid">
+                    <button>Primary</button>
+                    <button class="secondary">Secondary</button>
+                    <button class="contrast">Contrast</button>
+                    <button disabled>Disabled</button>
+                </div>
+                <br>
+                <form class="grid">
+                    <label>
+                        Text Input
+                        <input type="text" name="text" placeholder="Text input">
+                    </label>
+                    <fieldset>
+                        <legend>Radio Group</legend>
+                        <label>
+                            <input type="radio" name="radio">
+                            Radio 1
+                        </label>
+                        <label>
+                            <input type="radio" name="radio">
+                            Radio 2
+                        </label>
+                        <label>
+                            <input type="radio" name="radio" aria-invalid="true">
+                            Radio 3
+                        </label>
+                        <label>
+                            <input type="radio" name="radio" aria-invalid="true" required>
+                            Radio 3
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Checkbox Group</legend>
+                        <label>
+                            <input type="checkbox" name="checkbox" checked>
+                            Checkbox 1
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox">
+                            Checkbox 2
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox" aria-invalid="true" checked>
+                            Checkbox 3
+                        </label>
+                        <label>
+                            <input type="checkbox" name="checkbox" aria-invalid="true">
+                            Checkbox 4
+                        </label>
+                    </fieldset>
+                </form>
+
+
+
             <h3>UI Elements</h3>
             {% for i in "12345" %}
             {% cycle 'none' 'blue' 'green' 'red' 'amber' as bg_color silent %}
             {% cycle 'Normal' 'Blue' 'Green' 'Red' 'Amber' as label silent %}
             <div class="card card--medium card--{{ bg_color }}">
                 <h3>{{ label }} Background </h3>
+
+                <h2>Typography</h2>
+                <h1>Heading 1</h1>
+                <h2>Heading 2</h2>
+                <h3>Heading 3</h3>
+                <h4>Heading 4</h4>
+                <p>Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p><small>Small text for disclaimers or secondary information.</small></p>
+                <blockquote>
+                    "Digital minimalism is a philosophy of technology use in which you focus your online time on a small number of carefully selected and optimized activities that strongly support things you value, and then happily miss out on everything else."
+                    <footer><cite>— Cal Newport</cite></footer>
+                </blockquote>
+
                 <div class="grid">
                     <button>Primary</button>
                     <button class="secondary">Secondary</button>
@@ -435,122 +674,6 @@
             {% endfor %}
         </section>
 
-        <!-- Card Rows (New System) -->
-        <section class="doc-section">
-            <h2>Card Rows (New System)</h2>
-            <p>Use <code>.card__row</code> to create right-justified layouts. Works with headers, hgroups, and lists.</p>
-            
-            <!-- Basic Row -->
-            <div class="card card--medium">
-                <div class="card__row">
-                    <h3>Basic Row</h3>
-                    <span>Meta Info</span>
-                </div>
-                <p>Content body.</p>
-            </div>
-
-            <!-- With Hgroup -->
-            <div class="card card--medium">
-                <header class="card__row">
-                    <hgroup>
-                        <h3>Hgroup Title</h3>
-                        <p>Subtitle content</p>
-                    </hgroup>
-                    <span>Meta Info</span>
-                </header>
-                <p>The hgroup margin is automatically handled inside a row.</p>
-            </div>
-
-            <!-- List Integration -->
-            <div class="card card--medium">
-                <h3>List Rows</h3>
-                <ul>
-                    <li class="card__row">
-                        <p>List Item 1</p>
-                        <span><p>Status: OK</p></span>
-                    </li>
-                    <li class="card__row">
-                        <p>List Item 2</p>
-                        <span><p>Status: Pending</p></span>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Special Card Lahouts -->
-        <section class="doc-section">
-            <h2>Special Card Layouts</h2>
-            <div class="card card--medium card--border-left card--accent-green-soft">
-                <div class="card__header">
-                    <h3><a href="/cohorts/10/tasks/weekly-planning-week-1/0/">Card with meta header</a></h3>
-                    <span class="card__meta">meta information</span>
-                </div>
-                <p>Something goes here</p>
-            </div>
-        
-            <article class="card card--medium">
-                <!-- <div class="card__header"> -->
-                <hgroup>
-                    <h3>List with header, and items have header</h3>
-                    <p class="card__meta">Subtitle</p>
-                </hgroup>
-                <!-- </div> -->
-
-                <!-- only if the first one -->
-                <div>
-                    <h4>How do you feel today? (1-5)</h4>
-                    <p>1</p>
-                </div>
-            
-                <hr> <!-- only if the first one -->
-                <div>
-                    <h4>Satisfaction with your digital use today (1-5)</h4>
-                    <p>1</p>
-                </div>
-            </article>
-        
-        </section>
-        
-
-        <section class="doc-section">
-            <h2>List Cards</h2>
-
-            <!-- card with a list -->
-             <div class="card card--info card--medium">
-                <h3>List Card</h3>
-                <ul>
-                    <li>
-                        Item 1
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                    <li>
-                        Item 2
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                    <li>
-                        Item 3
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                </ul>
-            </div>
-
-             <div class="card card--info card--medium">
-                <ul>
-                    <li>
-                        Item 1
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                    <li>
-                        Item 2
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                    <li>
-                        Item 3
-                        <span class="card__meta">Meta Text</small>
-                    </li>
-                </ul>
-            </div>
-        </section>
 
 
         <section class="doc-section">
@@ -612,6 +735,64 @@
                 <p>You join a group of people committing to a 30-day digital declutter, supported by daily tasks and weekly reflections.</p>
             </details>
         </section>
+
+                <section class="doc-section">
+
+            <!-- Card Layouts -->
+            <h3>All Card Layouts</h3>
+
+            <h4>Basic Layouts</h4>
+
+            {% for show_heading in "01" %}
+            {% for show_subtitle in "01" %}
+            {% for show_eyebrow in "01" %}
+            {% for show_meta in "01" %}
+            {% if show_heading == "1" or show_subtitle == "0" and show_eyebrow == "0" and show_meta == "0" %}
+            {% for show_body in "01" %}
+            {% for show_body2 in "01" %}
+            <div class="card card--medium">
+                {% if show_meta == "1" %}
+                <div class="card__row">
+                {% endif %}
+
+                {% if show_subtitle == "1" or show_eyebrow == "1" %}
+                <hgroup>
+                {% endif %}
+                    {% if show_eyebrow == "1" %}
+                    <p>Eyebrow</p>
+                    {% endif %}
+                    {% if show_heading == "1" %}
+                    <h3>Heading Only</h3>
+                    {% endif %}
+                    {% if show_subtitle == "1" %}
+                    <p>Subtitle content</p>
+                    {% endif %}
+                {% if show_subtitle == "1" or show_eyebrow == "1" %}
+                </hgroup>
+                {% endif %}
+
+                {% if show_meta == "1" %}
+                <span class="card__meta">Meta Info</span>
+                </div>
+                {% endif %}
+
+                {% if show_body == "1" %}
+                <p>Body content</p>
+                {% endif %}
+                {% if show_body2 == "1" %}
+                <p>Body content</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+
+        </section>
+
 
     </main>
 
