@@ -102,6 +102,7 @@ def payment_cancel(request: HttpRequest) -> HttpResponse:
 @csrf_exempt
 def stripe_webhook(request: HttpRequest) -> HttpResponse:
     """Handle Stripe webhooks for payment confirmation."""
+    logger.warning("Webhook received")
     if not settings.STRIPE_ENABLED:
         return HttpResponse(status=400)
     
@@ -117,6 +118,7 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
     except stripe.error.SignatureVerificationError:
         return HttpResponse(status=400)
     
+    logger.warning(f"got event ${event}")
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
@@ -149,7 +151,7 @@ def stripe_webhook(request: HttpRequest) -> HttpResponse:
                     enrollment.amount_paid_cents = int(amount_cents)
                     enrollment.paid_at = timezone.now()
                     enrollment.save()
-                    logger.info(
+                    logger.warning(
                         f"Payment confirmed for user {user.id}, cohort {cohort.id}, "
                         f"amount ${int(amount_cents)/100:.2f}"
                     )

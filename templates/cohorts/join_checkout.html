@@ -32,12 +32,19 @@
 
         <!-- Payment Form -->
         <section class="card card--large">
-            <h2>Choose Your Amount</h2>
+            <h2>Choose Your Commitment</h2>
 
             <p>
-                Payment is a commitment device. Choose an amount that feels non-trivial to you.
-                Minimum: <strong>${{ minimum_price_dollars|floatformat:0 }}</strong>
+                <strong>Why pay?</strong> Research shows that financial commitment significantly increases completion rates.
+                Choose an amount that feels meaningful to you to lock in your intention.
             </p>
+            <p>
+                <small>Your contribution also supports the development of this open-source project and funds scholarships for those who can't afford it.</small>
+            </p>
+
+            {% if minimum_price_dollars != 0 %}
+            <p>Minimum: <strong>${{ minimum_price_dollars|floatformat:0 }}</strong></p>
+            {% endif %}
 
             <form method="post">
                 {% csrf_token %}
@@ -46,7 +53,7 @@
                 <div class="grid">
                     {% for amount in quick_select_amounts %}
                     <button type="button" class="secondary amount-btn" data-amount="{{ amount }}">
-                        ${{ amount }}
+                        {% if amount == 0 %}Free{% else %}${{ amount }}{% endif %}
                     </button>
                     {% endfor %}
                 </div>
@@ -57,7 +64,7 @@
                     <input type="number"
                            name="{{ form.amount.name }}"
                            id="{{ form.amount.id_for_label }}"
-                           value="{{ form.amount.value|default:minimum_price_dollars|floatformat:0 }}"
+                           value="{{ amount.value|default:minimum_price_dollars|floatformat:0 }}"
                            min="{{ minimum_price_dollars|floatformat:0 }}"
                            step="1"
                            required
@@ -71,14 +78,18 @@
                 </label>
 
                 <button type="submit" class="submit-btn">
-                    Pay Securely with Stripe
+                    Commit & Join Cohort
                 </button>
             </form>
+
+            <div class="guarantee-box">
+                <strong>🛡️ 100% Money-Back Guarantee</strong>
+                <p>Change your mind before the start date? Get a full refund, no questions asked.</p>
+            </div>
 
             <p class="payment-footer">
                 <small>
                     🔒 Secure payment via Stripe •
-                    Full refund up to start date •
                     <a href="{% url 'core:privacy' %}">Privacy Policy</a>
                 </small>
             </p>
@@ -105,6 +116,14 @@ document.querySelectorAll('.amount-btn').forEach(btn => {
     });
 });
 
+// Pre-select button if value matches
+const currentVal = document.getElementById('{{ form.amount.id_for_label }}').value;
+document.querySelectorAll('.amount-btn').forEach(btn => {
+    if (btn.getAttribute('data-amount') === currentVal) {
+        btn.click();
+    }
+});
+
 // Prevent double submission
 document.querySelector('form').addEventListener('submit', function(e) {
     const submitBtn = this.querySelector('button[type="submit"]');
@@ -126,6 +145,16 @@ document.querySelector('form').addEventListener('submit', function(e) {
     color: var(--pico-muted-color);
     font-size: 0.9rem;
 }
+
+.guarantee-box {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: var(--pico-card-background-color);
+    border: 1px dashed var(--pico-muted-color);
+    border-radius: var(--radius);
+    text-align: center;
+    font-size: 0.9rem;
+}
+.guarantee-box p { margin-bottom: 0; }
 </style>
 {% endblock %}
-

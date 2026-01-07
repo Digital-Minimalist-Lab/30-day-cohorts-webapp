@@ -32,14 +32,18 @@ def generate_quick_select_amounts(minimum_price_cents: int) -> list[int]:
     Returns:
         List of 3-4 dollar amounts (integers)
     """
-    min_dollars = 2000 / 100
+    min_dollars = minimum_price_cents / 100
+    min_dollars_scale = 2.75
 
     def round_to_friendly(amount: float) -> float:
         """Round to psychologically appealing price points."""
+        if amount == 0: 
+            return 0
+
+        if amount <= 1:
+            return 1
         if amount <= 5:
             return 5
-        elif amount <= 7.5:
-            return 7.5
         elif amount <= 10:
             return 10
         elif amount <= 15:
@@ -67,20 +71,28 @@ def generate_quick_select_amounts(minimum_price_cents: int) -> list[int]:
             return int(round(amount / 50) * 50)
 
     # Generate 4 options with gentle progression
-    quick_select_amounts = [
-        round_to_friendly(min_dollars * 1),
-        round_to_friendly(min_dollars * 1.25),
-        round_to_friendly(min_dollars * 1.75),
-        round_to_friendly(min_dollars * 2.5),
-    ]
+    quick_select_amounts = [round_to_friendly(min_dollars)]
+    
+    base = max(min_dollars_scale, min_dollars)
+    multipliers = [1.25, 2, 3, 4]
+    current_mult_idx = 0
 
-    # Remove duplicates while preserving order
-    seen = set()
-    quick_select_amounts = [x for x in quick_select_amounts if not (x in seen or seen.add(x))]
-
-    # Ensure we have at least 3 options (fallback)
-    if len(quick_select_amounts) < 3:
-        quick_select_amounts = [10, 25, 50, 100]
+    # Keep generating until we have exactly 4 unique options
+    while len(quick_select_amounts) < 4:
+        if current_mult_idx < len(multipliers):
+            mult = multipliers[current_mult_idx]
+        else:
+            # If we run out of multipliers or have collisions, keep scaling up
+            # Add 0.75 to the last multiplier for each new step
+            mult = multipliers[-1] + (0.75 * (current_mult_idx - len(multipliers) + 1))
+        
+        val = round_to_friendly(base * mult)
+        
+        # Only add if it's strictly greater than the last amount (ensures uniqueness and order)
+        if val > quick_select_amounts[-1]:
+            quick_select_amounts.append(val)
+            
+        current_mult_idx += 1
 
     return quick_select_amounts
 
@@ -244,11 +256,13 @@ def join_checkout(request: HttpRequest) -> HttpResponse:
     else:
         form = PaymentAmountForm(minimum_price_cents=cohort.minimum_price_cents)
 
+    price = cohort.minimum_price_cents / 100
+    price = 100
     context = {
         'cohort': cohort,
         'form': form,
-        'minimum_price_dollars': cohort.minimum_price_cents / 100,
-        'quick_select_amounts': generate_quick_select_amounts(cohort.minimum_price_cents),
+        'minimum_price_dollars': price / 100,
+        'quick_select_amounts': generate_quick_select_amounts(price),
     }
 
     return render(request, 'cohorts/join_checkout.html', context)
