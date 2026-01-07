@@ -334,13 +334,13 @@ details p:last-child {
 	margin-bottom: 0rem;
 }
 
+/* Fix centered content for "centered" layouts (usually applied at the top leve) */
 .content-centered {
 	/* margin-inline: auto; */
 	text-align: center;
-}
-
-.content-centered .card {
-	margin-inline: auto;
+	.card {
+		margin-inline: auto;
+	}
 }
 
 /* Flex grow (pushes content to bottom) */
