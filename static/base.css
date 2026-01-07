@@ -199,6 +199,11 @@ footer {
   UI ELEMENTS
 **/
 
+/* smaller button */
+.button--small {
+	padding: calc(var(--pico-nav-link-spacing-vertical) - var(--pico-border-width) * 2) var(--pico-nav-link-spacing-horizontal);
+}
+
 /* Avatar / profile image */
 .avatar {
 	width: 160px;
@@ -354,20 +359,26 @@ details p:last-child {
 	margin-bottom: var(--card-stack-gap);
 }
 
-.card__header {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 1rem;
+/* Card Rows - Flexible rows for headers or list items */
+.card__row {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	/* justify-content: space-between; */
+	align-items: start; /* Aligns text baselines (e.g. h3 with meta span) */
+	/* gap: 1rem; */
+	width: 100%;
+}
 
-	/* tktk */
+.card__row > hgroup {
+	margin-bottom: 0;
+	display: flex;
+	flex-direction: column;
 }
 
 .card__meta {
 	font-size: 0.85rem;
 	color: var(--pico-muted-color);
 	white-space: nowrap;
-	flex-shrink: 0;
 }
 
 
@@ -438,6 +449,7 @@ div {
 	/* Color variables - defaults (base). Customized in .card--info, .card--success, .card--warning, .card--error */
 	--card-foreground-color: var(--pico-color);
 	--card-background-color: var(--pico-card-background-color);
+	--card-accent-background-color: var(--pico-card-background-color);
 	--card-border-color: var(--pico-border-color);
 
 	padding: 1.5rem;
@@ -480,15 +492,15 @@ div {
 **/
 
 /* Defining colors for bg and semantic colors */
-.card--blue,  .card--bg-blue,  .card--info    { --card-background-color: var(--accent-blue-background); }
+.card--blue,  .card--bg-blue,  .card--info    { --card-background-color: var(--accent-blue-background);}
 .card--red,   .card--bg-red,   .card--danger  { --card-background-color: var(--accent-red-background); }
 .card--amber, .card--bg-amber, .card--warn    { --card-background-color: var(--accent-amber-background); }
 .card--green, .card--bg-green, .card--success { --card-background-color: var(--accent-green-background); }
 
-.card--blue,  .card--border-blue,  .card--info    { --card-border-color: var(--accent-blue-border);  }
-.card--red,   .card--border-red,   .card--danger  { --card-border-color: var(--accent-red-border);   }
-.card--amber, .card--border-amber, .card--warn    { --card-border-color: var(--accent-amber-border); }
-.card--green, .card--border-green, .card--success { --card-border-color: var(--accent-green-border); }
+.card--blue,  .card--border-blue,  .card--info    { --card-border-color: var(--accent-blue-border);  --card-accent-background-color: var(--accent-blue); }
+.card--red,   .card--border-red,   .card--danger  { --card-border-color: var(--accent-red-border);   --card-accent-background-color: var(--accent-red); }
+.card--amber, .card--border-amber, .card--warn    { --card-border-color: var(--accent-amber-border); --card-accent-background-color: var(--accent-amber); }
+.card--green, .card--border-green, .card--success { --card-border-color: var(--accent-green-border); --card-accent-background-color: var(--accent-green); }
 
 /* 'hard' border variant (for alerts, etc) */
 .card--hard-border-green, .card--hard-border-success { --card-border-color: var(--accent-green); }
@@ -519,6 +531,13 @@ div {
 .card--info, .card--warn, .card--danger, .card--success,
 .card--border-left {
 	border-left: 4px solid var(--card-border-color);
+}
+
+.card--border-left.card--border-accented {
+	border-left: 4px solid var(--card-accent-background-color);
+}
+.card--border-top-accented.card--border-accented {
+	border-top: 4px solid var(--card-accent-background-color);
 }
 
 /** 
@@ -652,7 +671,7 @@ div {
 	margin-bottom: 0;
 }
 
-/* small within hgroup acts as overline */
+/* if p tag is first within hgroup it acts as overline */
 .card.card hgroup p:first-child {
 	display: block;
 	font-size: var(--card-hgroup-eyebrow-size);
@@ -703,62 +722,31 @@ figure.card {
 /* Lists in Cards */
 /* When a ul is the only child of a card, make it flush */
 
-.card > ul:only-child, 
-.card > ol:only-child {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
+.card > ol:only-child, 
+.card > ul:only-child,
 .card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child {
-	list-style: none;
+.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child
+{
 	padding: 0;
-	margin: 0rem;
-	margin-top: 1.5rem;
-}
+	
+	li:first-child {
+		border-top: none;
+		padding-top: 0;
+	}
 
-.card > ul:only-child li, 
-.card > ol:only-child li {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	gap: 1rem;
-	padding: 0.75rem 0;
-	border-top: 1px solid var(--pico-border-color);
+	li:last-child {
+		padding-bottom: 0;
+	}
 
-	/* tktk */
-}
+	li {
+		list-style: none;
+		border-top: 1px solid var(--card-border-color);
+		padding: 0.75rem 0;
+	}
 
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li {
-	display: flex;
-	margin-top: 1rem;
-	border-bottom: 1px solid var(--pico-border-color);
-}
-
-.card > ul:only-child li:first-child, 
-.card > ol:only-child li:first-child,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li:first-child,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li:first-child {
-	border-top: none;
-	padding-top: 0;
-}
-
-.card > ul:only-child li:last-child, 
-.card > ol:only-child li:last-child,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ul:last-child li:last-child,
-.card > :is(h1, h2, h3, h4, h5, h6, hgroup):first-child + ol:last-child li:last-child {
-	border-bottom: none;
-	padding-bottom: 0;
-}
-
-
-.list__meta  {
-	font-size: 0.85rem;
-	color: var(--pico-muted-color);
-	font-weight: var(--pico-font-weight);
-	text-align: right;
+	li > :last-child {
+		margin-bottom: 0;
+	}
 }
 
 /* ──────────────────────────────────────────────

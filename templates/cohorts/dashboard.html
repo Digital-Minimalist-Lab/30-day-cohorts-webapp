@@ -19,15 +19,20 @@
     <h2>Today's Tasks</h2>
 
     {% if tasks %}
-    {% for task in tasks %}
-    <div class="card card--medium card--border-left card--border-green">
-        <div class="card__header">
-            <h3><a href="{{ task.url }}">{{ task.title|safe }}</a></h3>
-            {% if task.estimated_time_minutes %}<span class="card__meta">~{{ task.estimated_time_minutes }} min</span>{% endif %}
-        </div>
-        <p>{{ task.description|safe }}</p>
+    <div class="card card--medium card--blue card--border-left card--border-accented">
+        <ul>
+        {% for task in tasks %}
+            <li>
+                <div class="card__row">
+                    <h4><a href="{{ task.url }}">{{ task.title|safe }}</a></h4>
+                    {% if task.estimated_time_minutes %}<span class="card__meta">~{{ task.estimated_time_minutes }} min</span>{% endif %}
+                </div>
+                <p>{{ task.description|safe }}</p>
+            </li>
+        {% endfor %}
+
+        </ul>
     </div>
-    {% endfor %}
     {% else %}
     <div class="card card--medium card--blue">
         <p>✨ There's nothing to do but seize the day!</p>
@@ -43,11 +48,13 @@
         <ul>
             {% for task in upcoming_tasks %}
             <li>
-                {{ task.title }}
-                <span class="list__meta">
-                    {{ task.frequency }}{% if task.day_of_week %}, {{ task.day_of_week }}{% endif %}
-                    {% if task.estimated_time_minutes %}(~{{ task.estimated_time_minutes }} min){% endif %}
-                </span>
+                <div class="card__row">
+                    {{ task.title }}
+                    <span class="card__meta">
+                        {{ task.frequency }}{% if task.day_of_week %}, {{ task.day_of_week }}{% endif %}
+                        {% if task.estimated_time_minutes %}(~{{ task.estimated_time_minutes }} min){% endif %}
+                    </span>
+                </div>
             </li>
             {% endfor %}
         </ul>

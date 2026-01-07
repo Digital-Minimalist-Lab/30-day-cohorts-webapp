@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import privacy_policy, protocol_view, resources_view, landing, feedback_view, mailinglist_view, design_view
+from .views import *
 
 
 app_name = 'core'
@@ -13,4 +13,5 @@ urlpatterns = [
     path('feedback/', feedback_view, name='feedback'),
     path('mailinglist/', mailinglist_view, name='mailinglist'),
     path('ui-design/', design_view, name='design'),
+    path('preview-task-email/<int:tasks>', preview_email, name='preview_email'),
 ]

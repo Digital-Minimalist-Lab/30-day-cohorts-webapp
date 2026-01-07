@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
+from datetime import date
 
 # This is a temporary landing page which exists until the rest of the application is ready.
 # That should be _fine_. There is now way this will go wrong.
@@ -34,3 +35,22 @@ def mailinglist_view(request: HttpRequest) -> HttpResponse:
 def design_view(request: HttpRequest) -> HttpResponse:
     """UI design page."""
     return render(request, 'core/design.html')
+
+def preview_email(request: HttpRequest, tasks: int) -> HttpResponse:
+    """Preview email page."""
+    context = {
+        'user': {
+            'first_name': 'Nathan',
+        },
+        'site_url': 'http://127.0.0.1:8000',
+        'account_profile_url': '/accounts/profile/',
+        'pending_tasks': [
+            ({
+                'title': f'Day {i}: Environment Redesign',
+                'estimated_time_minutes': 45,
+                'due_date': date.today(),
+                'url': '/cohorts/1/tasks/day-1/'
+            }) for i in range(tasks)
+        ]
+    }
+    return render(request, 'emails/task_reminder.html', context)
