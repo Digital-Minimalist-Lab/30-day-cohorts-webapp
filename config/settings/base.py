@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django_q',  # Task queue
     'django_q2_email_backend',  # Email backend for Django Q
+    'djstripe',
 
     # Local apps
     'config',  # For management commands
@@ -251,8 +252,17 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@example.com')
 # Stripe Configuration
 STRIPE_ENABLED = os.getenv('STRIPE_ENABLED', 'True') == 'True'
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
-STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
+
+# dj-stripe Configuration
+STRIPE_LIVE_SECRET_KEY = os.getenv("STRIPE_LIVE_SECRET_KEY", os.getenv("STRIPE_SECRET_KEY"))
+STRIPE_TEST_SECRET_KEY = os.getenv("STRIPE_TEST_SECRET_KEY", os.getenv("STRIPE_SECRET_KEY"))
+STRIPE_LIVE_MODE = os.getenv("STRIPE_LIVE_MODE", "False") == "True"
+DJSTRIPE_WEBHOOK_SECRET = os.getenv("DJSTRIPE_WEBHOOK_SECRET", os.getenv("STRIPE_WEBHOOK_SECRET", ""))
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY if STRIPE_LIVE_MODE else STRIPE_TEST_SECRET_KEY
+STRIPE_WEBHOOK_SECRET = DJSTRIPE_WEBHOOK_SECRET
 
 # WhiteNoise Configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

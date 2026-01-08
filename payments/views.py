@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpRequest
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Sum
 from cohorts.models import Cohort, Enrollment
+from .models import Order, OrderItem
 import stripe
 import logging
 
@@ -18,8 +21,8 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpResponse:
     """Create Stripe checkout session for cohort payment."""
-    if not settings.STRIPE_ENABLED:
-        messages.error(request, 'Payments are not enabled.')
+    if not settings.STRIPE_LIVE_MODE:
+        messages.error(request, 'Payments are not enabled in this environment.')
         return redirect('cohorts:dashboard')
     
     cohort = get_object_or_404(Cohort, id=cohort_id)
@@ -47,6 +50,21 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
     site_url = f"{protocol}://{current_site.domain}"
 
     try:
+        # Create a pending Order
+        # NOTE: For group buying, you would create multiple OrderItems here based on form input
+        with transaction.atomic():
+            order = Order.objects.create(
+                user=request.user,
+                total_amount_cents=amount_cents,
+                status='pending'
+            )
+            OrderItem.objects.create(
+                order=order,
+                content_object=cohort,
+                recipient_email=request.user.email, # Default to self for now
+                price_cents=amount_cents
+            )
+
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -63,7 +81,7 @@ def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpRespons
             mode='payment',
             success_url=site_url + '/cohort/join/success/',
             cancel_url=site_url + '/cohort/join/checkout/',
-            client_reference_id=f'{request.user.id}:{cohort.id}:{amount_cents}',
+            client_reference_id=f'ORDER:{order.id}',
             metadata={
                 'user_id': request.user.id,
                 'cohort_id': cohort.id,
@@ -97,66 +115,3 @@ def payment_success(request: HttpRequest) -> HttpResponse:
 def payment_cancel(request: HttpRequest) -> HttpResponse:
     """Payment cancelled page."""
     return render(request, 'payments/cancel.html')
-
-
-@csrf_exempt
-def stripe_webhook(request: HttpRequest) -> HttpResponse:
-    """Handle Stripe webhooks for payment confirmation."""
-    if not settings.STRIPE_ENABLED:
-        return HttpResponse(status=400)
-    
-    payload = request.body
-    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-    
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError:
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError:
-        return HttpResponse(status=400)
-    
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        
-        # Parse client_reference_id (format: "user_id:cohort_id:amount_cents")
-        client_ref = session.get('client_reference_id', '')
-        if ':' in client_ref:
-            parts = client_ref.split(':')
-            if len(parts) >= 3:
-                user_id, cohort_id, amount_cents = parts[0], parts[1], parts[2]
-            else:
-                # Legacy format without amount
-                user_id, cohort_id = parts[0], parts[1]
-                amount_cents = session.get('amount_total', 0)
-            
-            try:
-                User = get_user_model()
-                user = User.objects.get(id=user_id)
-                cohort = Cohort.objects.get(id=cohort_id)
-                
-                # Update enrollment with payment details
-                enrollment, created = Enrollment.objects.get_or_create(
-                    user=user,
-                    cohort=cohort
-                )
-                
-                # Only update if not already paid (idempotency)
-                if enrollment.status != 'paid':
-                    enrollment.status = 'paid'
-                    enrollment.amount_paid_cents = int(amount_cents)
-                    enrollment.paid_at = timezone.now()
-                    enrollment.save()
-                    logger.info(
-                        f"Payment confirmed for user {user.id}, cohort {cohort.id}, "
-                        f"amount ${int(amount_cents)/100:.2f}"
-                    )
-                else:
-                    logger.info(f"Duplicate webhook for user {user.id}, cohort {cohort.id} - already paid")
-            except Exception as e:
-                # Log error without exposing sensitive data
-                logger.error(f"Webhook processing error for client_ref {client_ref}: {str(e)}")
-    
-    return HttpResponse(status=200)
