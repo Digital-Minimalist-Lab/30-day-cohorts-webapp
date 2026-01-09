@@ -21,7 +21,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def create_checkout_session(request: HttpRequest, cohort_id: int) -> HttpResponse:
     """Create Stripe checkout session for cohort payment."""
-    if not settings.STRIPE_LIVE_MODE:
+    if not settings.STRIPE_ENABLED:
         messages.error(request, 'Payments are not enabled in this environment.')
         return redirect('cohorts:dashboard')
     

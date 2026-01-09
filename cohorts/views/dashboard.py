@@ -29,7 +29,6 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     # Get user's most recent enrollment (assuming one active cohort at a time)
     # Also fetch the total number of enrollments for the cohort in the same query.
     enrollment = None
-    logger.info("User: %s", request.user if request.user else "None")
     if not request.user.is_anonymous:
         enrollment = Enrollment.objects.filter(
             user=request.user
