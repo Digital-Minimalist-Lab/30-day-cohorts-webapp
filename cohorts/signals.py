@@ -29,11 +29,17 @@ def fulfill_cohort_order(sender, order, **kwargs):
                 recipient = User.objects.filter(email=recipient_email).first()
             
             if recipient:
-                Enrollment.objects.get_or_create(
+                enrollment, created = Enrollment.objects.get_or_create(
                     user=recipient,
                     cohort=cohort,
-                    defaults={'status': 'paid', 'paid_at': timezone.now(), 'amount_paid_cents': item.price_cents}
                 )
+                
+                # Update existing enrollment if necessary
+                enrollment.status = 'paid'
+                enrollment.paid_at = timezone.now()
+                enrollment.amount_paid_cents = item.price_cents
+                enrollment.save()
+                
                 logger.info(f"Enrolled {recipient.email} in {cohort.name}")
             else:
                 logger.warning(f"Could not find user with email {recipient_email} for cohort enrollment")
