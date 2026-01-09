@@ -26,7 +26,7 @@ def handle_checkout_session_completed(sender, event, **kwargs):
     session_data = event.data.get('object', {}) if hasattr(event, 'data') else event.get('data', {}).get('object', {})
     client_ref = session_data.get('client_reference_id', '')
 
-    logger.info(f"Processing checkout session for ref: {client_ref}")
+    logger.warning(f"Processing checkout session for ref: {client_ref}")
 
     if client_ref.startswith('ORDER:'):
         try:
