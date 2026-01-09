@@ -8,5 +8,5 @@ urlpatterns = [
     path('create-checkout/<int:cohort_id>/', create_checkout_session, name='create_checkout'),
     path('success/', payment_success, name='success'),
     path('cancel/', payment_cancel, name='cancel'),
-    path('stripe/', include(djstripe.urls)),
+    path('stripe/', include(djstripe.urls, namespace='djstripe')),
 ]
